@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             BackgroundColor="Transparent"
+             x:Class="E_Vita.MainPage">
+
+    <Grid BackgroundColor="#1f1f1f">
+        <!-- Central Login Panel -->
+        <Border StrokeThickness="6"
+                Stroke="#2c003f"
+                BackgroundColor="#3b0054"
+                Padding="30"
+                WidthRequest="400"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                >
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="30"/>
+            </Border.StrokeShape>
+            <VerticalStackLayout>
+                <!-- Logo -->
+                <Image Source="e_vitalogo_01.png" WidthRequest="220" HeightRequest="168" HorizontalOptions="Center" />
+
+                <!-- Welcome Text -->
+                <Label Text="Welcome Back!" FontSize="24" FontFamily="Qatar2022 Arabic" FontAttributes="Bold" TextColor="White" HorizontalOptions="Center"/>
+                <Label Text="Please login to continue" FontSize="18" FontFamily="Qatar2022 Arabic" FontAttributes="Bold" TextColor="white" HorizontalOptions="Center" Margin="0,0,0,20"/>
+
+                <!-- Username Field -->
+                <Label Text="Username" FontSize="18" FontFamily="Qatar2022 Arabic" FontAttributes="Bold" TextColor="AntiqueWhite" Margin="0, 0, 0, 10"/>
+                <Entry  WidthRequest="300" HeightRequest="40" FontFamily="Qatar2022 Arabic" BackgroundColor="AntiqueWhite" TextColor="DarkViolet" FontSize="18"/>
+
+                <!-- Password Field -->
+                <Label Text="Password" FontSize="18" FontFamily="Qatar2022 Arabic" FontAttributes="Bold" TextColor="AntiqueWhite" Margin="0, 10, 0, 10"/>
+                <Entry WidthRequest="300" HeightRequest="40" FontFamily="Qatar2022 Arabic" BackgroundColor="AntiqueWhite" TextColor="DarkViolet" FontSize="18"  IsPassword="True"/>
+
+                <!-- ID Field -->
+                <Label Text="ID" FontSize="18" FontFamily="Qatar2022 Arabic" FontAttributes="Bold" TextColor="AntiqueWhite" Margin="0, 10, 0, 10"/>
+                <Entry  WidthRequest="300" HeightRequest="40" FontFamily="Qatar2022 Arabic" BackgroundColor="AntiqueWhite" TextColor="Darkviolet" FontSize="18" />
+
+                <!-- Login Button -->
+                <Button 
+                        Text="LOG IN" 
+                        TextColor="AntiqueWhite"
+                        FontSize="18"
+                        FontFamily="Qatar2022 Arabic"
+                        BackgroundColor="#891739"
+                        WidthRequest="150"
+                        HeightRequest="40"
+                        CornerRadius="20"
+                        Margin="15"
+                    Clicked="login"
+                         >
+                </Button>
+
+                <!-- Forgot Password -->
+                <HorizontalStackLayout HorizontalOptions="Center" Margin="0,20,0,0">
+                    <Label Text="Forgot Password?" TextColor="AntiqueWhite" FontSize="18" FontFamily="Qatar2022 Arabic" FontAttributes="Bold"/>
+                    <Button BackgroundColor="Transparent" BorderWidth="0" Text="Reset" TextColor="AntiqueWhite" FontFamily="Qatar2022 Arabic" FontSize="14" 
+                            Margin="0, -11, 0, 0" Clicked="Forgot_pass"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</ContentPage>
