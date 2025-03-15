@@ -24,7 +24,8 @@
         {
             try
             {
-                await Shell.Current.GoToAsync(nameof(PassReset));
+                //await Shell.Current.GoToAsync(nameof(PassReset));
+                await Shell.Current.GoToAsync(nameof(NurseDashboard));
             }
             catch (Exception ex)
             {
