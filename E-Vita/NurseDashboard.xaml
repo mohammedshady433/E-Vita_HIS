@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="E_Vita.NurseDashboard"
+             Title="NurseDashboard">
+
+    <Grid Background="#ecece4">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="6" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <VerticalStackLayout.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#3b0054" Offset="-0.5"/>
+                    <GradientStop Color="#3b0054" Offset="0.5"/>
+                    <GradientStop Color="#2c003f" Offset="1"/>
+                </LinearGradientBrush>
+            </VerticalStackLayout.Background>
+            <Label Text="Nurse Dashboard" TextColor="#e1b184" FontSize="56" FontFamily="Qatar2022 Arabic" FontAttributes="Bold"
+                     VerticalOptions="Center" HorizontalOptions="Start" Margin="20,50,0,0"/>
+        </VerticalStackLayout>
+
+        <!-- Side Panel -->
+        <VerticalStackLayout  Grid.Row="0" Grid.Column="0" Grid.RowSpan="6" Height="800" VerticalOptions="End">
+            <VerticalStackLayout.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#f9dcc0" Offset="-0.5"/>
+                    <GradientStop Color="#f9dcc0" Offset="0.5"/>
+                    <GradientStop Color="#e1b184" Offset="1"/>
+                </LinearGradientBrush>
+            </VerticalStackLayout.Background>
+            <!--logo-->
+            <Image Source="/Assets/E-Vita logo-01.png" Height="143" Margin="0,40,0,20" Width="265"/>
+            
+            <!-- Book Appointment Button -->
+            <Button Text="Book Appointment" Clicked="BookAppointment_Click"
+                    FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"
+                    Background="#3b0054" TextColor="#f9dcc0"
+                    WidthRequest="166" HeightRequest="46" Margin="5,150,5,10"
+                    CornerRadius="20"
+                    HorizontalOptions="Center" VerticalOptions="Center">
+               
+            </Button>
+            <!-- Add Patient Button -->
+            <Button Text="Add Patient" Clicked="AddPatient_Click" 
+                    FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"
+                    Background="#3b0054" TextColor="#f9dcc0"
+                    WidthRequest="166" HeightRequest="46" Margin="5,50,5,10"
+                    CornerRadius="20" 
+                    HorizontalOptions="Center" VerticalOptions="Center">
+                
+            </Button>
+
+            <Button Text="LogOut" Clicked="LogOut_Click" 
+                    FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10" 
+                    Background="#3b0054" TextColor="#f9dcc0" 
+                    WidthRequest="166" HeightRequest="46" Margin="5,240,5,10"
+                    CornerRadius="20"
+                    HorizontalOptions="Center" VerticalOptions="Center">
+                
+                
+             <!--  <Button.Background>
+                    <ImageBrush ImageSource="/Views/rb_5844.png" Stretch="Uniform"/>
+                </Button.Background>   -->
+            </Button>
+            
+           
+        </VerticalStackLayout>
+
+        <!-- Schedule -->
+        <Frame  Grid.Column="1" Grid.Row="1" Grid.RowSpan="5" Grid.ColumnSpan="3" Background="#f9dcc0" CornerRadius="10" Margin="10">
+            <Grid>
+                <Grid x:Name="CalendarGrid"  Margin="10">
+                    <!-- Days and buttons will be populated dynamically in code-behind -->
+                </Grid>
+
+                <HorizontalStackLayout Margin="10"  HorizontalOptions="Center" VerticalOptions="End">
+                    <Button Text="◀" Width="30" Height="30" Background="#e1b184" TextColor="#3b0054"
+                                  FontSize="16" FontAttributes="Bold" BorderWidth="0"
+                                  Clicked="PreviousMonth_Click" />
+                    <Picker  x:Name="YearSelector" Width="150" Height="30" SelectedIndexChanged="YearSelector_SelectionChanged" Margin="10,0">
+                        <!-- Populate years dynamically in code-behind -->
+                    </Picker>
+                    <Picker  x:Name="MonthSelector" Width="200" Height="30"  SelectedIndexChanged="MonthSelector_SelectionChanged" Margin="10,0">
+                        <!-- Populate months dynamically in code-behind -->
+                    </Picker>
+                    <Button Text="▶" Width="30" Height="30" Background="#e1b184" TextColor="#3b0054"
+                                  FontSize="16" FontAttributes="Bold" BorderWidth="0"
+                                  Clicked="NextMonth_Click" />
+                </HorizontalStackLayout>
+            </Grid>
+        </Frame>
+        <!-- Schedule -->
+
+        <VerticalStackLayout  Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="1" Margin="4,20,10,2" Grid.RowSpan="5">
+            <Frame BackgroundColor="#f9dcc0" Height="600" CornerRadius="10" Padding="5">
+                <CollectionView x:Name="ScheduleList" SelectionMode="Single" SelectionChanged="ScheduleList_SelectionChanged">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="#e1b184" CornerRadius="5" Padding="5" Margin="5">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Time}" FontSize="16" FontAttributes="Bold" TextColor="#3b0054"/>
+                                    <Label Text="{Binding Patient_appointment.name}" FontSize="14" TextColor="#3b0054"/>
+                                    <Label Text="{Binding Patient_appointment.contact}" FontSize="14" TextColor="#3b0054"/>
+                                    <Label Text="{Binding Patient_appointment.Patient_ID}" FontSize="14" TextColor="#3b0054"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Frame>
+
+        </VerticalStackLayout>
+
+       
+
+            <!--   <StackPanel Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="1" Margin="4,20,10,2" Grid.RowSpan="5">
+            <ListBox x:Name="ScheduleList" Height="600" SelectionChanged="ScheduleList_SelectionChanged" Background="#f9dcc0" BorderBrush="#f9dcc0">
+                <ListBox BorderBrush="#f9dcc0" Background="#f9dcc0">
+                    <DataGrid x:Name="ScheduleDataGrid" Grid.Column="1" Margin="0" AutoGenerateColumns="False" Height="580" Width="624" Background="#e1b184" BorderBrush="#FFBBE1FA"  RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Style="{DynamicResource DataGridStyle1}" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Time" Binding="{Binding Time }" Width="*" />
+                            <DataGridTextColumn Header="Patient Name" Binding="{Binding Patient_appointment.name}" Width="*"/>
+                            <DataGridTextColumn Header="Patient Phone" Binding="{Binding Patient_appointment.contact}" Width="*"/>
+                            <DataGridTextColumn Header="Patient ID" Binding="{Binding Patient_appointment.Patient_ID}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ListBox>
+            </ListBox>
+        </StackPanel>  -->
+
+    </Grid>
+</ContentPage>

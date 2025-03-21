@@ -5,7 +5,9 @@
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(PassReset), typeof(PassReset));
+            //Routing.RegisterRoute(nameof(PassReset), typeof(PassReset));
+            Routing.RegisterRoute(nameof(NurseDashboard), typeof(NurseDashboard));
+
         }
     }
 }
