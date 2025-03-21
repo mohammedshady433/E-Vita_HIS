@@ -46,10 +46,10 @@
             };
 
             // Create a new page (or use an existing one) to set as the content of the window
-            var newPage = new ContentPage
-            {
-                Content = new Label { Text = "This is a new window!" }
-            };
+            //var newPage = new ContentPage
+            //{
+            //    Content = new Label { Text = "This is a new window!" }
+            //};
 
             // Set the page as the content of the new window
             newWindow.Page = new PassReset();
