@@ -5,7 +5,7 @@
         double screenWidth;
         double screenHeight;
         double windowWidth = 350; // Example value, replace with actual window width
-        double windowHeight = 390; // Example value, replace with actual window height
+        double windowHeight = 500; // Example value, replace with actual window height
         double x;
         double y;
 
@@ -25,7 +25,7 @@
             try
             {
                 //await Shell.Current.GoToAsync(nameof(PassReset));
-                await Shell.Current.GoToAsync(nameof(NurseDashboard));
+                await Shell.Current.GoToAsync(nameof(Patientinfo));
             }
             catch (Exception ex)
             {

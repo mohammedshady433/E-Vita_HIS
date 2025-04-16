@@ -68,6 +68,9 @@
 	  <Compile Update="NurseDashboard.xaml.cs">
 	    <DependentUpon>NurseDashboard.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Book Appointment.xaml.cs">
+	    <DependentUpon>Book Appointment.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -78,6 +81,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="PassReset.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Book Appointment.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
