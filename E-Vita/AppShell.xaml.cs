@@ -1,4 +1,6 @@
-﻿namespace E_Vita
+﻿using E_Vita.Views;
+
+namespace E_Vita
 {
     public partial class AppShell : Shell
     {
