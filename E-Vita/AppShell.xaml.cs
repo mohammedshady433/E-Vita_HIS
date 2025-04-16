@@ -8,6 +8,7 @@
             Routing.RegisterRoute(nameof(PassReset), typeof(PassReset));
             Routing.RegisterRoute(nameof(NurseDashboard), typeof(NurseDashboard));
             Routing.RegisterRoute(nameof(Patient_info), typeof(Patient_info));
+            Routing.RegisterRoute(nameof(Patient_data), typeof(Patient_data));
         }
     }
 }

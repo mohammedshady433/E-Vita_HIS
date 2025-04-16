@@ -80,6 +80,9 @@
 	  <MauiXaml Update="Views\PassReset.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Patient_data.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Patient_info.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -1,4 +1,6 @@
-﻿namespace E_Vita
+﻿using E_Vita.Views;
+
+namespace E_Vita
 {
     public partial class MainPage : ContentPage
     {
@@ -25,7 +27,7 @@
             try
             {
                 //await Shell.Current.GoToAsync(nameof(PassReset));
-                await Shell.Current.GoToAsync(nameof(Patient_info));
+                await Shell.Current.GoToAsync(nameof(Patient_data));
             }
             catch (Exception ex)
             {
