@@ -116,6 +116,7 @@ public partial class Patientinfo : ContentPage
     {
         // Example: Show selected date in a label or debug
         string selectedDate = e.NewDate.ToString("yyyy-MM-dd");
+        //this.timeEntry;
 
         // Example: Log or display
         Console.WriteLine("Selected Date: " + selectedDate);
@@ -130,7 +131,7 @@ public partial class Patientinfo : ContentPage
 
 
 
-
+    //time slots
     protected override void OnAppearing()
     {
         base.OnAppearing();
