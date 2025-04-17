@@ -77,8 +77,60 @@ public partial class NewPage1 : ContentPage
         NotesStack.Children.Insert(0, noteFrame); // insert at top
     }
 
-    private void turn_over(object sender, EventArgs e)
+    private async void turn_over(object sender, EventArgs e)
     {
+        if (sender is Button button)
+        {
+            // Animate a bounce effect
+            await button.ScaleTo(1.2, 100); // Scale up
+            await button.ScaleTo(1.0, 100); // Scale back to normal
 
+            // Toggle background color using .Equals()
+            if (button.BackgroundColor.Equals(Colors.Red))
+            {
+                button.BackgroundColor = Colors.Green;
+            }
+            else if (button.BackgroundColor.Equals(Colors.Green))
+            {
+                button.BackgroundColor = Colors.White;
+            }
+            else
+            {
+                button.BackgroundColor = Colors.Red;
+            }
+        }
+    }
+    private void scaleUP()
+    {
+        var duplicate = new Button
+        {
+            ImageSource = condition.ImageSource,
+            WidthRequest = condition.WidthRequest,
+            HeightRequest = condition.HeightRequest,
+            BackgroundColor = condition.BackgroundColor,
+            CornerRadius = condition.CornerRadius
+        };
+
+        // Attach the same click handler
+        duplicate.Clicked += turn_over;
+
+        // Add the duplicate to the existing layout
+        ConditionStack.Children.Add(duplicate);
+    }
+
+    private async void settings(object sender, EventArgs e)
+    {
+        if (sender is Button button)
+        {
+            await button.ScaleTo(1.2, 100);
+            await button.ScaleTo(1.0, 100);
+            scaleUP();
+        }
+        
+    }
+    private void LogOut_Click(object sender, EventArgs e)
+    {
+        // Example: Navigate back to the login page
+        Application.Current.MainPage = new MainPage(); // Replace with your actual login page
     }
 }
