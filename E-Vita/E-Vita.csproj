@@ -61,10 +61,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.60" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.4" />
 		<PackageReference Include="Syncfusion.Licensing" Version="29.1.38" />
 		<PackageReference Include="Syncfusion.Maui.Calendar" Version="29.1.38" />
 		<PackageReference Include="Syncfusion.Maui.DataGrid" Version="29.1.38" />
+		<PackageReference Include="Syncfusion.Maui.ListView" Version="29.1.38" />
 		<PackageReference Include="Syncfusion.Maui.Scheduler" Version="29.1.38" />
 	</ItemGroup>
 
@@ -75,6 +76,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Views\DoctorDashboard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\NewPage1.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

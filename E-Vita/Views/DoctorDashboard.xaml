@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sfCalendar="clr-namespace:Syncfusion.Maui.Calendar;assembly=Syncfusion.Maui.Calendar"
+             xmlns:sfDataGrid="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+             xmlns:sfListView="clr-namespace:Syncfusion.Maui.ListView;assembly=Syncfusion.Maui.ListView"
+             x:Class="E_Vita.Views.DoctorDashboard"
+             Title="Doctor Dashboard">
+
+    <Grid BackgroundColor="#1f1f1f">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border  
+        Grid.Row="0"  
+        Grid.Column="0"  
+        Grid.RowSpan="9"  
+        StrokeThickness="0"  
+        StrokeShape="RoundRectangle 20"
+        BackgroundColor="Transparent"  
+        Padding="0"
+        HeightRequest="720"
+        Margin="2"
+        VerticalOptions="End">
+
+            <VerticalStackLayout>
+                <VerticalStackLayout.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Color="#e1b184" Offset="0"/>
+                        <GradientStop Color="#f9dcc0" Offset="0.5"/>
+                        <GradientStop Color="#f9dcc0" Offset="1"/>
+                    </LinearGradientBrush>
+                </VerticalStackLayout.Background>
+
+                <Image Source="e_vitalogo_01.png" Margin="0,40,10,20"/>
+                <!-- Patient Button -->
+                <Button Text="Patients Data"   
+                FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
+                BackgroundColor="#3b0054" TextColor="#f9dcc0"  
+                WidthRequest="166" HeightRequest="46" Margin="5,150,5,10"  
+                CornerRadius="20"   
+                HorizontalOptions="Center" VerticalOptions="Center"/>
+                <!-- Radiology Images Button -->
+                <Button Text="Radiology"   
+                FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
+                BackgroundColor="#3b0054" TextColor="#f9dcc0"  
+                WidthRequest="166" HeightRequest="46" Margin="10"  
+                CornerRadius="20"  
+                HorizontalOptions="Center" VerticalOptions="Center"/>
+                <Button Text="Lab Results"   
+                        FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
+                        BackgroundColor="#3b0054" TextColor="#f9dcc0"  
+                        WidthRequest="166" HeightRequest="46" Margin="10"  
+                        CornerRadius="20"   
+                        HorizontalOptions="Center" VerticalOptions="Center"/>
+                
+                <Button Text="Finance"   
+                        FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
+                        BackgroundColor="#3b0054" TextColor="#f9dcc0"  
+                        WidthRequest="166" HeightRequest="46" Margin="10"  
+                        CornerRadius="20"   
+                        HorizontalOptions="Center" VerticalOptions="Center"/>
+                <!-- Logout Button -->
+                <Button Text="LogOut"  
+                        FontFamily="Qatar2022 Arabic" FontSize="14"   
+                        BackgroundColor="#3b0054" TextColor="#f9dcc0"   
+                        WidthRequest="166" HeightRequest="46" Margin="10"  
+                        CornerRadius="20"  
+                        HorizontalOptions="Center" VerticalOptions="Center" Clicked="LogOut_Click"/>
+            </VerticalStackLayout>
+        </Border>
+        <!-- calender -->
+        <VerticalStackLayout Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="4">
+            <sfCalendar:SfCalendar x:Name="MyCalendar" View="Month" SelectionChanged="OnCalendarDateSelected" Margin="10" CornerRadius="20" BackgroundColor="AliceBlue"/>
+        </VerticalStackLayout>
+        
+        
+        <!-- patient listview -->
+        <VerticalStackLayout Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="4" Grid.RowSpan="4" Margin="5">
+            <sfListView:SfListView 
+                       x:Name="listView"
+                       ItemsSource="{Binding Appointments}"
+                       SelectionMode="Single"
+                       ItemTapped="SfListView_ItemTapped"
+                       ItemSize="100"
+                       ItemSpacing="5"
+                       AllowSwiping="True"
+                       HeightRequest="384">
+
+                <sfListView:SfListView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="#f9dcc0"
+                        CornerRadius="15"
+                        Padding="10">
+                            <StackLayout>
+                                <Label Text="{Binding PatientName}"
+                           FontSize="14"
+                           TextColor="#34111e"
+                           HorizontalOptions="Center"/>
+                                <Label Text="{Binding Time}"
+                           FontSize="14"
+                           TextColor="#34111e" />
+                                <Label TextColor="#3b0054" Text="{Binding PatientPhone}"
+                           FontSize="12"/>
+                                <Label TextColor="#3b0054" Text="{Binding PatientID}"
+                           FontSize="12"/>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </sfListView:SfListView.ItemTemplate>
+            </sfListView:SfListView>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

@@ -14,9 +14,9 @@
            <RowDefinition Height="*"/>  
        </Grid.RowDefinitions>  
        <Grid.ColumnDefinitions>  
-           <ColumnDefinition Width="*"/>  
-           <ColumnDefinition Width="*"/>  
-           <ColumnDefinition Width="*"/>  
+           <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>  
            <ColumnDefinition Width="*"/>  
            <ColumnDefinition Width="*"/>  
            <ColumnDefinition Width="*"/>  
@@ -51,9 +51,9 @@
             <VerticalStackLayout>
                 <VerticalStackLayout.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#f9dcc0" Offset="-0.5"/>
+                        <GradientStop Color="#e1b184" Offset="0"/>
                         <GradientStop Color="#f9dcc0" Offset="0.5"/>
-                        <GradientStop Color="#e1b184" Offset="1"/>
+                        <GradientStop Color="#f9dcc0" Offset="1"/>
                     </LinearGradientBrush>
                 </VerticalStackLayout.Background>
 
@@ -82,6 +82,7 @@
                         WidthRequest="166" HeightRequest="46" Margin="0"  
                         CornerRadius="20"  
                         HorizontalOptions="Center" VerticalOptions="Center" Clicked="LogOut_Click"/>
+                
                 <!-- Settings Button -->
                 <Button ImageSource="settings.png" WidthRequest="50" HeightRequest="50" Background="Transparent" Clicked="settings"></Button>
             </VerticalStackLayout>

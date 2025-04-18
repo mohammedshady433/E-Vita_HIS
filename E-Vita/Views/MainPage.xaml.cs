@@ -27,7 +27,7 @@ namespace E_Vita
             try
             {
                 //await Shell.Current.GoToAsync(nameof(PassReset));
-                await Shell.Current.GoToAsync(nameof(NewPage1));
+                await Shell.Current.GoToAsync(nameof(DoctorDashboard));
             }
             catch (Exception ex)
             {
