@@ -6,7 +6,7 @@ public partial class PassReset : ContentPage
 {
 	public PassReset()
 	{
-		InitializeComponent();
+		
 	}
 
     private void btnminimized(object sender, EventArgs e)
