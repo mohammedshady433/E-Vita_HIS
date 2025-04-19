@@ -10,9 +10,10 @@ namespace E_Vita
             Routing.RegisterRoute(nameof(PassReset), typeof(PassReset));
             Routing.RegisterRoute(nameof(NurseDashboard), typeof(NurseDashboard));
             Routing.RegisterRoute(nameof(Patient_info), typeof(Patient_info));
-            Routing.RegisterRoute(nameof(NewPage1), typeof(NewPage1));
             Routing.RegisterRoute(nameof(DoctorDashboard), typeof(DoctorDashboard));
             Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
+            Routing.RegisterRoute(nameof(ReceptionistDashboard), typeof(ReceptionistDashboard));
+            Routing.RegisterRoute(nameof(BookAppointment), typeof(BookAppointment));
         }
     }
 }

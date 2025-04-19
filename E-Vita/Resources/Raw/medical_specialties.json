@@ -1,0 +1,431 @@
+{
+  "MedicalSpecialties": [
+    {
+      "Specialty": "Allergy and Immunology",
+      "Focus": "Diagnoses and treats disorders of the immune system, including allergies, asthma, and immune deficiencies.",
+      "Subspecialties": [
+        "Pediatric allergy and immunology",
+        "Clinical immunology",
+        "Asthma management"
+      ],
+      "Training": "3 years internal medicine or pediatrics residency + 2 years allergy/immunology fellowship"
+    },
+    {
+      "Specialty": "Anesthesiology",
+      "Focus": "Manages pain relief and sedation during surgery, childbirth, or other procedures; monitors vital signs.",
+      "Subspecialties": [
+        "Critical care medicine",
+        "Pain medicine",
+        "Pediatric anesthesiology",
+        "Obstetric anesthesiology",
+        "Regional anesthesiology"
+      ],
+      "Training": "4 years anesthesiology residency + 1-2 years fellowship for subspecialties"
+    },
+    {
+      "Specialty": "Cardiology",
+      "Focus": "Treats heart and blood vessel conditions, such as heart disease, heart attacks, and arrhythmias.",
+      "Subspecialties": [
+        "Interventional cardiology",
+        "Electrophysiology",
+        "Heart failure and transplant cardiology",
+        "Preventive cardiology",
+        "Pediatric cardiology"
+      ],
+      "Training": "3 years internal medicine residency + 3 years cardiology fellowship"
+    },
+    {
+      "Specialty": "Colon and Rectal Surgery",
+      "Focus": "Diagnoses and treats diseases of the colon, rectum, and anus, often surgically.",
+      "Subspecialties": [
+        "Pelvic floor disorders",
+        "Colorectal oncology"
+      ],
+      "Training": "5-6 years general surgery residency + 1 year colon and rectal surgery fellowship"
+    },
+    {
+      "Specialty": "Critical Care Medicine",
+      "Focus": "Manages life-threatening conditions in intensive care units (ICUs).",
+      "Subspecialties": [
+        "Pediatric critical care",
+        "Neurocritical care",
+        "Surgical critical care"
+      ],
+      "Training": "1-3 years fellowship after primary residency (anesthesiology, internal medicine, or surgery)"
+    },
+    {
+      "Specialty": "Dermatology",
+      "Focus": "Treats conditions of the skin, hair, and nails, including skin cancer, eczema, and psoriasis.",
+      "Subspecialties": [
+        "Mohs surgery",
+        "Pediatric dermatology",
+        "Dermatopathology",
+        "Cosmetic dermatology"
+      ],
+      "Training": "4 years dermatology residency + 1-2 years fellowship for subspecialties"
+    },
+    {
+      "Specialty": "Emergency Medicine",
+      "Focus": "Provides immediate care for acute illnesses and injuries in emergency settings.",
+      "Subspecialties": [
+        "Pediatric emergency medicine",
+        "Sports medicine",
+        "Toxicology",
+        "EMS (prehospital care)"
+      ],
+      "Training": "3-4 years emergency medicine residency + 1-2 years fellowship for subspecialties"
+    },
+    {
+      "Specialty": "Endocrinology and Metabolism",
+      "Focus": "Treats hormone-related disorders, such as diabetes, thyroid disease, and metabolic conditions.",
+      "Subspecialties": [
+        "Pediatric endocrinology",
+        "Reproductive endocrinology",
+        "Surgical endocrinology"
+      ],
+      "Training": "3 years internal medicine residency + 2-3 years endocrinology fellowship"
+    },
+    {
+      "Specialty": "Family Medicine",
+      "Focus": "Provides comprehensive care for patients of all ages, emphasizing preventive and holistic care.",
+      "Subspecialties": [
+        "Geriatric medicine",
+        "Sports medicine",
+        "Adolescent medicine",
+        "Hospice and palliative care"
+      ],
+      "Training": "3 years family medicine residency + 1-2 years fellowship for subspecialties"
+    },
+    {
+      "Specialty": "Gastroenterology",
+      "Focus": "Treats disorders of the digestive system, including the stomach, liver, pancreas, and intestines.",
+      "Subspecialties": [
+        "Hepatology",
+        "Inflammatory bowel disease",
+        "Pediatric gastroenterology",
+        "Advanced endoscopy"
+      ],
+      "Training": "3 years internal medicine residency + 3 years gastroenterology fellowship"
+    },
+    {
+      "Specialty": "General Surgery",
+      "Focus": "Performs a wide range of surgical procedures, such as appendectomies and hernia repairs.",
+      "Subspecialties": [
+        "Trauma surgery",
+        "Surgical oncology",
+        "Vascular surgery",
+        "Pediatric surgery"
+      ],
+      "Training": "5-7 years general surgery residency + 1-2 years fellowship for subspecialties"
+    },
+    {
+      "Specialty": "Geriatric Medicine",
+      "Focus": "Specializes in the care of elderly patients, managing chronic conditions and promoting independence.",
+      "Subspecialties": [
+        "Dementia care",
+        "Frailty management"
+      ],
+      "Training": "3 years internal medicine or family medicine residency + 1-2 years geriatric fellowship"
+    },
+    {
+      "Specialty": "Hematology",
+      "Focus": "Treats blood disorders, such as anemia, hemophilia, and leukemia.",
+      "Subspecialties": [
+        "Hematologic oncology",
+        "Coagulation disorders",
+        "Pediatric hematology"
+      ],
+      "Training": "3 years internal medicine residency + 2-3 years hematology fellowship (often combined with oncology)"
+    },
+    {
+      "Specialty": "Hospice and Palliative Medicine",
+      "Focus": "Provides care for patients with terminal illnesses, focusing on pain management and quality of life.",
+      "Subspecialties": [],
+      "Training": "3 years primary residency (e.g., internal medicine) + 1 year palliative care fellowship"
+    },
+    {
+      "Specialty": "Infectious Disease",
+      "Focus": "Diagnoses and treats infections, including HIV, tuberculosis, and Lyme disease.",
+      "Subspecialties": [
+        "Pediatric infectious disease",
+        "Travel medicine",
+        "Infection control"
+      ],
+      "Training": "3 years internal medicine residency + 2 years infectious disease fellowship"
+    },
+    {
+      "Specialty": "Internal Medicine",
+      "Focus": "Treats adult patients with a wide range of acute and chronic illnesses.",
+      "Subspecialties": [
+        "Rheumatology",
+        "Pulmonology",
+        "Nephrology"
+      ],
+      "Training": "3 years internal medicine residency + 1-3 years fellowship for subspecialties"
+    },
+    {
+      "Specialty": "Medical Genetics and Genomics",
+      "Focus": "Diagnoses and manages hereditary disorders, offering genetic counseling and screening.",
+      "Subspecialties": [
+        "Clinical genetics",
+        "Biochemical genetics",
+        "Molecular genetics"
+      ],
+      "Training": "2-4 years genetics residency or combined with other specialties + 1-2 years fellowship"
+    },
+    {
+      "Specialty": "Nephrology",
+      "Focus": "Treats kidney diseases, hypertension, and fluid/electrolyte imbalances; manages dialysis.",
+      "Subspecialties": [
+        "Pediatric nephrology",
+        "Transplant nephrology"
+      ],
+      "Training": "3 years internal medicine residency + 2-3 years nephrology fellowship"
+    },
+    {
+      "Specialty": "Neurology",
+      "Focus": "Treats disorders of the nervous system, including stroke, epilepsy, and Parkinson’s disease.",
+      "Subspecialties": [
+        "Pediatric neurology",
+        "Neurocritical care",
+        "Neuromuscular medicine",
+        "Vascular neurology"
+      ],
+      "Training": "4 years neurology residency + 1-2 years fellowship for subspecialties"
+    },
+    {
+      "Specialty": "Neurosurgery",
+      "Focus": "Performs surgery on the brain, spinal cord, and nerves for conditions like tumors or trauma.",
+      "Subspecialties": [
+        "Pediatric neurosurgery",
+        "Spine surgery",
+        "Functional neurosurgery"
+      ],
+      "Training": "7-8 years neurosurgery residency + 1-2 years fellowship"
+    },
+    {
+      "Specialty": "Nuclear Medicine",
+      "Focus": "Uses radioactive substances for diagnostic imaging and treatment (e.g., PET scans).",
+      "Subspecialties": [
+        "Therapeutic nuclear medicine",
+        "Pediatric nuclear medicine"
+      ],
+      "Training": "3 years radiology or internal medicine residency + 2-3 years nuclear medicine residency"
+    },
+    {
+      "Specialty": "Obstetrics and Gynecology",
+      "Focus": "Manages female reproductive health, pregnancy, and childbirth.",
+      "Subspecialties": [
+        "Maternal-fetal medicine",
+        "Gynecologic oncology",
+        "Reproductive endocrinology and infertility",
+        "Urogynecology"
+      ],
+      "Training": "4 years OB/GYN residency + 2-3 years fellowship for subspecialties"
+    },
+    {
+      "Specialty": "Oncology",
+      "Focus": "Diagnoses and treats cancers, often in collaboration with surgical or radiation specialists.",
+      "Subspecialties": [
+        "Medical oncology",
+        "Radiation oncology",
+        "Surgical oncology",
+        "Pediatric oncology"
+      ],
+      "Training": "3 years internal medicine residency + 2-3 years oncology fellowship (or 5-6 years for radiation oncology)"
+    },
+    {
+      "Specialty": "Ophthalmology",
+      "Focus": "Treats eye and vision disorders, including cataracts, glaucoma, and retinal diseases; performs eye surgery.",
+      "Subspecialties": [
+        "Pediatric ophthalmology",
+        "Retina/vitreous surgery",
+        "Cornea and external disease",
+        "Glaucoma"
+      ],
+      "Training": "4 years ophthalmology residency + 1-2 years fellowship"
+    },
+    {
+      "Specialty": "Orthopedic Surgery",
+      "Focus": "Treats musculoskeletal conditions, including bones, joints, and ligaments, often surgically.",
+      "Subspecialties": [
+        "Sports medicine",
+        "Pediatric orthopedics",
+        "Spine surgery",
+        "Hand surgery",
+        "Joint replacement"
+      ],
+      "Training": "5 years orthopedic surgery residency + 1-2 years fellowship"
+    },
+    {
+      "Specialty": "Otolaryngology",
+      "Focus": "Treats ear, nose, throat, and head/neck conditions, including sinus issues and cancers.",
+      "Subspecialties": [
+        "Pediatric otolaryngology",
+        "Rhinology",
+        "Head and neck surgery",
+        "Facial plastic surgery"
+      ],
+      "Training": "5 years otolaryngology residency + 1-2 years fellowship"
+    },
+    {
+      "Specialty": "Pathology",
+      "Focus": "Examines tissues and fluids to diagnose diseases; manages clinical labs.",
+      "Subspecialties": [
+        "Anatomic pathology",
+        "Clinical pathology",
+        "Forensic pathology",
+        "Hematopathology",
+        "Molecular pathology"
+      ],
+      "Training": "4 years pathology residency + 1-2 years fellowship"
+    },
+    {
+      "Specialty": "Pediatrics",
+      "Focus": "Provides primary care for infants, children, and adolescents.",
+      "Subspecialties": [
+        "Pediatric cardiology",
+        "Pediatric oncology",
+        "Neonatology",
+        "Pediatric gastroenterology"
+      ],
+      "Training": "3 years pediatrics residency + 2-3 years fellowship for subspecialties"
+    },
+    {
+      "Specialty": "Physical Medicine and Rehabilitation",
+      "Focus": "Restores function for patients with physical impairments, such as stroke or spinal cord injuries.",
+      "Subspecialties": [
+        "Sports medicine",
+        "Spinal cord injury medicine",
+        "Pain medicine",
+        "Pediatric rehabilitation"
+      ],
+      "Training": "4 years PM&R residency + 1-2 years fellowship"
+    },
+    {
+      "Specialty": "Plastic Surgery",
+      "Focus": "Performs reconstructive or cosmetic surgeries, such as breast reconstruction or facial procedures.",
+      "Subspecialties": [
+        "Craniofacial surgery",
+        "Hand surgery",
+        "Aesthetic surgery",
+        "Burn surgery"
+      ],
+      "Training": "6 years plastic surgery residency or 5 years general surgery + 3 years plastic surgery fellowship"
+    },
+    {
+      "Specialty": "Podiatry",
+      "Focus": "Treats conditions of the feet and ankles, such as bunions, infections, and injuries.",
+      "Subspecialties": [
+        "Podiatric surgery",
+        "Sports podiatry",
+        "Diabetic foot care"
+      ],
+      "Training": "4 years podiatric medical school + 3 years residency"
+    },
+    {
+      "Specialty": "Preventive Medicine",
+      "Focus": "Focuses on disease prevention and health promotion through lifestyle changes and screenings.",
+      "Subspecialties": [
+        "Public health and general preventive medicine",
+        "Occupational medicine",
+        "Aerospace medicine"
+      ],
+      "Training": "3 years preventive medicine residency + MPH degree often required"
+    },
+    {
+      "Specialty": "Psychiatry",
+      "Focus": "Diagnoses and treats mental health disorders, including depression, anxiety, and schizophrenia.",
+      "Subspecialties": [
+        "Child and adolescent psychiatry",
+        "Geriatric psychiatry",
+        "Addiction psychiatry",
+        "Forensic psychiatry"
+      ],
+      "Training": "4 years psychiatry residency + 1-2 years fellowship"
+    },
+    {
+      "Specialty": "Pulmonology",
+      "Focus": "Treats lung and respiratory conditions, such as asthma, COPD, and lung cancer.",
+      "Subspecialties": [
+        "Critical care medicine",
+        "Pediatric pulmonology",
+        "Sleep medicine"
+      ],
+      "Training": "3 years internal medicine residency + 2-3 years pulmonology fellowship"
+    },
+    {
+      "Specialty": "Radiology",
+      "Focus": "Uses imaging (X-rays, MRIs, CTs) to diagnose and sometimes treat diseases.",
+      "Subspecialties": [
+        "Diagnostic radiology",
+        "Interventional radiology",
+        "Pediatric radiology",
+        "Neuroradiology"
+      ],
+      "Training": "5 years radiology residency + 1-2 years fellowship"
+    },
+    {
+      "Specialty": "Rheumatology",
+      "Focus": "Treats autoimmune and joint disorders, such as arthritis and lupus.",
+      "Subspecialties": [
+        "Pediatric rheumatology",
+        "Musculoskeletal ultrasound"
+      ],
+      "Training": "3 years internal medicine residency + 2 years rheumatology fellowship"
+    },
+    {
+      "Specialty": "Sleep Medicine",
+      "Focus": "Diagnoses and treats sleep disorders, such as sleep apnea and insomnia.",
+      "Subspecialties": [],
+      "Training": "3-4 years primary residency + 1 year sleep medicine fellowship"
+    },
+    {
+      "Specialty": "Sports Medicine",
+      "Focus": "Treats musculoskeletal injuries in athletes and active individuals, often non-surgically.",
+      "Subspecialties": [
+        "Pediatric sports medicine",
+        "Primary care sports medicine"
+      ],
+      "Training": "3 years primary residency (e.g., family medicine) + 1-2 years sports medicine fellowship"
+    },
+    {
+      "Specialty": "Thoracic Surgery",
+      "Focus": "Performs surgeries on the chest, including heart, lungs, and esophagus.",
+      "Subspecialties": [
+        "Cardiothoracic surgery",
+        "Congenital heart surgery",
+        "Esophageal surgery"
+      ],
+      "Training": "5 years general surgery residency + 2-3 years thoracic surgery fellowship"
+    },
+    {
+      "Specialty": "Transplant Surgery",
+      "Focus": "Performs organ transplants, such as kidney, liver, or heart transplants.",
+      "Subspecialties": [
+        "Abdominal transplant surgery",
+        "Cardiothoracic transplant surgery"
+      ],
+      "Training": "5 years general surgery residency + 2 years transplant fellowship"
+    },
+    {
+      "Specialty": "Urology",
+      "Focus": "Treats urinary tract and male reproductive system disorders, such as kidney stones and prostate issues.",
+      "Subspecialties": [
+        "Pediatric urology",
+        "Urologic oncology",
+        "Endourology"
+      ],
+      "Training": "5 years urology residency + 1-2 years fellowship"
+    },
+    {
+      "Specialty": "Vascular Surgery",
+      "Focus": "Treats diseases of the circulatory system, such as aneurysms and varicose veins.",
+      "Subspecialties": [
+        "Endovascular surgery",
+        "Pediatric vascular surgery"
+      ],
+      "Training": "5 years general surgery residency + 2 years vascular surgery fellowship or 5 years integrated vascular surgery residency"
+    }
+  ]
+}

@@ -1,303 +1,136 @@
+using System.Collections.ObjectModel;
 
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
+namespace E_Vita.Views;
 
-namespace E_Vita;
-
-/// <summary>
-/// Interaction logic for Page1.xaml
-/// </summary>
 public partial class NurseDashboard : ContentPage
 {
-    private DateTime currentDate;
-
+    public ObservableCollection<Appointment> ScheduleList { get; set; }
     public NurseDashboard()
     {
         InitializeComponent();
-        currentDate = DateTime.Now;
-        PopulateYearAndMonthSelectors();
-        GenerateCalendar(currentDate);
-        //var services = ((App)Application.Current)._serviceProvider;
-        //_Appointment = services.GetService<IRepository<Appointment>>() ?? throw new InvalidOperationException("Data helper service is not available");
-        //LoadAppointmentsFortoday();
+        LoadNotes(); // Call your backend method here to populate existing notes
+                     // Sample data
+        ScheduleList = new ObservableCollection<Appointment>
+        {
+            new Appointment { Time = "10:00 AM", PatientName = "John Doe", PatientPhone = "123-456-7890", PatientID = "001" },
+            new Appointment { Time = "11:00 AM", PatientName = "Jane Smith", PatientPhone = "234-567-8901", PatientID = "002" },
+            new Appointment { Time = "12:00 PM", PatientName = "Emily Johnson", PatientPhone = "345-678-9012", PatientID = "003" },
+        };
+
+        // Setting the BindingContext
+        this.BindingContext = this;
     }
-    //public async void LoadAppointmentsFortoday()
-    //{
-    //    var today = DateTime.Today; // Get today's date without time
-    //    var todayAppointments = await _Appointment.GetAllAsync();
-
-    //    //Filter appointments where the Date matches today's date
-    //    var filteredAppointments = todayAppointments
-    //        .Where(a => a.Date.Date == today)
-    //        .ToList();
-
-    //    ScheduleDataGrid.ItemsSource = todayAppointments;
-    //}
-    //public async void LoadAppointmentsForDate(DateTime specificDate)
-    //{
-    //    var specificDateAppointments = await _Appointment.GetAllAsync();
-
-    //    // Filter appointments where the Date matches the specific date
-    //    var filteredAppointments = specificDateAppointments
-    //        .Where(a => a.Date.Date == specificDate.Date)
-    //        .ToList();
-
-    //    ScheduleDataGrid.ItemsSource = filteredAppointments;
-    //}
-
-    private int currentYear = DateTime.Now.Year;
-    private int currentMonth = DateTime.Now.Month;
-
-    //private void PopulateYearAndMonthSelectors()
-    //{
-
-    //    CalendarGrid.Children.Clear();
-    //    CalendarGrid.ColumnDefinitions.Clear();
-    //    CalendarGrid.RowDefinitions.Clear();
-
-    //    // Define columns (7 for days of the week)
-    //    for (int i = 0; i < 7; i++)
-    //    {
-    //        CalendarGrid.ColumnDefinitions.Add(new ColumnDefinition());
-    //    }
-
-    //    // Define rows (5 or 6 for weeks)
-    //    for (int i = 0; i < 6; i++)
-    //    {
-    //        CalendarGrid.RowDefinitions.Add(new RowDefinition());
-    //    }
-
-    //    DateTime firstDayOfMonth = new DateTime(currentYear, currentMonth, 1);
-    //    int daysInMonth = DateTime.DaysInMonth(currentYear, currentMonth);
-    //    int startDay = (int)firstDayOfMonth.DayOfWeek; // Sunday = 0, Monday = 1, etc.
-
-    //    int row = 1, col = startDay;
-
-    //    for (int day = 1; day <= daysInMonth; day++)
-    //    {
-    //        var dayButton = new Button
-    //        {
-    //            Text = day.ToString(),
-    //            BackgroundColor = Color.FromArgb("#e1b184"),
-    //            TextColor = Color.FromArgb("#3b0054"),
-    //            CornerRadius = 10,
-    //            Padding = 5
-    //        };
-
-    //        // Assign click event
-    //        dayButton.Clicked += (sender, e) =>
-    //        {
-    //            DisplayAlert("Date Selected", $"You selected {new DateTime(currentYear, currentMonth, day):dddd, MMMM d, yyyy}", "OK");
-    //        };
-
-    //        // Add to grid properly in .NET MAUI
-    //        CalendarGrid.Children.Add(dayButton);
-    //        Grid.SetRow(dayButton, row);
-    //        Grid.SetColumn(dayButton, col);
-
-    //        col++;
-    //        if (col > 6) // Move to next row after Saturday
-    //        {
-    //            col = 0;
-    //            row++;
-    //        }
-    //    }
-    //}
-
-    private void PopulateYearAndMonthSelectors()
+    private void OnCalendarDateSelected(object sender, Syncfusion.Maui.Calendar.CalendarSelectionChangedEventArgs e)
     {
-        // Populate Years
-        int currentYear = DateTime.Now.Year;
-        for (int year = currentYear - 10; year <= currentYear + 10; year++)
+        if (e.NewValue != null)
         {
-            YearSelector.Items.Add(year.ToString());
+            DateTime selectedDate = (DateTime)e.NewValue;
+            SelectedDateLabel.Text = $"You selected: {selectedDate.ToString("D")}";
         }
-        YearSelector.SelectedIndex = 10; // Default to current year
-
-        // Populate Months
-        for (int month = 1; month <= 12; month++)
-        {
-            MonthSelector.Items.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
-        }
-        MonthSelector.SelectedIndex = DateTime.Now.Month - 1;
     }
-    private void GenerateCalendar(DateTime date)
+    private async void OnPostNoteClicked(object sender, EventArgs e)
     {
-        CalendarGrid.Children.Clear();
+        string noteText = NoteEditor.Text?.Trim();
 
-        // Add day names (Sunday-Saturday)
-        string[] dayNames = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames;
-        foreach (string dayName in dayNames)
+        if (!string.IsNullOrEmpty(noteText))
         {
-            CalendarGrid.Clear();
+            // TODO: Post to backend API here
+            // await YourApi.PostNoteAsync(noteText);
 
-            // Get the first day of the month
-            DateTime firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
-            int daysInMonth = DateTime.DaysInMonth(date.Year, date.Month);
-            int startDayOffset = (int)firstDayOfMonth.DayOfWeek;
+            AddNoteToUI(noteText, "You", DateTime.Now); // Temporary local addition
 
-            // Add day headers
-            string[] abbreviatedDayNames = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames;
-            foreach (var abbreviatedDayName in abbreviatedDayNames)
+            NoteEditor.Text = string.Empty;
+        }
+        else
+        {
+            await DisplayAlert("Empty Note", "Please enter some text before posting.", "OK");
+        }
+    }
+
+    // Simulate loading notes from the backend
+    private void LoadNotes()
+    {
+        // TODO: Replace with your API call
+        AddNoteToUI("Patient in Room 2 requires wound dressing every 6 hours.", "Nurse Sarah", DateTime.Now.AddMinutes(-30));
+    }
+
+    // UI Helper
+    private void AddNoteToUI(string text, string author, DateTime timestamp)
+    {
+        var noteFrame = new Frame
+        {
+            BackgroundColor = Color.FromArgb("#fff8e1"),
+            BorderColor = Colors.LightGray,
+            CornerRadius = 10,
+            Padding = new Thickness(10),
+            Content = new VerticalStackLayout
             {
-                CalendarGrid.Add(new Label { Text = abbreviatedDayName, FontAttributes = FontAttributes.Bold });
-            }
-
-            // Add empty spaces before first day
-            for (int i = 0; i < startDayOffset; i++)
-            {
-                CalendarGrid.Add(new Label { Text = "" });
-            }
-
-            //Add days
-            for (int day = 1; day <= daysInMonth; day++)
-            {
-                DateTime currentDay = new DateTime(date.Year, date.Month, day);
-                Button dayButton = new Button
+                Spacing = 4,
+                Children =
                 {
-                    Text = day.ToString(),
-                    BackgroundColor = currentDay == DateTime.Today ? Colors.DarkRed : Colors.White,
-                    CommandParameter = currentDay
-                };
-
-                dayButton.Clicked += DayButton_Click;
-                CalendarGrid.Add(dayButton);
+                    new Label { Text = text, FontSize = 16, TextColor = Colors.Black },
+                    new Label { Text = $"— {author}, {timestamp:t}", FontSize = 12, TextColor = Colors.Gray }
+                }
             }
+        };
 
-        }
+        NotesStack.Children.Insert(0, noteFrame); // insert at top
     }
-    private void DayButton_Click(object sender, EventArgs e)
+
+    private async void turn_over(object sender, EventArgs e)
     {
-        if (sender is Button button && button.CommandParameter is DateTime selectedDate)
+        if (sender is Button button)
         {
-            DisplayAlert("Date Selected", $"You selected {selectedDate:dddd, MMMM d, yyyy}", "OK");
+            // Animate a bounce effect
+            await button.ScaleTo(1.2, 100); // Scale up
+            await button.ScaleTo(1.0, 100); // Scale back to normal
+
+            // Toggle background color using .Equals()
+            if (button.BackgroundColor.Equals(Colors.Red))
+            {
+                button.BackgroundColor = Colors.Green;
+            }
+            else if (button.BackgroundColor.Equals(Colors.Green))
+            {
+                button.BackgroundColor = Colors.White;
+            }
+            else
+            {
+                button.BackgroundColor = Colors.Red;
+            }
         }
     }
-
-
-    private void PreviousMonth_Click(object sender, EventArgs e)
+    private void scaleUP()
     {
-        currentDate = currentDate.AddMonths(-1);
-        YearSelector.SelectedItem = currentDate.Year.ToString();
-        MonthSelector.SelectedIndex = currentDate.Month - 1;
-        GenerateCalendar(currentDate);
-    }
-
-    private void NextMonth_Click(object sender, EventArgs e)
-    {
-        currentDate = currentDate.AddMonths(1);
-        YearSelector.SelectedItem = currentDate.Year;
-        MonthSelector.SelectedIndex = currentDate.Month - 1;
-        GenerateCalendar(currentDate);
-    }
-
-    //private void YearSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    //{
-    //    if (YearSelector.SelectedItem != null && MonthSelector.SelectedIndex >= 0)
-    //    {
-    //        currentDate = new DateTime((int)YearSelector.SelectedItem, MonthSelector.SelectedIndex + 1, 1);
-    //        GenerateCalendar(currentDate);
-    //    }
-    //}
-
-    private void YearSelector_SelectionChanged(object sender, EventArgs e)
-    {
-        // Handle the selection change event here
-        var picker = sender as Picker;
-        if (picker != null)
+        var duplicate = new Button
         {
-            string selectedYear = picker.SelectedItem?.ToString();
-            DisplayAlert("Year Selected", $"You selected: {selectedYear}", "OK");
-        }
+            ImageSource = condition.ImageSource,
+            WidthRequest = condition.WidthRequest,
+            HeightRequest = condition.HeightRequest,
+            BackgroundColor = condition.BackgroundColor,
+            CornerRadius = condition.CornerRadius
+        };
+
+        // Attach the same click handler
+        duplicate.Clicked += turn_over;
+
+        // Add the duplicate to the existing layout
+        ConditionStack.Children.Add(duplicate);
     }
 
-    //private void MonthSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    //{
-    //    if (YearSelector.SelectedItem != null && MonthSelector.SelectedIndex >= 0)
-    //    {
-    //        currentDate = new DateTime((int)YearSelector.SelectedItem, MonthSelector.SelectedIndex + 1, 1);
-    //        GenerateCalendar(currentDate);
-    //    }
-    //}
-    private void MonthSelector_SelectionChanged(object sender, EventArgs e)
+    private async void settings(object sender, EventArgs e)
     {
-        var picker = sender as Picker;
-        if (picker != null)
+        if (sender is Button button)
         {
-            string selectedMonth = picker.SelectedItem?.ToString();
-            DisplayAlert("Month Selected", $"You selected: {selectedMonth}", "OK");
+            await button.ScaleTo(1.2, 100);
+            await button.ScaleTo(1.0, 100);
+            scaleUP();
         }
+        
     }
-    //private void DayButton_Click(object sender, RoutedEventArgs e)
-    //{
-    //    if (sender is Button button && button.Tag is DateTime selectedDate)
-    //    {
-    //        //MessageBox.Show($"Clicked on {selectedDate:MMMM dd, yyyy}");
-    //        LoadAppointmentsForDate(selectedDate);
-
-    //    }
-    //}
-
-    //private void AddPatient_Click(object sender, RoutedEventArgs e)
-    //{
-    //    this.NavigationService.Navigate(new Add_Patient());
-    //}
-
-    //private void BookAppointment_Click(object sender, RoutedEventArgs e)
-    //{
-    //    BookAppointmentWindow bookAppointmentWindow = new BookAppointmentWindow();
-    //    bookAppointmentWindow.ShowDialog();
-    //}
-
-
-
-    private async void ScheduleList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        await DisplayAlert("Selection", "Schedule item selected.", "OK");
-    }
-
-
-    private void BookAppointment_Click(object sender, EventArgs e)
-    {
-        // Example action when the button is clicked
-        DisplayAlert("Appointment", "Booking appointment...", "OK");
-    }
-    private void AddPatient_Click(object sender, EventArgs e)
-    {
-        // Example action when the button is clicked
-        DisplayAlert("Add Patient", "Adding new patient...", "OK");
-    }
-
     private void LogOut_Click(object sender, EventArgs e)
     {
         // Example: Navigate back to the login page
         Application.Current.MainPage = new MainPage(); // Replace with your actual login page
     }
-
-    //private void LogOut_Click(object sender, EventArgs e)
-    //{
-    //    // Navigate back to login page
-    //    var mainWindow = (MainWindow)Window.GetWindow(this);
-    //    if (mainWindow != null)
-    //    {
-    //        // Clear any stored credentials or session data
-    //        mainWindow.pass_txt.Clear();
-    //        mainWindow.user_txt.Clear();
-    //        mainWindow.ID_txt.Clear();
-
-    //        // Clear the navigation history and return to the main content
-    //        while (mainWindow.MainFrame.CanGoBack)
-    //        {
-    //            mainWindow.MainFrame.RemoveBackEntry();
-    //        }
-    //        mainWindow.MainFrame.Content = null;
-    //    }
-    //}
 }

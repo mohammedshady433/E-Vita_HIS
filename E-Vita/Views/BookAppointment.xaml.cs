@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
-namespace E_Vita;
+namespace E_Vita.Views;
 
 public partial class BookAppointment : ContentPage
 {
@@ -14,7 +14,7 @@ public partial class BookAppointment : ContentPage
 
     private async void Close(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+        await Shell.Current.GoToAsync(nameof(ReceptionistDashboard));
     }
 
     private async void ConfirmAppointment_Clicked(object sender, EventArgs e)

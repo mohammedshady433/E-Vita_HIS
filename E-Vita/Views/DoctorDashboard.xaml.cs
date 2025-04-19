@@ -44,12 +44,5 @@ public partial class DoctorDashboard : ContentPage
         DisplayAlert("Tapped", "You selected: " + ((Appointment)e.DataItem).PatientName, "OK");
     }
 
-    public class Appointment
-    {
-        public string Time { get; set; }
-        public string PatientName { get; set; }
-        public string PatientPhone { get; set; }
-        public string PatientID { get; set; }
-    }
 }
 
