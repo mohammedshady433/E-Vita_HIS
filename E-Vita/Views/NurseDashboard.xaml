@@ -59,22 +59,6 @@
 
                 <Image Source="e_vitalogo_01.png" Margin="0,40,10,20"/>
 
-                <!-- Book Appointment Button -->
-                <Button Text="Book Appointment"   
-                        FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
-                        BackgroundColor="#3b0054" TextColor="#f9dcc0"  
-                        WidthRequest="166" HeightRequest="46" Margin="5,150,5,10"  
-                        CornerRadius="20"  
-                        HorizontalOptions="Center" VerticalOptions="Center"/>
-
-                <!-- Add Patient Button -->
-                <Button Text="Add Patient"   
-                        FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
-                        BackgroundColor="#3b0054" TextColor="#f9dcc0"  
-                        WidthRequest="166" HeightRequest="46" Margin="5,50,5,10"  
-                        CornerRadius="20"   
-                        HorizontalOptions="Center" VerticalOptions="Center"/>
-
                 <!-- Logout Button -->
                 <Button Text="LogOut"  
                         FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"   

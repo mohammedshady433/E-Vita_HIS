@@ -15,7 +15,6 @@ public partial class AddDoctor : ContentPage
         InitializeComponent();
         LoadSpecialities();
         LoadNationalities();
-
     }
 
     private void LoadNationalities()
