@@ -11,8 +11,28 @@ public partial class ReceptionistDashboard : ContentPage
 		InitializeComponent();
         LoadNotes();
         StartClock();
-
+        LoadDoctors(); // Load dummy doctor data
     }
+    private void LoadDoctors()
+    {
+        var doctors = new List<Doctor>
+        {
+            new Doctor { Name = "Dr. John Smith", Specialty = "Cardiologist", PhoneNumber = "123-456-7890" },
+            new Doctor { Name = "Dr. Emily Johnson", Specialty = "Dermatologist", PhoneNumber = "987-654-3210" },
+            new Doctor { Name = "Dr. Michael Brown", Specialty = "Pediatrician", PhoneNumber = "555-123-4567" },
+            new Doctor { Name = "Dr. Sarah Davis", Specialty = "Neurologist", PhoneNumber = "444-987-6543" }
+        };
+
+        DoctorListBox.ItemsSource = doctors;
+    }
+
+
+public class Doctor
+{
+    public string Name { get; set; }
+    public string Specialty { get; set; }
+    public string PhoneNumber { get; set; }
+}
     private void StartClock()
     {
         Device.StartTimer(TimeSpan.FromSeconds(1), () =>
@@ -78,5 +98,15 @@ public partial class ReceptionistDashboard : ContentPage
     private async void newAppointment(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(BookAppointment));
+    }
+
+    private async void AddnewPatient(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(AddPatient));
+    }
+
+    private async void addNewDoc(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(AddDoctor));
     }
 }

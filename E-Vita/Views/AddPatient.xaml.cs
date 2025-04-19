@@ -6,9 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using System.Runtime.Intrinsics.Arm;
+using E_Vita.Views;
 
 
-namespace E_Vita;
+namespace E_Vita.Views;
 
 public partial class AddPatient : ContentPage
 {
@@ -105,5 +106,10 @@ public partial class AddPatient : ContentPage
     {
         // Your save logic here
         Console.WriteLine("Save button clicked.");
+    }
+
+    private async void close(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(ReceptionistDashboard));
     }
 }

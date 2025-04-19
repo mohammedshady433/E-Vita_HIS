@@ -14,6 +14,9 @@ namespace E_Vita
             Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
             Routing.RegisterRoute(nameof(ReceptionistDashboard), typeof(ReceptionistDashboard));
             Routing.RegisterRoute(nameof(BookAppointment), typeof(BookAppointment));
+            Routing.RegisterRoute(nameof(AddPatient), typeof(AddPatient));
+            Routing.RegisterRoute(nameof(AddDoctor), typeof(AddDoctor));
+
         }
     }
 }
