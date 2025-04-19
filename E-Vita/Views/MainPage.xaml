@@ -26,8 +26,8 @@
                 <Label Text="Please login to continue" FontSize="18" FontFamily="Qatar2022 Arabic" FontAttributes="Bold" TextColor="white" HorizontalOptions="Center" Margin="0,0,0,20"/>
 
                 <!-- Username Field -->
-                <Label Text="Username" FontSize="18" FontFamily="Qatar2022 Arabic" FontAttributes="Bold" TextColor="AntiqueWhite" Margin="0, 0, 0, 10"/>
-                <Entry  WidthRequest="300" HeightRequest="40" FontFamily="Qatar2022 Arabic" BackgroundColor="AntiqueWhite" TextColor="DarkViolet" FontSize="18"/>
+                <Label  Text="Username" FontSize="18" FontFamily="Qatar2022 Arabic" FontAttributes="Bold" TextColor="AntiqueWhite" Margin="0, 0, 0, 10"/>
+                <Entry x:Name="username" WidthRequest="300" HeightRequest="40" FontFamily="Qatar2022 Arabic" BackgroundColor="AntiqueWhite" TextColor="DarkViolet" FontSize="18"/>
 
                 <!-- Password Field -->
                 <Label Text="Password" FontSize="18" FontFamily="Qatar2022 Arabic" FontAttributes="Bold" TextColor="AntiqueWhite" Margin="0, 10, 0, 10"/>

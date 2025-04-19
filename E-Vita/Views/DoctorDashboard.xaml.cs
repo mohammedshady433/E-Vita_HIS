@@ -44,5 +44,9 @@ public partial class DoctorDashboard : ContentPage
         DisplayAlert("Tapped", "You selected: " + ((Appointment)e.DataItem).PatientName, "OK");
     }
 
+    private async void PatientData(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(Patient_data));
+    }
 }
 

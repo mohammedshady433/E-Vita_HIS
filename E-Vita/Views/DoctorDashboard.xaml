@@ -56,7 +56,7 @@
                 FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
                 BackgroundColor="#3b0054" TextColor="#f9dcc0"  
                 WidthRequest="166" HeightRequest="46" Margin="10"  
-                CornerRadius="20"   
+                CornerRadius="20"   Clicked="PatientData"
                 HorizontalOptions="Center" VerticalOptions="Center"/>
                 <!-- Radiology Images Button -->
                 <Button Text="Radiology"   
@@ -72,17 +72,17 @@
                         CornerRadius="20"   
                         HorizontalOptions="Center" VerticalOptions="Center"/>
                 
-                <Button Text="Finance"   
-                        FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
-                        BackgroundColor="#3b0054" TextColor="#f9dcc0"  
-                        WidthRequest="166" HeightRequest="46" Margin="10"  
+                <Button Text="Operations Room"   FontAutoScalingEnabled="True"
+                        FontFamily="Qatar2022 Arabic" FontSize="12" FontAttributes="Bold"
+                        BackgroundColor="Red" TextColor="Black"  
+                        WidthRequest="166" HeightRequest="46" Margin="10,50,10,10"  
                         CornerRadius="20"   
                         HorizontalOptions="Center" VerticalOptions="Center"/>
                 <!-- Logout Button -->
                 <Button Text="LogOut"  
                         FontFamily="Qatar2022 Arabic" FontSize="14"   
                         BackgroundColor="#3b0054" TextColor="#f9dcc0"   
-                        WidthRequest="166" HeightRequest="46" Margin="10,140,10,10"  
+                        WidthRequest="166" HeightRequest="46" Margin="10,100,10,10"  
                         CornerRadius="20"
                         HorizontalOptions="Center" VerticalOptions="Center" Clicked="LogOut_Click"/>
             </VerticalStackLayout>

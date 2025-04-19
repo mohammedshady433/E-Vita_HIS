@@ -26,8 +26,24 @@ namespace E_Vita
         {
             try
             {
+                if (username.Text == "1")
+                {
+                    await Shell.Current.GoToAsync(nameof(NurseDashboard));
+                }
+                else if (username.Text == "2")
+                {
+                    await Shell.Current.GoToAsync(nameof(DoctorDashboard));
+                }
+                else if (username.Text == "3")
+                {
+                    await Shell.Current.GoToAsync(nameof(ReceptionistDashboard));
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Invalid username or password", "OK");
+                }
                 //await Shell.Current.GoToAsync(nameof(PassReset));
-                await Shell.Current.GoToAsync(nameof(ReceptionistDashboard));
+
             }
             catch (Exception ex)
             {
