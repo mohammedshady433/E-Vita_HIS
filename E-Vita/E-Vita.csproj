@@ -65,25 +65,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="NurseDashboard.xaml.cs">
-	    <DependentUpon>NurseDashboard.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="Book Appointment.xaml.cs">
-	    <DependentUpon>Book Appointment.xaml</DependentUpon>
+	  <Compile Update="BookAppointment.xaml.cs">
+	    <DependentUpon>BookAppointment.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="NurseDashboard.xaml">
+	  <MauiXaml Update="LabImages.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="NewPage2.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="PassReset.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Book Appointment.xaml">
+	  <MauiXaml Update="BookAppointment.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
