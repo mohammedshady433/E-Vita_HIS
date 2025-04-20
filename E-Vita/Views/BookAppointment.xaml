@@ -1,0 +1,134 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             x:Class="E_Vita.Views.BookAppointment"
+             Title="BookAppointment">
+    <Grid BackgroundColor="#1f1f1f">
+        <ScrollView>
+            <Border StrokeThickness="6"
+                    Stroke="#2c003f"
+                    BackgroundColor="#3b0054"
+                    Padding="50,50,30,50"
+                    WidthRequest="400"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="30"/>
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+
+                    <Label Text="Book Appointment" 
+                           TextColor="white" 
+                           FontSize="30" 
+                           HorizontalOptions="Center"
+                           VerticalOptions="Start" 
+                           FontAttributes="Bold" 
+                           Margin="0,0,0,20"/>
+
+                    <Label Text="Patient ID" 
+                           TextColor="white" 
+                           FontSize="23" 
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start" 
+                           FontAttributes="Bold" 
+                           Margin="0,0,0,10"/>
+                    <Entry x:Name="patientIdEntry" Placeholder="Enter Patient ID"
+                           WidthRequest="300" 
+                           HeightRequest="40" 
+                           FontFamily="Qatar2022 Arabic" 
+                           BackgroundColor="AntiqueWhite" 
+                           TextColor="DarkViolet" 
+                           FontSize="18"/>
+
+                    <Label Text="Doctor ID" 
+                           TextColor="white" 
+                           FontSize="23" 
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start" 
+                           FontAttributes="Bold" 
+                           Margin="0,0,0,10"/>
+                    <Entry x:Name="doctorIdEntry" Placeholder="Enter Doctor ID"
+                           WidthRequest="300" 
+                           HeightRequest="40" 
+                           FontFamily="Qatar2022 Arabic" 
+                           BackgroundColor="AntiqueWhite" 
+                           TextColor="DarkViolet" 
+                           FontSize="18"/>
+
+                    <Label Text="Appointment Time" 
+                           TextColor="white" 
+                           FontSize="23" 
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start" 
+                           FontAttributes="Bold" 
+                           Margin="0,0,0,10"/>
+                    <Entry x:Name="timeEntry"
+                           Placeholder="Select Time"
+                           IsReadOnly="True"
+                           Focused="OnTimeEntryTapped"
+                           WidthRequest="300" 
+                           HeightRequest="40" 
+                           FontFamily="Qatar2022 Arabic" 
+                           BackgroundColor="AntiqueWhite" 
+                           TextColor="DarkViolet" 
+                           FontSize="18"/>
+
+                    <CollectionView x:Name="timeList"
+                                    IsVisible="True"
+                                    SelectionMode="Single"
+                                    SelectionChanged="OnTimeSlotSelected"
+                                    HeightRequest="200">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BorderColor="DarkViolet" Padding="10" Margin="5">
+                                    <Label Text="{Binding}" TextColor="DarkViolet" FontSize="18"/>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <VerticalStackLayout Padding="30">
+                        <Label Text="Appointment Date" 
+                               TextColor="white" 
+                               FontSize="23" 
+                               HorizontalOptions="Start"
+                               VerticalOptions="Start" 
+                               FontAttributes="Bold" 
+                               Margin="0,0,0,10"/>
+                        <Entry x:Name="dateEntry" Placeholder="Select a date"
+                               WidthRequest="300" 
+                               HeightRequest="40" 
+                               FontFamily="Qatar2022 Arabic" 
+                               BackgroundColor="AntiqueWhite" 
+                               TextColor="DarkViolet" 
+                               FontSize="18"/>
+
+                        <DatePicker x:Name="datePicker"
+                                    IsVisible="True"
+                                    Format="yyyy-MM-dd"
+                                    DateSelected="OnDateSelected"
+                                    MinimumDate="{x:Static sys:DateTime.Today}" 
+                                    BackgroundColor="White"/>
+                    </VerticalStackLayout>
+
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Button Text="Confirm Appointment"
+                                Clicked="ConfirmAppointment_Clicked"
+                                BackgroundColor="DarkRed" 
+                                TextColor="White" 
+                                CornerRadius="5"/>
+
+                        <Button Text="Close"
+                                Clicked="Close"
+                                BackgroundColor="DarkRed" 
+                                TextColor="White" 
+                                CornerRadius="5"/>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+        </ScrollView>
+    </Grid>
+</ContentPage>

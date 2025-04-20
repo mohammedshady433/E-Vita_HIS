@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             x:Class="E_Vita.Views.AddPatient"
+             Title="Add Patient">
+    <Grid BackgroundColor="#1f1f1f">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Grid.ColumnSpan="1" HorizontalOptions="Center">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20"/>
+            </Border.StrokeShape>
+            <ScrollView Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" Grid.ColumnSpan="4">
+                <StackLayout Orientation="Vertical" Background="#3b0054" Padding="10">
+                    <!--patient name-->
+                    <Label Text="Patient Name" TextColor="AntiqueWhite" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="10"/>
+                    <Entry x:Name="PatientNameEntry" BackgroundColor="AntiqueWhite" WidthRequest="200" HeightRequest="40" VerticalOptions="Center" />
+
+                    <!--patient ID-->
+                    <Label Text="Patient ID" TextColor="AntiqueWhite" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="10"/>
+                    <Entry x:Name="PatientIdEntry" BackgroundColor="AntiqueWhite" WidthRequest="200" HeightRequest="40" VerticalOptions="Center" />
+
+                    <!--patient phone number-->
+                    <Label Text="Phone Number" TextColor="AntiqueWhite" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="10"/>
+                    <Entry x:Name="PhoneNumberEntry" BackgroundColor="AntiqueWhite" WidthRequest="200" HeightRequest="40" VerticalOptions="Center" />
+
+                    <!--Gender-->
+                    <Label Text="Select Gender:" TextColor="AntiqueWhite" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="10"/>
+                    <RadioButton GroupName="GenderGroup" Content="Male" Value="Male" CheckedChanged="OnGenderSelected"/>
+                    <RadioButton GroupName="GenderGroup" Content="Female" Value="Female" CheckedChanged="OnGenderSelected"/>
+
+                    <!--patient age-->
+                    <Label Text="Date of Birth" TextColor="AntiqueWhite" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="10"/>
+                    <DatePicker x:Name="DobPicker" DateSelected="OnDateSelected" 
+            MaximumDate="{x:Static sys:DateTime.Today}" 
+            MinimumDate="1930-01-01"/>
+
+                    <!--Blood Type-->
+                    <Label Text="Select Blood Type" TextColor="AntiqueWhite" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="10"/>
+                    <Picker  x:Name="BloodTypePicker" SelectedIndexChanged="OnBloodTypeSelected">
+                        <Picker.Items>
+                            <x:String>A+</x:String>
+                            <x:String>A-</x:String>
+                            <x:String>B+</x:String>
+                            <x:String>B-</x:String>
+                            <x:String>AB+</x:String>
+                            <x:String>AB-</x:String>
+                            <x:String>O+</x:String>
+                            <x:String>O-</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                    <!--chronic disease-->
+                    <VerticalStackLayout>
+                        <Label Text="Select chronic disease" TextColor="AntiqueWhite" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="10"/>
+                        <Entry x:Name="SearchEntry" Placeholder="Start typing..." TextChanged="OnSearchTextChanged"/>
+                        <ListView x:Name="SuggestionsListView" IsVisible="False">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextCell Text="{Binding}" />
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </VerticalStackLayout>
+
+                    <!--nationality-->
+                    <VerticalStackLayout>
+                        <Label Text="Select patient's nationality" TextColor="AntiqueWhite" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="10"/>
+
+                        <Picker x:Name="NationalityPicker">
+                        </Picker>
+                    </VerticalStackLayout>
+
+                    <Button Text="Save"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    CornerRadius="25"
+                    FontAttributes="Bold"
+                    HeightRequest="50"
+                    Clicked="OnSaveClicked"
+                    Margin="0,10,0,20"/>
+                    <Button Text="Cancel"
+                    BackgroundColor="Transparent"
+                    BorderColor="White"
+                    BorderWidth="1"
+                    TextColor="White"
+                    CornerRadius="15"
+                    FontAttributes="Bold"
+                    HeightRequest="50"
+                    Margin="0,10,0,20"
+                    Clicked="close"/>
+
+                </StackLayout>
+            </ScrollView>
+        </Border>
+
+    </Grid>
+
+</ContentPage>
