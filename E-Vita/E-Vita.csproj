@@ -42,6 +42,7 @@
 
 		<!-- Raw Assets -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+		<EmbeddedResource Include="Resources\Raw\surgical_operations.json" />
 	</ItemGroup>
 
 	<ItemGroup>
