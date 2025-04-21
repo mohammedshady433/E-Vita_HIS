@@ -1,0 +1,162 @@
+{
+  "SurgicalOperations": [
+    {
+      "Specialty": "General Surgery",
+      "Operations": [
+        "Appendectomy",
+        "Cholecystectomy (Gallbladder removal)",
+        "Hernia repair",
+        "Mastectomy",
+        "Thyroidectomy",
+        "Colectomy",
+        "Gastrectomy",
+        "Splenectomy",
+        "Hemorrhoidectomy",
+        "Laparoscopic procedures"
+      ]
+    },
+    {
+      "Specialty": "Cardiothoracic Surgery",
+      "Operations": [
+        "Coronary artery bypass grafting (CABG)",
+        "Heart valve repair/replacement",
+        "Aortic aneurysm repair",
+        "Lung resection",
+        "Pacemaker implantation",
+        "Heart transplant",
+        "Minimally invasive cardiac surgery",
+        "Thoracotomy"
+      ]
+    },
+    {
+      "Specialty": "Neurosurgery",
+      "Operations": [
+        "Craniotomy",
+        "Spinal fusion",
+        "Brain tumor removal",
+        "Deep brain stimulation",
+        "Cerebral aneurysm repair",
+        "Laminectomy",
+        "Microdiscectomy",
+        "Ventriculoperitoneal shunt"
+      ]
+    },
+    {
+      "Specialty": "Orthopedic Surgery",
+      "Operations": [
+        "Total joint replacement (Hip/Knee)",
+        "Arthroscopy",
+        "Fracture repair",
+        "Spinal fusion",
+        "ACL reconstruction",
+        "Rotator cuff repair",
+        "Carpal tunnel release",
+        "Osteotomy"
+      ]
+    },
+    {
+      "Specialty": "Plastic Surgery",
+      "Operations": [
+        "Breast augmentation/reduction",
+        "Rhinoplasty",
+        "Facelift",
+        "Liposuction",
+        "Tummy tuck",
+        "Blepharoplasty",
+        "Reconstructive surgery",
+        "Burn reconstruction"
+      ]
+    },
+    {
+      "Specialty": "Urology",
+      "Operations": [
+        "Prostatectomy",
+        "Nephrectomy",
+        "Cystectomy",
+        "Ureteroscopy",
+        "Transurethral resection of prostate (TURP)",
+        "Kidney stone removal",
+        "Vasectomy",
+        "Bladder reconstruction"
+      ]
+    },
+    {
+      "Specialty": "Gynecological Surgery",
+      "Operations": [
+        "Hysterectomy",
+        "Cesarean section",
+        "Oophorectomy",
+        "Tubal ligation",
+        "Myomectomy",
+        "Endometrial ablation",
+        "Pelvic floor repair",
+        "Laparoscopic procedures"
+      ]
+    },
+    {
+      "Specialty": "Ophthalmology",
+      "Operations": [
+        "Cataract surgery",
+        "LASIK",
+        "Glaucoma surgery",
+        "Retinal detachment repair",
+        "Corneal transplant",
+        "Strabismus surgery",
+        "Vitrectomy",
+        "Eyelid surgery"
+      ]
+    },
+    {
+      "Specialty": "Otolaryngology (ENT)",
+      "Operations": [
+        "Tonsillectomy",
+        "Adenoidectomy",
+        "Septoplasty",
+        "Tympanoplasty",
+        "Thyroidectomy",
+        "Parathyroidectomy",
+        "Sinus surgery",
+        "Laryngectomy"
+      ]
+    },
+    {
+      "Specialty": "Vascular Surgery",
+      "Operations": [
+        "Carotid endarterectomy",
+        "Aortic aneurysm repair",
+        "Peripheral artery bypass",
+        "Varicose vein surgery",
+        "Dialysis access surgery",
+        "Thrombectomy",
+        "Angioplasty and stenting",
+        "Lymphatic surgery"
+      ]
+    },
+    {
+      "Specialty": "Pediatric Surgery",
+      "Operations": [
+        "Appendectomy",
+        "Hernia repair",
+        "Circumcision",
+        "Pyloric stenosis repair",
+        "Congenital heart surgery",
+        "Spina bifida repair",
+        "Cleft lip/palate repair",
+        "Undescended testicle surgery"
+      ]
+    },
+    {
+      "Specialty": "Colorectal Surgery",
+      "Operations": [
+        "Colectomy",
+        "Hemorrhoidectomy",
+        "Anal fissure repair",
+        "Rectal prolapse repair",
+        "Ileostomy/Colostomy",
+        "Fistula repair",
+        "Bowel resection",
+        "Pelvic floor repair"
+      ]
+    }
+  ]
+} 
