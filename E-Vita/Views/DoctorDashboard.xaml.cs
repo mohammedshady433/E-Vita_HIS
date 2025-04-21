@@ -1,6 +1,7 @@
 using Microsoft.Maui.Graphics;
 using System.Collections.ObjectModel;
 using Syncfusion.Maui.Calendar;
+using System.Threading.Tasks;
 
 namespace E_Vita.Views;
 public partial class DoctorDashboard : ContentPage
@@ -39,14 +40,20 @@ public partial class DoctorDashboard : ContentPage
         }
     }
 
-    private void SfListView_ItemTapped(object sender, Syncfusion.Maui.ListView.ItemTappedEventArgs e)
-    {
-        DisplayAlert("Tapped", "You selected: " + ((Appointment)e.DataItem).PatientName, "OK");
-    }
-
     private async void PatientData(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(Patient_data));
+    }
+
+    private async void labImagesbtn(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(LabImages));
+    }
+
+    private async void SfListView_ItemTapped(object sender, Syncfusion.Maui.ListView.ItemTappedEventArgs e)
+    {
+        //DisplayAlert("Tapped", "You selected: " + ((Appointment)e.DataItem).PatientName, "OK");
+        await Shell.Current.GoToAsync(nameof(Prescription));
     }
 }
 

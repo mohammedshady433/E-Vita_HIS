@@ -1,0 +1,127 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="E_Vita.Views.LabImages"
+             Title="Lab Images">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <!-- Top bar -->
+        <Grid BackgroundColor="#4B0082" HeightRequest="80">
+            <Label Text="Lab Images"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   TextColor="White"
+                   FontSize="30"
+                   FontAttributes="Bold"/>
+        </Grid>
+
+        <!-- Main content area -->
+        <Grid Grid.Row="1" ColumnDefinitions="2*, 6*">
+
+            <!-- Left Grid (Sidebar) -->
+            <Grid BackgroundColor="#E6E6FA"
+                  Padding="10"
+                  WidthRequest="300"
+                  VerticalOptions="Start">
+                <VerticalStackLayout  VerticalOptions="Center" Margin="0,20,0,0">
+
+                    <!-- Filters Header -->
+                    <Label Text="Filters"
+                           FontSize="25"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center"
+                           Margin="0,0,0,20"/>
+
+                    <!-- Radiology Checkbox -->
+                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                        <CheckBox x:Name="RadiologyCheckBox"
+                                  IsChecked="False"
+                                  VerticalOptions="Center"
+                                  CheckedChanged="OnCheckboxChanged" />
+                        <Label Text="Radiology"
+                               FontSize="20"
+                               Margin="0,0,0,8"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <!-- Dermatology Checkbox -->
+                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                        <CheckBox x:Name="DermatologyCheckBox"
+                                  IsChecked="False"
+                                  VerticalOptions="Center"
+                                  CheckedChanged="OnCheckboxChanged" />
+                        <Label Text="Dermatology"
+                               FontSize="20"
+                               Margin="0,0,0,8"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <!-- Laser Therapy Checkbox -->
+                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                        <CheckBox x:Name="LaserTherapyCheckBox"
+                                  IsChecked="False"
+                                  VerticalOptions="Center"
+                                  CheckedChanged="OnCheckboxChanged" />
+                        <Label Text="Laser Therapy"
+                               FontSize="20"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <!-- Upload New Image Button -->
+                    <Button 
+                        Text="+Upload New Image"
+                        FontSize="16"
+                        BackgroundColor="#891739"
+                        TextColor="White"
+                        HorizontalOptions="Center"
+                        Margin="0,380,0,0"
+                        Clicked="Upload" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Right Grid -->
+            <Grid Grid.Column="1"
+                  Padding="10"
+                  BackgroundColor="White"
+                  RowDefinitions="Auto, *">
+
+                <!-- Row 0: Search bar + button -->
+                <Grid Grid.Row="0"
+                      ColumnDefinitions="Auto, Auto"
+                      HorizontalOptions="CenterAndExpand"
+                      Margin="0,0,10,10">
+
+                    <!-- Entry for Patient ID -->
+                    <Entry x:Name="PatientIDEntry"
+                           Placeholder="Enter Patient ID"
+                           WidthRequest="200"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Keyboard="Numeric" />
+                    <!-- Ensures numeric keyboard is shown -->
+
+                    <!-- Search Button -->
+                    <Button Grid.Column="1"
+                            Text="Search"
+                            VerticalOptions="Center"
+                            Margin="10,0,0,0"
+                            Clicked="OnSearchClicked" />
+                </Grid>
+
+                <!-- Row 1: Right-side images grid -->
+                <StackLayout Grid.Row="1">
+                    <Grid x:Name="ImagesGrid"
+                          Grid.Row="1"
+                          ColumnDefinitions="Auto, Auto, Auto"
+                          HorizontalOptions="CenterAndExpand"
+                          Margin="0,0,10,10">
+                        <!-- Dynamically added images will appear here -->
+                    </Grid>
+                </StackLayout>
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>
+
+
+

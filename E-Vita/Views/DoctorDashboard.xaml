@@ -70,6 +70,7 @@
                         BackgroundColor="#3b0054" TextColor="#f9dcc0"  
                         WidthRequest="166" HeightRequest="46" Margin="10"  
                         CornerRadius="20"   
+                        Clicked="labImagesbtn"
                         HorizontalOptions="Center" VerticalOptions="Center"/>
                 
                 <Button Text="Operations Room"   FontAutoScalingEnabled="True"
