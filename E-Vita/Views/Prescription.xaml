@@ -161,7 +161,88 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                     </VerticalStackLayout>
-                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Lab Tests Section - Left Column -->
+                        <VerticalStackLayout Grid.Column="0">
+                            <HorizontalStackLayout>
+                                <Label Text="Lab Tests:" FontSize="18" Margin="30,20,10,10"/>
+                                <Entry x:Name="searchentrylabTests" Placeholder="enter the test name" WidthRequest="300" Margin="10" TextChanged="SearchEntry_TextChangedforlabs" />
+                                <Button Text="+" FontSize="18" Clicked="addlabbtn" WidthRequest="20" Margin="10,10,10,10"/>
+                            </HorizontalStackLayout>
+
+                            <CollectionView x:Name="SuggestionsListofLabTests"  
+                                IsVisible="False"  
+                                SelectionMode="Single"  
+                                WidthRequest="300"  
+                                HeightRequest="200"  
+                                Margin="0">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Label Text="{Binding TestName}"  
+                                            Padding="10"  
+                                            BackgroundColor="#EEE"  
+                                            TextColor="Black"
+                                            Margin="5">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnSuggestionTappedofLabTest"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <VerticalStackLayout x:Name="labteststackpanel">
+                                <!-- Lab test entries will be added here -->
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+
+                        <!-- Radiology Section - Right Column -->
+                        <VerticalStackLayout Grid.Column="1">
+                            <HorizontalStackLayout>
+                                <Label Text="Radiology Tests:" FontSize="18" Margin="30,20,10,10"/>
+                                <Entry x:Name="RadiologyTests" Placeholder="enter the test name" WidthRequest="300" Margin="10" TextChanged="SearchEntry_TextChangedforRadio"/>
+                                <Button Text="+" FontSize="18" WidthRequest="20" Margin="10" Clicked="addRaidologybtn"/>
+                            </HorizontalStackLayout>
+                            
+                            <CollectionView x:Name="SuggestionsListofRadio"  
+                                IsVisible="False"  
+                                SelectionMode="Single"  
+                                WidthRequest="300"  
+                                HeightRequest="200"  
+                                Margin="0">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackLayout Orientation="Vertical">
+                                            <Label Text="{Binding Category}"
+                                                    FontSize="12"
+                                                    TextColor="Gray"
+                                                    Padding="10,5,10,0"/>
+                                            <Label Text="{Binding TestName}"  
+                                                Padding="10,0,10,5"  
+                                                BackgroundColor="#EEE"  
+                                                TextColor="Black"
+                                                FontAttributes="Bold"
+                                                Margin="0,0,0,5">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="OnSuggestionTappedofRadio"/>
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                            
+                            <VerticalStackLayout x:Name="radiologyStackpanel">
+                                <!-- Radiology entries will be added here -->
+                            </VerticalStackLayout>
+                            
+                        </VerticalStackLayout>
+                    </Grid>
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </Grid>
