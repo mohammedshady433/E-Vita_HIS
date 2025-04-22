@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="E_Vita.Views.CancelAppointment"
+             Title="Cancel Appointment">
+
+    <Grid RowDefinitions="Auto, Auto, Auto, *">
+
+        <!-- Top bar -->
+        <Grid Grid.Row="0" BackgroundColor="#4B0082" HeightRequest="80">
+            <Label Text="Cancel Appointment"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   TextColor="White"
+                   FontSize="30"
+                   FontAttributes="Bold"/>
+        </Grid>
+
+        <!-- Search section -->
+        <Grid Grid.Row="1" BackgroundColor="White" Padding="20">
+            <HorizontalStackLayout Spacing="10"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center">
+                <Entry Placeholder="Search by Patient ID or Doctor ID"
+                       x:Name="searchEntry"
+                       WidthRequest="250"
+                       BackgroundColor="#F0F0F0"
+                       TextColor="Black" />
+                <Button Text="Search"
+                        BackgroundColor="#4B0082"
+                        TextColor="White"
+                        Clicked="OnSearchClicked" />
+            </HorizontalStackLayout>
+        </Grid>
+
+        <!-- Table Headers -->
+        <Grid Grid.Row="2" ColumnSpacing="10" Padding="10" BackgroundColor="#EEE">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Label Text="Patient Name" Grid.Column="0" FontAttributes="Bold" />
+            <Label Text="Patient ID" Grid.Column="1" FontAttributes="Bold" />
+            <Label Text="Doctor Name" Grid.Column="2" FontAttributes="Bold" />
+            <Label Text="Doctor ID" Grid.Column="3" FontAttributes="Bold" />
+            <Label Text="Specialty" Grid.Column="4" FontAttributes="Bold" />
+            <Label Text="Time" Grid.Column="5" FontAttributes="Bold" />
+            <Label Text="Cancel" Grid.Column="6" FontAttributes="Bold" />
+        </Grid>
+
+        <!-- Appointments list -->
+        <CollectionView Grid.Row="3"
+                        ItemsSource="{Binding ScheduleList}"
+                        VerticalOptions="FillAndExpand"
+                        Margin="0,0,0,10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10"
+                          ColumnSpacing="10"
+                          BackgroundColor="#F8F8F8"
+                          Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Values for each column -->
+                        <Label Text="{Binding Patient_appointment.Patient_Name}" Grid.Column="0" VerticalOptions="Center" />
+                        <Label Text="{Binding Patient_appointment.Patient_ID}" Grid.Column="1" VerticalOptions="Center" />
+                        <Label Text="{Binding Doctor_appointment.Doctor_Name}" Grid.Column="2" VerticalOptions="Center" />
+                        <Label Text="{Binding Doctor_appointment.ID}" Grid.Column="3" VerticalOptions="Center" />
+                        <Label Text="{Binding Doctor_appointment.Specialty}" Grid.Column="4" VerticalOptions="Center" />
+                        <Label Text="{Binding Time}" Grid.Column="5" VerticalOptions="Center" />
+
+                        <!-- Delete Button -->
+                        <Button Text="X"
+                                Grid.Column="6"
+                                BackgroundColor="Red"
+                                TextColor="White"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                CornerRadius="20"
+                                VerticalOptions="Center"
+                                Clicked="OnDeleteClicked"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCommand}"
+                                CommandParameter="{Binding}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+
+    <!-- navigation for ReceptionistDashboard-->
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Text="Back"
+            IconImageSource="back_arrow.png"
+            Clicked="OnBackClicked"
+            Order="Primary"
+            Priority="0"/>
+    </ContentPage.ToolbarItems>
+
+</ContentPage>
+
+
+
+
+

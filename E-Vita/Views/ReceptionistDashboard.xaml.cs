@@ -100,6 +100,13 @@ public class Doctor
         await Shell.Current.GoToAsync(nameof(BookAppointment));
     }
 
+
+    private async void Cancel(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(CancelAppointment));
+    }
+
+
     private async void AddnewPatient(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(AddPatient));

@@ -55,12 +55,13 @@
                    CornerRadius="20"   
                    HorizontalOptions="Center" VerticalOptions="Center" Clicked="newAppointment"/>
 
+                <!-- cancellation Button -->
                 <Button Text="Cancel Appointment"   
                    FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
                    BackgroundColor="#3b0054" TextColor="#f9dcc0"  
                    WidthRequest="166" HeightRequest="46" Margin="10"  
                    CornerRadius="20"   
-                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                   HorizontalOptions="Center" VerticalOptions="Center" Clicked="Cancel"/>
                 <!-- Add New Patient Button -->
                 <Button Text="Add New Patient"   
                    FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
