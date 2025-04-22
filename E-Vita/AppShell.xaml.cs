@@ -21,6 +21,8 @@ namespace E_Vita
             Routing.RegisterRoute(nameof(Prescription), typeof(Prescription));
             Routing.RegisterRoute(nameof(OperationRoomReservation), typeof(OperationRoomReservation));
             Routing.RegisterRoute(nameof(Finance), typeof(Finance));
+            Routing.RegisterRoute(nameof(CancelAppointment), typeof(CancelAppointment));
+
 
         }
     }
