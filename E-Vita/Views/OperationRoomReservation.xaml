@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="E_Vita.Views.OperationRoomReservation"
+             Title="Operation Room Reservation">
+
+    <Grid BackgroundColor="#1f1f1f" RowDefinitions="Auto,Auto,*,Auto" ColumnDefinitions="*" Padding="20">
+        <!-- Header -->
+        <Border Grid.Row="0" 
+               BackgroundColor="#3b0054"
+               StrokeThickness="2"
+               Stroke="#2c003f"
+               Padding="15"
+               Margin="0,0,0,20">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20"/>
+            </Border.StrokeShape>
+            <Label Text="Operation Rooms" 
+                   FontSize="24"
+                   FontFamily="Qatar2022 Arabic"
+                   TextColor="AntiqueWhite"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"/>
+        </Border>
+
+        <!-- Current Time -->
+        <Label x:Name="CurrentTimeLabel"
+               Grid.Row="1"
+               Text="Current Time: 00:00:00"
+               TextColor="AntiqueWhite"
+               FontSize="18"
+               HorizontalOptions="Center"
+               Margin="0,0,0,20"/>
+
+        <!-- Rooms Grid -->
+        <ScrollView Grid.Row="2">
+            <FlexLayout x:Name="RoomStack"
+                        Direction="Row"
+                        Wrap="Wrap"
+                        JustifyContent="Start"
+                        AlignItems="Start"
+                        Padding="10">
+                <Button x:Name="room1"
+                        Text="Room 1"
+                        Clicked="OnRoomClicked"
+                        WidthRequest="120"
+                        HeightRequest="120"
+                        CornerRadius="20"
+                        BackgroundColor="#3b0054"
+                        TextColor="AntiqueWhite"
+                        FontFamily="Qatar2022 Arabic"
+                        FontSize="16"
+                        Margin="10"/>
+                <Button x:Name="room2"
+                        Text="Room 2"
+                        Clicked="OnRoomClicked"
+                        WidthRequest="120"
+                        HeightRequest="120"
+                        CornerRadius="20"
+                        BackgroundColor="#3b0054"
+                        TextColor="AntiqueWhite"
+                        FontFamily="Qatar2022 Arabic"
+                        FontSize="16"
+                        Margin="10"/>
+                <Button x:Name="room3"
+                        Text="Room 3"
+                        Clicked="OnRoomClicked"
+                        WidthRequest="120"
+                        HeightRequest="120"
+                        CornerRadius="20"
+                        BackgroundColor="#3b0054"
+                        TextColor="AntiqueWhite"
+                        FontFamily="Qatar2022 Arabic"
+                        FontSize="16"
+                        Margin="10"/>
+                <Button x:Name="room4"
+                        Text="Room 4"
+                        Clicked="OnRoomClicked"
+                        WidthRequest="120"
+                        HeightRequest="120"
+                        CornerRadius="20"
+                        BackgroundColor="#3b0054"
+                        TextColor="AntiqueWhite"
+                        FontFamily="Qatar2022 Arabic"
+                        FontSize="16"
+                        Margin="10"/>
+            </FlexLayout>
+        </ScrollView>
+
+        <!-- Add Room Button -->
+        <Border Grid.Row="3" 
+               BackgroundColor="Transparent"
+               Padding="0"
+               Margin="0,20,0,0">
+            <Button x:Name="AddRoomButton"
+                    Text="Add New Room"
+                    Clicked="OnAddRoomClicked"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    WidthRequest="200"
+                    HeightRequest="50"
+                    BackgroundColor="#3b0054"
+                    TextColor="AntiqueWhite"
+                    FontFamily="Qatar2022 Arabic"
+                    CornerRadius="25"
+                    FontSize="16"/>
+        </Border>
+    </Grid>
+</ContentPage> 

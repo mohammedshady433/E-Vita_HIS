@@ -1,0 +1,63 @@
+{
+  "Radiography": [
+    "Chest X-ray",
+    "Abdominal X-ray",
+    "Pelvic X-ray",
+    "Extremity X-ray",
+    "Spine X-ray",
+    "Skull X-ray",
+    "Sinus X-ray"
+  ],
+  "Computed Tomography": [
+    "CT Head",
+    "CT Chest",
+    "CT Abdomen",
+    "CT Pelvis",
+    "CT Angiography",
+    "CT Colonography"
+  ],
+  "Magnetic Resonance Imaging": [
+    "MRI Brain",
+    "MRI Spine",
+    "MRI Musculoskeletal",
+    "MRI Abdomen",
+    "MRI Pelvis",
+    "MR Angiography"
+  ],
+  "Ultrasound": [
+    "Abdominal Ultrasound",
+    "Pelvic Ultrasound",
+    "Obstetric Ultrasound",
+    "Vascular Ultrasound",
+    "Echocardiography",
+    "Breast Ultrasound"
+  ],
+  "Nuclear Medicine": [
+    "Bone Scan",
+    "Thyroid Scan",
+    "PET Scan",
+    "SPECT Scan",
+    "Cardiac Stress Test"
+  ],
+  "Mammography": [
+    "Screening Mammogram",
+    "Diagnostic Mammogram",
+    "Tomosynthesis"
+  ],
+  "Fluoroscopy": [
+    "Barium Swallow",
+    "Upper GI Series",
+    "Barium Enema",
+    "Hysterosalpingogram"
+  ],
+  "Interventional Radiology": [
+    "Angiography",
+    "Biopsy",
+    "Drainage Procedures",
+    "Embolization",
+    "Stent Placement"
+  ],
+  "Bone Densitometry": [
+    "DEXA Scan"
+  ]
+}

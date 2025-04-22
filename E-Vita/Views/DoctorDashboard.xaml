@@ -70,13 +70,14 @@
                         BackgroundColor="#3b0054" TextColor="#f9dcc0"  
                         WidthRequest="166" HeightRequest="46" Margin="10"  
                         CornerRadius="20"   
+                        Clicked="labImagesbtn"
                         HorizontalOptions="Center" VerticalOptions="Center"/>
                 
                 <Button Text="Operations Room"   FontAutoScalingEnabled="True"
                         FontFamily="Qatar2022 Arabic" FontSize="12" FontAttributes="Bold"
                         BackgroundColor="Red" TextColor="Black"  
                         WidthRequest="166" HeightRequest="46" Margin="10,50,10,10"  
-                        CornerRadius="20"   
+                        CornerRadius="20"   Clicked="oproombtn"
                         HorizontalOptions="Center" VerticalOptions="Center"/>
                 <!-- Logout Button -->
                 <Button Text="LogOut"  
