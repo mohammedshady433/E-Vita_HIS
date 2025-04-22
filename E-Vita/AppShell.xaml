@@ -13,9 +13,4 @@
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
-    <ShellContent
-        Title="Operation Rooms"
-        ContentTemplate="{DataTemplate views:OperationRoomReservation}"
-        Route="OperationRoomReservation" />
-
 </Shell>

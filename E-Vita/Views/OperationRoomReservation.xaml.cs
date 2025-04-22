@@ -36,7 +36,7 @@ namespace E_Vita.Views
         {
             timer = Application.Current.Dispatcher.CreateTimer();
             timer.Interval = TimeSpan.FromSeconds(1); // Check every second
-            timer.Tick += (s, e) => 
+            timer.Tick += (s, e) =>
             {
                 UpdateCurrentTime();
                 CheckReservations();
@@ -57,7 +57,7 @@ namespace E_Vita.Views
         {
             var currentDateTime = DateTime.Now;
             Console.WriteLine($"\nChecking reservations at {currentDateTime:HH:mm:ss}");
-            
+
             foreach (var reservation in reservations.ToList())
             {
                 var roomButton = RoomStack.Children.FirstOrDefault(c => c is Button b && b.Text == reservation.Key) as Button;
@@ -66,17 +66,17 @@ namespace E_Vita.Views
                     try
                     {
                         var endDateTime = reservation.Value.EndDateTime;
-                        
+
                         Console.WriteLine($"\nRoom {reservation.Key}:");
                         Console.WriteLine($"  Current time: {currentDateTime:HH:mm:ss}");
                         Console.WriteLine($"  End time: {endDateTime:HH:mm:ss}");
                         Console.WriteLine($"  Current >= End: {currentDateTime >= endDateTime}");
-                        
+
                         // Compare only the time part
                         var currentTime = currentDateTime.TimeOfDay;
                         var endTime = endDateTime.TimeOfDay;
                         var isToday = endDateTime.Date == currentDateTime.Date;
-                        
+
                         if (isToday && currentTime >= endTime)
                         {
                             Console.WriteLine($"Unreserving room {reservation.Key} - Time condition met");
@@ -168,8 +168,8 @@ namespace E_Vita.Views
                     {
                         // Parse the end time (format: HH:mm)
                         var timeParts = reservationData.EndTime.Split(':');
-                        if (timeParts.Length == 2 && 
-                            int.TryParse(timeParts[0], out int hours) && 
+                        if (timeParts.Length == 2 &&
+                            int.TryParse(timeParts[0], out int hours) &&
                             int.TryParse(timeParts[1], out int minutes))
                         {
                             // Set the end time for today
@@ -190,15 +190,15 @@ namespace E_Vita.Views
 
                             reservations[button.Text] = newReservation;
                             button.BackgroundColor = Colors.Red;
-                            
+
                             Console.WriteLine($"\nNew reservation created for {button.Text}:");
                             Console.WriteLine($"  Current time: {now:HH:mm:ss}");
                             Console.WriteLine($"  End time: {endDateTime:HH:mm:ss}");
-                            
+
                             MainThread.BeginInvokeOnMainThread(async () =>
                             {
-                                await DisplayAlert("Reservation Confirmed", 
-                                    $"Room reserved until {hours:D2}:{minutes:D2} today", 
+                                await DisplayAlert("Reservation Confirmed",
+                                    $"Room reserved until {hours:D2}:{minutes:D2} today",
                                     "OK");
                             });
 
@@ -218,7 +218,6 @@ namespace E_Vita.Views
             }
         }
     }
-
     public class ReservationForm : ContentPage
     {
         public event EventHandler<ReservationData> ReservationCompleted;
@@ -243,7 +242,7 @@ namespace E_Vita.Views
 
             var mainLayout = new ScrollView
             {
-                Content = new StackLayout { Spacing = 20, Padding = 20 }
+                Content = new StackLayout { Spacing = 20, Padding = 20 } // Added padding for better appearance
             };
 
             // Doctor Selection
@@ -251,14 +250,21 @@ namespace E_Vita.Views
             {
                 BackgroundColor = Colors.White,
                 CornerRadius = 10,
-                Padding = 15
+                Padding = 15 // Increased padding for better appearance
             };
             var doctorStack = new StackLayout { Spacing = 5 };
-            doctorStack.Children.Add(new Label { Text = "Select Doctor", FontSize = 16, FontAttributes = FontAttributes.Bold });
+            doctorStack.Children.Add(new Label
+            {
+                Text = "Select Doctor",
+                FontSize = 16,
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Colors.Black // Explicitly set text color
+            });
             doctorPicker = new Picker
             {
                 ItemsSource = new List<string> { "Dr. Smith", "Dr. Johnson", "Dr. Williams", "Dr. Brown" },
-                FontSize = 16
+                FontSize = 16,
+                TextColor = Colors.Black // Explicitly set text color
             };
             doctorStack.Children.Add(doctorPicker);
             doctorFrame.Content = doctorStack;
@@ -268,14 +274,21 @@ namespace E_Vita.Views
             {
                 BackgroundColor = Colors.White,
                 CornerRadius = 10,
-                Padding = 15
+                Padding = 15 // Increased padding for better appearance
             };
             var patientStack = new StackLayout { Spacing = 5 };
-            patientStack.Children.Add(new Label { Text = "Select Patient", FontSize = 16, FontAttributes = FontAttributes.Bold });
+            patientStack.Children.Add(new Label
+            {
+                Text = "Select Patient",
+                FontSize = 16,
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Colors.Black // Explicitly set text color
+            });
             patientPicker = new Picker
             {
                 ItemsSource = new List<string> { "John Doe", "Jane Smith", "Robert Brown", "Alice Johnson" },
-                FontSize = 16
+                FontSize = 16,
+                TextColor = Colors.Black // Explicitly set text color
             };
             patientStack.Children.Add(patientPicker);
             patientFrame.Content = patientStack;
@@ -285,14 +298,21 @@ namespace E_Vita.Views
             {
                 BackgroundColor = Colors.White,
                 CornerRadius = 10,
-                Padding = 15
+                Padding = 15 // Increased padding for better appearance
             };
             var specialtyStack = new StackLayout { Spacing = 5 };
-            specialtyStack.Children.Add(new Label { Text = "Select Specialty", FontSize = 16, FontAttributes = FontAttributes.Bold });
+            specialtyStack.Children.Add(new Label
+            {
+                Text = "Select Specialty",
+                FontSize = 16,
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Colors.Black // Explicitly set text color
+            });
             specialtyPicker = new Picker
             {
                 ItemsSource = surgicalSpecialties?.Select(s => s.Specialty).ToList() ?? new List<string>(),
-                FontSize = 16
+                FontSize = 16,
+                TextColor = Colors.Black // Explicitly set text color
             };
             specialtyPicker.SelectedIndexChanged += OnSpecialtySelected;
             specialtyStack.Children.Add(specialtyPicker);
@@ -303,14 +323,21 @@ namespace E_Vita.Views
             {
                 BackgroundColor = Colors.White,
                 CornerRadius = 10,
-                Padding = 15
+                Padding = 15 // Increased padding for better appearance
             };
             var operationStack = new StackLayout { Spacing = 5 };
-            operationStack.Children.Add(new Label { Text = "Select Operation", FontSize = 16, FontAttributes = FontAttributes.Bold });
+            operationStack.Children.Add(new Label
+            {
+                Text = "Select Operation",
+                FontSize = 16,
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Colors.Black // Explicitly set text color
+            });
             operationPicker = new Picker
             {
                 FontSize = 16,
-                IsEnabled = false
+                IsEnabled = false,
+                TextColor = Colors.Black // Explicitly set text color
             };
             operationStack.Children.Add(operationPicker);
             operationFrame.Content = operationStack;
@@ -320,15 +347,22 @@ namespace E_Vita.Views
             {
                 BackgroundColor = Colors.White,
                 CornerRadius = 10,
-                Padding = 15
+                Padding = 15 // Increased padding for better appearance
             };
             var dateStack = new StackLayout { Spacing = 5 };
-            dateStack.Children.Add(new Label { Text = "Select Date", FontSize = 16, FontAttributes = FontAttributes.Bold });
+            dateStack.Children.Add(new Label
+            {
+                Text = "Select Date",
+                FontSize = 16,
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Colors.Black // Explicitly set text color
+            });
             datePicker = new DatePicker
             {
                 Format = "dd/MM/yyyy",
                 FontSize = 16,
-                MinimumDate = DateTime.Today
+                MinimumDate = DateTime.Today,
+                TextColor = Colors.Black // Explicitly set text color
             };
             dateStack.Children.Add(datePicker);
             dateFrame.Content = dateStack;
@@ -338,15 +372,37 @@ namespace E_Vita.Views
             {
                 BackgroundColor = Colors.White,
                 CornerRadius = 10,
-                Padding = 15
+                Padding = 15 // Increased padding for better appearance
             };
             var timeStack = new StackLayout { Spacing = 10 };
-            timeStack.Children.Add(new Label { Text = "Select Time", FontSize = 16, FontAttributes = FontAttributes.Bold });
-            
+            timeStack.Children.Add(new Label
+            {
+                Text = "Select Time",
+                FontSize = 16,
+                FontAttributes = FontAttributes.Bold,
+                TextColor = Colors.Black // Explicitly set text color
+            });
+
             var timeLayout = new StackLayout { Orientation = StackOrientation.Horizontal, Spacing = 10 };
-            startTimePicker = new TimePicker { Format = "HH:mm", FontSize = 16 };
-            var toLabel = new Label { Text = "to", VerticalOptions = LayoutOptions.Center, FontSize = 16 };
-            endTimePicker = new TimePicker { Format = "HH:mm", FontSize = 16 };
+            startTimePicker = new TimePicker
+            {
+                Format = "HH:mm",
+                FontSize = 16,
+                TextColor = Colors.Black // Explicitly set text color
+            };
+            var toLabel = new Label
+            {
+                Text = "to",
+                VerticalOptions = LayoutOptions.Center,
+                FontSize = 16,
+                TextColor = Colors.Black // Explicitly set text color
+            };
+            endTimePicker = new TimePicker
+            {
+                Format = "HH:mm",
+                FontSize = 16,
+                TextColor = Colors.Black // Explicitly set text color
+            };
 
             timeLayout.Children.Add(startTimePicker);
             timeLayout.Children.Add(toLabel);
@@ -378,6 +434,7 @@ namespace E_Vita.Views
 
             Content = mainLayout;
         }
+    
 
         private void LoadSurgicalSpecialties()
         {

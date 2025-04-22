@@ -55,5 +55,10 @@ public partial class DoctorDashboard : ContentPage
         //DisplayAlert("Tapped", "You selected: " + ((Appointment)e.DataItem).PatientName, "OK");
         await Shell.Current.GoToAsync(nameof(Prescription));
     }
+
+    private async void oproombtn(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(OperationRoomReservation));
+    }
 }
 

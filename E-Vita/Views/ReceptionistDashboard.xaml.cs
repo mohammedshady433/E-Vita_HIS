@@ -109,4 +109,9 @@ public class Doctor
     {
         await Shell.Current.GoToAsync(nameof(AddDoctor));
     }
+
+    private async void financebtn(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(Finance));
+    }
 }
