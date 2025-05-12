@@ -46,7 +46,7 @@
                     </LinearGradientBrush>
                 </VerticalStackLayout.Background>
 
-                <Image Source="e_vitalogo_01.png" Margin="0,40,10,40"/>
+                <Image Source="e_vitalogo_01.png" Margin="0,10,10,5" WidthRequest="150" HeightRequest="150"/>
                 <!-- Reservation Button -->
                 <Button Text="New Reservation"   
                    FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
@@ -54,14 +54,19 @@
                    WidthRequest="166" HeightRequest="46" Margin="10"  
                    CornerRadius="20"   
                    HorizontalOptions="Center" VerticalOptions="Center" Clicked="newAppointment"/>
-
+                <Button Text="Room Reservation"   
+                    FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
+                    BackgroundColor="#3b0054" TextColor="#f9dcc0"  
+                    WidthRequest="166" HeightRequest="46" Margin="10"  
+                    CornerRadius="20"
+                    HorizontalOptions="Center" VerticalOptions="Center" Clicked="newRoom"/>
                 <!-- cancellation Button -->
                 <Button Text="Cancel Appointment"   
                    FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
                    BackgroundColor="#3b0054" TextColor="#f9dcc0"  
                    WidthRequest="166" HeightRequest="46" Margin="10"  
-                   CornerRadius="20"   
-                   HorizontalOptions="Center" VerticalOptions="Center" Clicked="Cancel"/>
+                   CornerRadius="20"   Clicked="cancelappointment"
+                   HorizontalOptions="Center" VerticalOptions="Center" />
                 <!-- Add New Patient Button -->
                 <Button Text="Add New Patient"   
                    FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
@@ -76,7 +81,14 @@
                    WidthRequest="166" HeightRequest="46" Margin="10"  
                    CornerRadius="20" Clicked="addNewDoc"
                    HorizontalOptions="Center" VerticalOptions="Center"/>
-
+                <!--Add New Nurses-->
+                <Button Text="Add New Nurse"   
+                   FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
+                   BackgroundColor="#3b0054" TextColor="#f9dcc0"  
+                   WidthRequest="166" HeightRequest="46" Margin="10"  
+                   CornerRadius="20" Clicked="addNewNurse"
+                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                
                 <Button Text="Finance"   
                    FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
                    BackgroundColor="#3b0054" TextColor="#f9dcc0"  

@@ -126,18 +126,21 @@
                     <!-- Drug Search -->
                     <VerticalStackLayout>
                         <HorizontalStackLayout>
-                            <Label Text="Drugs:" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="560,15,5,0"/>
+                            <Label Text="Drugs:" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="30,15,5,0"/>
                             <Entry x:Name="SearchEntryforDrugs"  
                            Placeholder="Search drugs by name..."  
                            WidthRequest="300" 
-                           Margin="90,5,5,5"  
+                           Margin="50,5,5,5"  
                            TextChanged="SearchEntry_TextChangedforDrugs"/>
                             <Button Text="+" 
                             FontSize="18" 
                             Margin="10,5,5,5" 
                             Clicked="OnAddDrugNoteClicked"/>
+                            <Label Text="Reserve The Patient" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="80,15,0,0"/>
+                            <CheckBox Color="#991130" BackgroundColor="Transparent" Margin="5" IsChecked="False" CheckedChanged="ShowReserveCheckBox_CheckedChanged"/>
+                            <Entry x:Name="checkboxentry3"  Background="Transparent" WidthRequest="400" IsVisible="False" TextColor="White" Placeholder="Reason,Clarification............."/>
                         </HorizontalStackLayout>
-                        <VerticalStackLayout x:Name="DrugNotesContainer" Margin="220,5,5,5">
+                        <VerticalStackLayout x:Name="DrugNotesContainer" Margin="-900,5,5,5">
                             <!-- Duplicated drug entries and collection views will be added here -->
                         </VerticalStackLayout>
                         <CollectionView x:Name="SuggestionsListofDrugs"  
@@ -145,7 +148,7 @@
                                 SelectionMode="Single"  
                                 WidthRequest="300"  
                                 HeightRequest="200"  
-                                Margin="245,5,5,5">
+                                Margin="-900,5,5,5">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Label Text="{Binding Tradename}"  

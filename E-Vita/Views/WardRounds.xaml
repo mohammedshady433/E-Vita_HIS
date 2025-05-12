@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sfCalendar="clr-namespace:Syncfusion.Maui.Calendar;assembly=Syncfusion.Maui.Calendar"
+             xmlns:sfDataGrid="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+             x:Class="E_Vita.Views.WardRounds"
+             Title="Ward Rounds">
+
+    <Grid BackgroundColor="#1f1f1f">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,20,20,10">
+            <Label Text="Ward Rounds Schedule" 
+                   FontSize="24" 
+                   FontAttributes="Bold" 
+                   TextColor="#f9dcc0"
+                   HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+
+        <!-- Calendar Section -->
+        <VerticalStackLayout Grid.Row="1" Grid.Column="0" Margin="20">
+            <Frame BackgroundColor="#f9dcc0" CornerRadius="20" Padding="10">
+                <VerticalStackLayout>
+                    <Label Text="Select Date" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="#3b0054"
+                           HorizontalOptions="Center"/>
+                    <sfCalendar:SfCalendar x:Name="WardRoundsCalendar" 
+                                          View="Month"
+                                          SelectionChanged="OnCalendarDateSelected"
+                                          Margin="10"/>
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+
+        <!-- Ward Rounds List -->
+        <Grid Grid.Row="1" Grid.Column="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Frame Grid.Row="0" BackgroundColor="#f9dcc0" CornerRadius="20" Padding="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <Label Grid.Row="0" 
+                           Text="Scheduled Rounds" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="#3b0054"
+                           HorizontalOptions="Center"/>
+
+                    <!-- Filter Controls -->
+                    <Grid Grid.Row="1" Margin="0,10,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Entry Grid.Column="0" 
+                               x:Name="SearchEntry"
+                               Placeholder="Search by doctor or ward..."
+                               BackgroundColor="White"
+                               TextColor="#3b0054"
+                               PlaceholderColor="#3b0054"
+                               TextChanged="OnSearchTextChanged"/>
+
+                        <Button Grid.Column="1" 
+                                Text="Filter" 
+                                BackgroundColor="#3b0054"
+                                TextColor="#f9dcc0"
+                                CornerRadius="5"
+                                Margin="5,0,0,0"
+                                Clicked="FilterButton_Clicked"/>
+                    </Grid>
+
+                    <!-- Status Filter Buttons -->
+                    <FlexLayout Grid.Row="2" 
+                               Direction="Row" 
+                               JustifyContent="SpaceEvenly"
+                               Margin="0,0,0,10">
+
+                        <Button Text="All" 
+                                BackgroundColor="#3b0054" 
+                                TextColor="#f9dcc0"
+                                CornerRadius="15"
+                                HeightRequest="30"
+                                WidthRequest="60"
+                                FontSize="12"
+                                Margin="2,0"
+                                Clicked="AllFilter_Clicked"/>
+
+                        <Button Text="Scheduled" 
+                                BackgroundColor="#007acc" 
+                                TextColor="White"
+                                CornerRadius="15"
+                                HeightRequest="30"
+                                WidthRequest="90"
+                                FontSize="12"
+                                Margin="2,0"
+                                Clicked="ScheduledFilter_Clicked"/>
+
+                        <Button Text="In Progress" 
+                                BackgroundColor="#ff9800" 
+                                TextColor="White"
+                                CornerRadius="15"
+                                HeightRequest="30"
+                                WidthRequest="90"
+                                FontSize="12"
+                                Margin="2,0"
+                                Clicked="InProgressFilter_Clicked"/>
+
+                        <Button Text="Completed" 
+                                BackgroundColor="#4caf50" 
+                                TextColor="White"
+                                CornerRadius="15"
+                                HeightRequest="30"
+                                WidthRequest="90"
+                                FontSize="12"
+                                Margin="2,0"
+                                Clicked="CompletedFilter_Clicked"/>
+                    </FlexLayout>
+
+                    <!-- Data Grid -->
+                    <sfDataGrid:SfDataGrid Grid.Row="3"
+                                          x:Name="WardRoundsGrid"
+                                          ItemsSource="{Binding FilteredWardRounds}"
+                                          RowHeight="50"
+                                          HeaderRowHeight="40"
+                                          SelectionMode="Single"
+                                          NavigationMode="Cell"
+                                          Margin="0,5,0,0"
+                                          SelectionChanged="WardRoundsGrid_SelectionChanged">
+                        <sfDataGrid:SfDataGrid.Columns>
+                            <sfDataGrid:DataGridTextColumn HeaderText="Time" 
+                                                          MappingName="Time"
+                                                          Width="100"/>
+                            <sfDataGrid:DataGridTextColumn HeaderText="Ward" 
+                                                          MappingName="Ward"
+                                                          Width="100"/>
+                            <sfDataGrid:DataGridTextColumn HeaderText="Doctor" 
+                                                          MappingName="Doctor"
+                                                          Width="150"/>
+                            <sfDataGrid:DataGridTextColumn HeaderText="Status" 
+                                                          MappingName="Status"
+                                                          Width="100"/>
+                        </sfDataGrid:SfDataGrid.Columns>
+                    </sfDataGrid:SfDataGrid>
+                </Grid>
+            </Frame>
+
+            <!-- Button Container for Add and Close -->
+            <VerticalStackLayout Grid.Row="1" Spacing="10" Margin="0,10,0,0">
+                <!-- Add New Round Button -->
+                <Button Text="Schedule New Round" 
+                        FontFamily="Qatar2022 Arabic" 
+                        FontSize="14" 
+                        BackgroundColor="#3b0054" 
+                        TextColor="#f9dcc0"
+                        HeightRequest="46" 
+                        CornerRadius="20"
+                        Clicked="ScheduleNewRound_Click"/>
+
+                <!-- Close Button -->
+                <Button Text="Close" 
+                        FontFamily="Qatar2022 Arabic" 
+                        FontSize="14" 
+                        BackgroundColor="#3b0054" 
+                        TextColor="#f9dcc0"
+                        HeightRequest="46" 
+                        CornerRadius="20"
+                        HorizontalOptions="Center"
+                        WidthRequest="200"
+                        Clicked="CloseButton_Clicked"/>
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Ward Round Details Popup -->
+        <Frame x:Name="DetailsPopup"
+               BackgroundColor="#f9dcc0"
+               CornerRadius="20"
+               IsVisible="false"
+               Grid.Row="0"
+               Grid.RowSpan="2"
+               Grid.Column="0"
+               Grid.ColumnSpan="2"
+               Margin="30"
+               Padding="20"
+               BorderColor="#3b0054"
+               HasShadow="True">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Header -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Main Details -->
+                    <RowDefinition Height="*"/>
+                    <!-- Patients List -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Notes -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Buttons -->
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <StackLayout Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+                    <Label Text="Ward Round Details" 
+                           FontSize="22" 
+                           FontAttributes="Bold" 
+                           TextColor="#3b0054"
+                           HorizontalOptions="StartAndExpand"
+                           VerticalOptions="Center"/>
+                    <Button Text="X"
+                            BackgroundColor="#3b0054"
+                            TextColor="#f9dcc0"
+                            CornerRadius="15"
+                            HeightRequest="30"
+                            WidthRequest="30"
+                            FontSize="15"
+                            Clicked="CloseDetailsPopup_Clicked"/>
+                </StackLayout>
+
+                <!-- Main Details -->
+                <Grid Grid.Row="1" Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Text="Time:" 
+                           FontAttributes="Bold" TextColor="#3b0054" FontSize="16"/>
+                    <Label Grid.Row="0" Grid.Column="1" x:Name="DetailTime" 
+                           TextColor="#3b0054" FontSize="16"/>
+
+                    <Label Grid.Row="1" Grid.Column="0" Text="Ward:" 
+                           FontAttributes="Bold" TextColor="#3b0054" FontSize="16"/>
+                    <Label Grid.Row="1" Grid.Column="1" x:Name="DetailWard" 
+                           TextColor="#3b0054" FontSize="16"/>
+
+                    <Label Grid.Row="2" Grid.Column="0" Text="Doctor:" 
+                           FontAttributes="Bold" TextColor="#3b0054" FontSize="16"/>
+                    <Label Grid.Row="2" Grid.Column="1" x:Name="DetailDoctor" 
+                           TextColor="#3b0054" FontSize="16"/>
+                </Grid>
+
+                <!-- Patient List -->
+                <VerticalStackLayout Grid.Row="2" Margin="0,0,0,15">
+                    <Label Text="Patients to Visit" 
+                           FontAttributes="Bold" 
+                           TextColor="#3b0054" 
+                           FontSize="18" 
+                           Margin="0,0,0,10"/>
+
+                    <CollectionView x:Name="PatientsList" 
+               BackgroundColor="White" 
+               HeightRequest="200">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="10" Margin="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <CheckBox Grid.Column="0" 
+                         IsChecked="{Binding Visited}"
+                         Color="#3b0054" />
+
+                                    <Label Grid.Column="1" 
+                       Text="{Binding PatientId}" 
+                       FontSize="12"
+                       VerticalOptions="Center" 
+                       TextColor="Gray"
+                       Margin="0,0,5,0"/>
+
+                                    <Label Grid.Column="2" 
+                       Text="{Binding PatientName}" 
+                       FontSize="14"
+                       VerticalOptions="Center" 
+                       TextColor="Black"/>
+
+                                    <Label Grid.Column="3" 
+                       Text="{Binding RoomNumber}" 
+                       FontSize="14" 
+                       TextColor="Black"
+                       VerticalOptions="Center"/>
+
+                                    <Label Grid.Column="4" 
+                       Text="{Binding Condition}" 
+                       FontSize="14" 
+                       TextColor="Black"
+                       VerticalOptions="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <!-- Notes -->
+                <VerticalStackLayout Grid.Row="3" Margin="0,0,0,15">
+                    <Label Text="Round Notes" 
+                           FontAttributes="Bold" 
+                           TextColor="#3b0054" 
+                           FontSize="18" 
+                           Margin="0,0,0,10"/>
+
+                    <Editor x:Name="RoundNotes" 
+                           BackgroundColor="White" 
+                           TextColor="#3b0054" 
+                           HeightRequest="100"
+                           Placeholder="Enter notes for this round..."/>
+                </VerticalStackLayout>
+
+                <!-- Buttons -->
+                <HorizontalStackLayout Grid.Row="4" 
+                                     HorizontalOptions="Center" 
+                                     Spacing="15">
+                    <Button Text="Update Status"
+                            BackgroundColor="#3b0054"
+                            TextColor="#f9dcc0"
+                            WidthRequest="120"
+                            HeightRequest="40"
+                            CornerRadius="20"
+                            Clicked="UpdateStatus_Clicked"/>
+
+                    <Button Text="Save Notes"
+                            BackgroundColor="#3b0054"
+                            TextColor="#f9dcc0"
+                            WidthRequest="120"
+                            HeightRequest="40"
+                            CornerRadius="20"
+                            Clicked="SaveNotes_Clicked"/>
+                    <Button Text="Select Patients"
+                            BackgroundColor="#3b0054"
+                            TextColor="#f9dcc0"
+                            WidthRequest="140"
+                            HeightRequest="40"
+                            CornerRadius="20"
+                            Clicked="SelectExistingPatients_Clicked"/>
+
+                </HorizontalStackLayout>
+            </Grid>
+        </Frame>
+    </Grid>
+</ContentPage>

@@ -22,7 +22,11 @@ namespace E_Vita
             Routing.RegisterRoute(nameof(OperationRoomReservation), typeof(OperationRoomReservation));
             Routing.RegisterRoute(nameof(Finance), typeof(Finance));
             Routing.RegisterRoute(nameof(CancelAppointment), typeof(CancelAppointment));
-
+            Routing.RegisterRoute(nameof(Room_Reservation), typeof(Room_Reservation));
+            Routing.RegisterRoute(nameof(AddNurse), typeof(AddNurse));
+            Routing.RegisterRoute(nameof(InpatientDoctorDashboard), typeof(InpatientDoctorDashboard));
+            Routing.RegisterRoute(nameof(WardRounds), typeof(WardRounds));
+            Routing.RegisterRoute(nameof(DischargePlanning), typeof(DischargePlanning));
 
         }
     }

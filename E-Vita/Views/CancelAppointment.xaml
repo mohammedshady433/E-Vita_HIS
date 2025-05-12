@@ -17,7 +17,7 @@
         </Grid>
 
         <!-- Search section -->
-        <Grid Grid.Row="1" BackgroundColor="White" Padding="20">
+        <Grid Grid.Row="1" BackgroundColor="#4B0082" Padding="20">
             <HorizontalStackLayout Spacing="10"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center">
@@ -34,7 +34,7 @@
         </Grid>
 
         <!-- Table Headers -->
-        <Grid Grid.Row="2" ColumnSpacing="10" Padding="10" BackgroundColor="#EEE">
+        <Grid Grid.Row="2" ColumnSpacing="10" Padding="10" BackgroundColor="#4B0082">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -63,7 +63,7 @@
                 <DataTemplate>
                     <Grid Padding="10"
                           ColumnSpacing="10"
-                          BackgroundColor="#F8F8F8"
+                          BackgroundColor="#4B0082"
                           Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -87,7 +87,7 @@
                         <Button Text="X"
                                 Grid.Column="6"
                                 BackgroundColor="Red"
-                                TextColor="White"
+                                TextColor="Black"
                                 WidthRequest="40"
                                 HeightRequest="40"
                                 CornerRadius="20"

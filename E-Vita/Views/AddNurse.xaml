@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="E_Vita.Views.AddDoctor"
-             Title="Add Doctor">
+             x:Class="E_Vita.Views.AddNurse"
+             Title="Add Nurse">
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
             <!-- Doctor Name -->
-            <Label Text="Doctor Name" FontSize="18" TextColor="#F9DCC0" />
-            <Entry x:Name="DoctorNameEntry" Placeholder="Enter doctor's name" />
+            <Label Text="Nurse Name" FontSize="18" TextColor="#F9DCC0" />
+            <Entry x:Name="NurseNameEntry" Placeholder="Enter Nurse's name" />
 
             <!-- Phone Number -->
             <Label Text="Phone Number" FontSize="18" TextColor="#F9DCC0" />
             <Entry x:Name="PhoneNumberEntry" Placeholder="Enter phone number" Keyboard="Telephone" />
-            
+
             <!--ID-->
             <Label Text="ID" FontSize="18" TextColor="#F9DCC0"/>
-            <Entry x:Name="DocID" Placeholder="Enter Doctor's ID" />
+            <Entry x:Name="NurseID" Placeholder="Enter Nurse's ID" />
+
+            <Label Text="Doctor ID" FontSize="18" TextColor="#F9DCC0"/>
+            <Entry x:Name="DocID" Placeholder="Enter assigned Doctor ID" />
+
+            <Label Text="Floor" FontSize="18" TextColor="#F9DCC0"/>
+            <Entry x:Name="Floor" Placeholder="Enter the Floor number" />
+
             <!-- Nationality -->
             <Label Text="Nationality" FontSize="18" TextColor="#F9DCC0" />
             <Picker x:Name="NationalityPicker" ItemsSource="{Binding Specialties}" />
@@ -25,23 +32,23 @@
             <Picker x:Name="SpecialtyPicker" />
 
             <!-- Save Button -->
-            <Button Text="Save Doctor"
-                    BackgroundColor="Green"
-                    TextColor="White"
-                    CornerRadius="25"
-                    FontAttributes="Bold"
-                    HeightRequest="50"
-                    Clicked="OnSaveDoctorClicked"/>
-            <Button Text="Cancel"
-                BackgroundColor="Transparent"
-                BorderColor="White"
-                BorderWidth="1"
+            <Button Text="Save Nurse"
+                BackgroundColor="Green"
                 TextColor="White"
-                CornerRadius="15"
+                CornerRadius="25"
                 FontAttributes="Bold"
                 HeightRequest="50"
-                Margin="0,10,0,20"
-                Clicked="close"/>
+                Clicked="OnSaveNurseClicked"/>
+            <Button Text="Cancel"
+            BackgroundColor="Transparent"
+            BorderColor="White"
+            BorderWidth="1"
+            TextColor="White"
+            CornerRadius="15"
+            FontAttributes="Bold"
+            HeightRequest="50"
+            Margin="0,10,0,20"
+            Clicked="close"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
