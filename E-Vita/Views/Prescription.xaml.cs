@@ -899,7 +899,10 @@ namespace E_Vita.Views
             public string TestName { get; set; }
         }
 
-
+        private void ShowReserveCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            checkboxentry3.IsVisible = e.Value;
+        }
     }
 
     // Extension method to find ancestor in the visual tree

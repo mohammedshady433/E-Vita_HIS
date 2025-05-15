@@ -101,12 +101,6 @@ public class Doctor
     }
 
 
-    private async void Cancel(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync(nameof(CancelAppointment));
-    }
-
-
     private async void AddnewPatient(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(AddPatient));
@@ -120,5 +114,20 @@ public class Doctor
     private async void financebtn(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(Finance));
+    }
+
+    private async void cancelappointment(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(CancelAppointment));
+    }
+
+    private async void newRoom(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(Room_Reservation));
+    }
+
+    private async void addNewNurse(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(AddNurse));
     }
 }

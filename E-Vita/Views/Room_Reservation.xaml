@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="E_Vita.Views.Room_Reservation"
+             Title="Room Reservation">
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label Text="Rooms Capacity" Margin="10" WidthRequest="300"/>
+            <Entry Placeholder="Enter the count of the Rooms" WidthRequest="300" x:Name="count"/>
+            <Entry Placeholder="Enter the Password" WidthRequest="300" x:Name="Pass"/>
+            <Button Text="Save" Background="Green" Margin="10" CornerRadius="20" WidthRequest="300" Clicked="Save"/>
+            
+            <Picker x:Name="avialable_rooms" Title="Select the room" WidthRequest="500" Margin="50"/>
+            <Label Text="Patient ID" Margin="10" WidthRequest="300"/>
+            <Entry Placeholder="Enter the Patient ID" WidthRequest="300" x:Name="patient_id"/>
+            <Label Text="Floor Number" Margin="10" WidthRequest="300"/>
+            <Entry Placeholder="Enter the Floor Number" WidthRequest="300" x:Name="floor"/>
+            <Label Text="Doctor ID" Margin="10" WidthRequest="300"/>
+            <Entry Placeholder="Enter the Doctor ID" WidthRequest="300" x:Name="doctor"/>
+
+
+            <Button Text="Save" Background="Green" Margin="10" CornerRadius="20" WidthRequest="300" Clicked="SavePatient"/>
+            <Button Text="Cancel"
+                BackgroundColor="Transparent"
+                BorderColor="White"
+                BorderWidth="1"
+                TextColor="White"
+                CornerRadius="15"
+                FontAttributes="Bold"
+                HeightRequest="50"
+                WidthRequest="300"
+                Margin="0,10,0,20"
+                Clicked="close"/>
+        </VerticalStackLayout>
+
+    </ScrollView>
+</ContentPage>
