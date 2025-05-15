@@ -27,35 +27,70 @@
                            FontAttributes="Bold" 
                            Margin="0,0,0,20"/>
 
-                    <Label Text="Patient ID" 
+                    <Label Text="Appointment Date" 
                            TextColor="white" 
                            FontSize="23" 
                            HorizontalOptions="Start"
                            VerticalOptions="Start" 
                            FontAttributes="Bold" 
                            Margin="0,0,0,10"/>
-                    <Entry x:Name="patientIdEntry" Placeholder="Enter Patient ID"
-                           WidthRequest="300" 
-                           HeightRequest="40" 
-                           FontFamily="Qatar2022 Arabic" 
-                           BackgroundColor="AntiqueWhite" 
-                           TextColor="DarkViolet" 
-                           FontSize="18"/>
+                    <DatePicker x:Name="datePicker"
+                                Format="yyyy-MM-dd"
+                                DateSelected="OnDateSelected"
+                                MinimumDate="{x:Static sys:DateTime.Today}" 
+                                BackgroundColor="White"
+                                WidthRequest="300" 
+                                HeightRequest="40" 
+                                FontFamily="Qatar2022 Arabic" 
+                                TextColor="DarkViolet" 
+                                FontSize="18"/>
 
-                    <Label Text="Doctor ID" 
+                    <Label Text="Doctor" 
                            TextColor="white" 
                            FontSize="23" 
                            HorizontalOptions="Start"
                            VerticalOptions="Start" 
                            FontAttributes="Bold" 
                            Margin="0,0,0,10"/>
-                    <Entry x:Name="doctorIdEntry" Placeholder="Enter Doctor ID"
-                           WidthRequest="300" 
-                           HeightRequest="40" 
-                           FontFamily="Qatar2022 Arabic" 
-                           BackgroundColor="AntiqueWhite" 
-                           TextColor="DarkViolet" 
-                           FontSize="18"/>
+                    <Picker x:Name="doctorPicker"
+                            WidthRequest="300" 
+                            HeightRequest="40" 
+                            FontFamily="Qatar2022 Arabic" 
+                            BackgroundColor="AntiqueWhite" 
+                            TextColor="DarkViolet" 
+                            FontSize="18"
+                            IsEnabled="False"/>
+
+                    <Label Text="Patient Search" 
+                           TextColor="white" 
+                           FontSize="23" 
+                           HorizontalOptions="Start"
+                           VerticalOptions="Start" 
+                           FontAttributes="Bold" 
+                           Margin="0,0,0,10"/>
+                    <SearchBar x:Name="patientSearchBar"
+                              Placeholder="Search patient by ID or name"
+                              TextChanged="OnPatientSearchTextChanged"
+                              WidthRequest="300" 
+                              HeightRequest="40" 
+                              FontFamily="Qatar2022 Arabic" 
+                              BackgroundColor="AntiqueWhite" 
+                              TextColor="DarkViolet" 
+                              FontSize="18"/>
+
+                    <CollectionView x:Name="patientList"
+                                  IsVisible="False"
+                                  SelectionMode="Single"
+                                  SelectionChanged="OnPatientSelected"
+                                  HeightRequest="200">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BorderColor="DarkViolet" Padding="10" Margin="5">
+                                    <Label Text="{Binding DisplayText}" TextColor="DarkViolet" FontSize="18"/>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
 
                     <Label Text="Appointment Time" 
                            TextColor="white" 
@@ -88,30 +123,6 @@
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-
-                    <VerticalStackLayout Padding="30">
-                        <Label Text="Appointment Date" 
-                               TextColor="white" 
-                               FontSize="23" 
-                               HorizontalOptions="Start"
-                               VerticalOptions="Start" 
-                               FontAttributes="Bold" 
-                               Margin="0,0,0,10"/>
-                        <Entry x:Name="dateEntry" Placeholder="Select a date"
-                               WidthRequest="300" 
-                               HeightRequest="40" 
-                               FontFamily="Qatar2022 Arabic" 
-                               BackgroundColor="AntiqueWhite" 
-                               TextColor="DarkViolet" 
-                               FontSize="18"/>
-
-                        <DatePicker x:Name="datePicker"
-                                    IsVisible="True"
-                                    Format="yyyy-MM-dd"
-                                    DateSelected="OnDateSelected"
-                                    MinimumDate="{x:Static sys:DateTime.Today}" 
-                                    BackgroundColor="White"/>
-                    </VerticalStackLayout>
 
                     <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
                         <Button Text="Confirm Appointment"

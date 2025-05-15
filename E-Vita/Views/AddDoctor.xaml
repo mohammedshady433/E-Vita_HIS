@@ -21,6 +21,10 @@
             <Label Text="Specialty" FontSize="18" TextColor="#F9DCC0" />
             <Picker x:Name="SpecialtyPicker" />
 
+            <!-- Rank -->
+            <Label Text="Rank" FontSize="18" TextColor="#F9DCC0" />
+            <Picker x:Name="RankPicker" />
+
             <!-- Save Button -->
             <Button Text="Save Doctor"
                     BackgroundColor="Green"

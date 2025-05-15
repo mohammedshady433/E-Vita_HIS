@@ -1,84 +1,144 @@
 using Microsoft.Maui.Graphics;
 using System.Text.RegularExpressions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-
+using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace E_Vita.Views;
 
 public partial class BookAppointment : ContentPage
 {
+    private class Doctor
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public List<DateTime> AvailableDates { get; set; }
+    }
+
+    private class Patient
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string DisplayText => $"{Name} (ID: {Id})";
+    }
+
+    private List<Doctor> doctors;
+    private List<Patient> patients;
+    private Patient selectedPatient;
+
     public BookAppointment()
     {
         InitializeComponent();
+        LoadDoctors();
+        LoadPatients();
+    }
+
+    private void LoadDoctors()
+    {
+        // This would typically come from a database or API
+        doctors = new List<Doctor>
+        {
+            new Doctor { Id = "123456789", Name = "Dr. Smith", AvailableDates = new List<DateTime> { DateTime.Today.AddDays(1), DateTime.Today.AddDays(2) } },
+            new Doctor { Id = "234567890", Name = "Dr. Johnson", AvailableDates = new List<DateTime> { DateTime.Today, DateTime.Today.AddDays(3) } },
+            new Doctor { Id = "345678901", Name = "Dr. Williams", AvailableDates = new List<DateTime> { DateTime.Today.AddDays(1), DateTime.Today.AddDays(4) } }
+        };
+    }
+
+    private void LoadPatients()
+    {
+        // This would typically come from a database or API
+        patients = new List<Patient>
+        {
+            new Patient { Id = "11", Name = "John Doe" },
+            new Patient { Id = "22", Name = "Jane Smith" },
+            new Patient { Id = "33", Name = "Robert Brown" },
+            new Patient { Id = "44", Name = "Alice Johnson" },
+            new Patient { Id = "55", Name = "Michael Wilson" }
+        };
+    }
+
+    private void OnPatientSearchTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(e.NewTextValue))
+        {
+            patientList.IsVisible = false;
+            return;
+        }
+
+        var searchText = e.NewTextValue.ToLower();
+        var filteredPatients = patients
+            .Where(p => p.Id.Contains(searchText) || p.Name.ToLower().Contains(searchText))
+            .ToList();
+
+        patientList.ItemsSource = filteredPatients;
+        patientList.IsVisible = filteredPatients.Any();
+    }
+
+    private void OnPatientSelected(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.FirstOrDefault() is Patient selected)
+        {
+            selectedPatient = selected;
+            patientSearchBar.Text = selected.DisplayText;
+            patientList.IsVisible = false;
+        }
+    }
+
+    private void OnDateSelected(object sender, DateChangedEventArgs e)
+    {
+        UpdateAvailableDoctors(e.NewDate);
+    }
+
+    private void UpdateAvailableDoctors(DateTime selectedDate)
+    {
+        var availableDoctors = doctors
+            .Where(d => d.AvailableDates.Any(date => date.Date == selectedDate.Date))
+            .Select(d => d.Name)
+            .ToList();
+
+        doctorPicker.ItemsSource = availableDoctors;
+        doctorPicker.IsEnabled = availableDoctors.Any();
+
+        if (!availableDoctors.Any())
+        {
+            DisplayAlert("No Doctors Available", "There are no doctors available on the selected date. Please choose another date.", "OK");
+        }
+    }
+
+    private async void ConfirmAppointment_Clicked(object sender, EventArgs e)
+    {
+        if (selectedPatient == null)
+        {
+            await DisplayAlert("Error", "Please select a patient", "OK");
+            return;
+        }
+
+        if (doctorPicker.SelectedItem == null)
+        {
+            await DisplayAlert("Error", "Please select a doctor", "OK");
+            return;
+        }
+
+        string appointmentTime = timeEntry.Text;
+        if (string.IsNullOrWhiteSpace(appointmentTime))
+        {
+            await DisplayAlert("Error", "Please select an appointment time", "OK");
+            return;
+        }
+
+        string selectedDoctor = doctorPicker.SelectedItem.ToString();
+        string message = $"Patient: {selectedPatient.Name}\n" +
+                        $"Patient ID: {selectedPatient.Id}\n" +
+                        $"Doctor: {selectedDoctor}\n" +
+                        $"Time: {appointmentTime}\n" +
+                        $"Date: {datePicker.Date:yyyy-MM-dd}";
+        
+        await DisplayAlert("Appointment has been confirmed", message, "OK");
     }
 
     private async void Close(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(ReceptionistDashboard));
-    }
-
-    private async void ConfirmAppointment_Clicked(object sender, EventArgs e)
-    {
-        string patientId = patientIdEntry.Text;
-        string doctorId = doctorIdEntry.Text;
-        string appointmentTime = timeEntry.Text;
-        string appointmentDate = dateEntry.Text;
-
-        List<string> missingFields = new();
-        if (string.IsNullOrWhiteSpace(patientId)) missingFields.Add("Patient ID");
-        if (string.IsNullOrWhiteSpace(doctorId)) missingFields.Add("Doctor ID");
-        if (string.IsNullOrWhiteSpace(appointmentTime)) missingFields.Add("Appointment Time");
-        if (string.IsNullOrWhiteSpace(appointmentDate)) missingFields.Add("Appointment Date");
-
-        if (missingFields.Count > 0)
-        {
-            string errorMessage = "Please enter the following field(s):\n\n" + string.Join("\n", missingFields);
-            await DisplayAlert("Missing Information", errorMessage, "OK");
-            return;
-        }
-
-        if (!int.TryParse(patientId, out _))
-        {
-            await DisplayAlert("Invalid Patient ID", "Patient ID must contain only digits.", "OK");
-            return;
-        }
-
-        if (!int.TryParse(doctorId, out _))
-        {
-            await DisplayAlert("Invalid Doctor ID", "Doctor ID must contain only digits.", "OK");
-            return;
-        }
-
-        // Patient and Doctor ID must be exactly 9 digits
-        if (!Regex.IsMatch(patientId, @"^\d{9}$"))
-        {
-            await DisplayAlert("Invalid Patient ID", "Patient ID must contain exactly 9 digits.", "OK");
-            return;
-        }
-
-        if (!Regex.IsMatch(doctorId, @"^\d{9}$"))
-        {
-            await DisplayAlert("Invalid Doctor ID", "Doctor ID must contain exactly 9 digits.", "OK");
-            return;
-        }
-
-        if (patientId == doctorId)
-        {
-            await DisplayAlert("Invalid IDs", "Patient ID and Doctor ID must be different.", "OK");
-            return;
-        }
-
-        string message = $"Patient ID: {patientId}\nDoctor ID: {doctorId}\nTime: {appointmentTime}\nDate: {appointmentDate}";
-        await DisplayAlert("Appointment has been confirmed", message, "OK");
-    }
-
-    private void OnDateSelected(object sender, DateChangedEventArgs e)
-    {
-        dateEntry.Text = e.NewDate.ToString("yyyy-MM-dd");
-
-        // Set the minimum selectable date to today
-        datePicker.MinimumDate = DateTime.Today;
-
     }
 
     protected override void OnAppearing()
