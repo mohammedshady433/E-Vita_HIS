@@ -8,6 +8,7 @@ public partial class AddNurse : ContentPage
 		InitializeComponent();
         LoadSpecialities();
         LoadNationalities();
+        LoadDepartments();
     }
     private void LoadNationalities()
     {
@@ -55,6 +56,27 @@ public partial class AddNurse : ContentPage
 };
         SpecialtyPicker.ItemsSource = specialties;
     }
+    private void LoadDepartments()
+    {
+        var departments = new List<string>
+        {
+            "Emergency Department",
+            "Intensive Care Unit",
+            "Pediatrics",
+            "Maternity",
+            "Surgery",
+            "Cardiology",
+            "Neurology",
+            "Orthopedics",
+            "Oncology",
+            "Radiology",
+            "Laboratory",
+            "Rehabilitation",
+
+        };
+
+        DepartmentPicker.ItemsSource = departments;
+    }
 
     private async void OnSaveNurseClicked(object sender, EventArgs e)
     {
@@ -62,15 +84,17 @@ public partial class AddNurse : ContentPage
         string phone = PhoneNumberEntry.Text?.Trim();
         string nationality = (string)NationalityPicker.SelectedItem;
         string specialty = (string)SpecialtyPicker.SelectedItem;
+        string department = (string)DepartmentPicker.SelectedItem;
 
-        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(phone) || nationality == null || specialty == null)
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(phone) || 
+            nationality == null || specialty == null || department == null)
         {
             await DisplayAlert("Error", "Please fill in all fields.", "OK");
             return;
         }
 
-        // Save the doctor (you can replace this with actual saving logic)
-        Console.WriteLine($"Nurse Saved: {name}, {phone}, {nationality}, {specialty}");
+        // Save the nurse (you can replace this with actual saving logic)
+        Console.WriteLine($"Nurse Saved: {name}, {phone}, {nationality}, {specialty}, {department}");
         await DisplayAlert("Success", "Nurse added successfully!", "OK");
 
         // Navigate back to the previous page

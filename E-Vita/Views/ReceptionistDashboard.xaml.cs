@@ -65,7 +65,7 @@ public class Doctor
     private void LoadNotes()
     {
         // TODO: Replace with your API call
-        AddNoteToUI("Patient in Room 2 requires wound dressing every 6 hours.", "Nurse Sarah", DateTime.Now.AddMinutes(-30));
+        AddNoteToUI("i have to leave now, cancel john's appointment", "receptionist ali", DateTime.Now.AddMinutes(-30));
     }
 
     // UI Helper
