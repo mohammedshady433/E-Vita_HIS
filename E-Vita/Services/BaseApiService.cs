@@ -38,5 +38,18 @@ namespace E_Vita.Services
             var response = await _httpClient.PostAsync(endpoint, content);
             return response.IsSuccessStatusCode;
         }
+
+        protected async Task<bool> PutAsync<T>(string endpoint, T data)
+        {
+            var json = JsonSerializer.Serialize(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync(endpoint, content);
+            return response.IsSuccessStatusCode;
+        }
+        protected async Task<bool> DeleteAsync(string endpoint)
+        {
+            var response = await _httpClient.DeleteAsync(endpoint);
+            return response.IsSuccessStatusCode;
+        }
     }
 }
