@@ -1,13 +1,13 @@
 using E_Vita.Models;
 using E_Vita.Services;
 using System.Collections.ObjectModel;
-
+using E_Vita_APIs.Models;
 namespace E_Vita.Views
 {
     public partial class DischargePlanning : ContentPage
     {
-        private ObservableCollection<Models.Patient> _patients;
-        private Models.Patient _selectedPatient;
+        private ObservableCollection<Patient> _patients;
+        private Patient _selectedPatient;
 
         public DischargePlanning()
         {
@@ -21,9 +21,9 @@ namespace E_Vita.Views
             try
             {
                 // TODO: Replace with actual service call
-                var patients = await PatientService.GetPatientsReadyForDischarge();
-                _patients = new ObservableCollection<Models.Patient>(patients);
-                PatientsGrid.ItemsSource = _patients;
+                //var patients = await PatientServices.GetPatientsReadyForDischarge();
+                //_patients = new ObservableCollection<Patient>(patients);
+                //PatientsGrid.ItemsSource = _patients;
             }
             catch (Exception ex)
             {
@@ -36,12 +36,12 @@ namespace E_Vita.Views
             // Get the selected item using the SelectedIndex
             if (PatientsGrid.SelectedIndex >= 0)
             {
-                var selectedItem = _patients[PatientsGrid.SelectedIndex] as Models.Patient;
+                var selectedItem = _patients[PatientsGrid.SelectedIndex] as Patient;
                 if (selectedItem != null)
                 {
                     _selectedPatient = selectedItem;
-                    PatientNameEntry.Text = _selectedPatient.PatientName;
-                    RoomNumberEntry.Text = _selectedPatient.RoomNumber;
+                    PatientNameEntry.Text = _selectedPatient.Patient_Name;
+                    //RoomNumberEntry.Text = _selectedPatient.RoomNumber;
                     DischargeDatePicker.Date = DateTime.Today;
                 }
             }
@@ -71,14 +71,14 @@ namespace E_Vita.Views
             {
                 var dischargeInfo = new DischargeInfo
                 {
-                    PatientId = _selectedPatient.PatientId,
+                    PatientId = _selectedPatient.Patient_ID,
                     DischargeDate = DischargeDatePicker.Date,
                     Notes = DischargeNotesEditor.Text,
                     DischargeType = DischargeTypePicker.SelectedItem.ToString()
                 };
 
                 // TODO: Replace with actual service call
-                await PatientService.ProcessDischarge(dischargeInfo);
+                //await PatientServices.ProcessDischarge(dischargeInfo);
 
                 await DisplayAlert("Success", "Patient discharged successfully", "OK");
                 
