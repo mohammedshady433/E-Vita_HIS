@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using E_Vita_APIs.Models;
+
 
 namespace E_Vita_APIs.Models
 {

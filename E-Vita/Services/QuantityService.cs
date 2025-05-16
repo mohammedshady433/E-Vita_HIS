@@ -12,22 +12,22 @@ namespace E_Vita.Services
 
         public async Task<List<Quantity>> GetAllAsync()
         {
-            return await GetAsync<List<Quantity>>(Quantity);
+            return await GetAsync<List<Quantity>>("Quantity");
         }
 
         public async Task<Quantity> GetByIdAsync(int id)
         {
-            return await GetAsync<Quantity>($"{Quantity}/{id}");
+            return await GetAsync<Quantity>($"Quantity/{id}");
         }
 
         public async Task<bool> AddAsync(Quantity quantity)
         {
-            return await PostAsync(Quantity, quantity);
+            return await PostAsync("Quantity", quantity);
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            return await DeleteAsync($"{Quantity}/{id}");
+            return await DeleteAsync($"Quantity/{id}");
         }
     }
 }
