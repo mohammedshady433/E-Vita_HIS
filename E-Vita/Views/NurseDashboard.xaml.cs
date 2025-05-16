@@ -349,7 +349,7 @@ public partial class NurseDashboard : ContentPage
     private void LoadNotes()
     {
         // TODO: Replace with your API call
-        AddNoteToUI("Patient in Room 2 requires wound dressing every 6 hours.", "Nurse Sarah", DateTime.Now.AddMinutes(-30));
+        AddNoteToUI("am leaving early today, please be more concentrated on john.", "Nurse Sarah", DateTime.Now.AddMinutes(-30));
     }
 
     // UI Helper
@@ -367,7 +367,7 @@ public partial class NurseDashboard : ContentPage
                 Children =
                 {
                     new Label { Text = text, FontSize = 16, TextColor = Colors.Black },
-                    new Label { Text = $"— {author}, {timestamp:t}", FontSize = 12, TextColor = Colors.Gray }
+                    new Label { Text = $"ï¿½ {author}, {timestamp:t}", FontSize = 12, TextColor = Colors.Gray }
                 }
             }
         };

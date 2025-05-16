@@ -17,8 +17,8 @@
             <Label Text="ID" FontSize="18" TextColor="#F9DCC0"/>
             <Entry x:Name="NurseID" Placeholder="Enter Nurse's ID" />
 
-            <Label Text="Doctor ID" FontSize="18" TextColor="#F9DCC0"/>
-            <Entry x:Name="DocID" Placeholder="Enter assigned Doctor ID" />
+            <Label Text="Department" FontSize="18" TextColor="#F9DCC0"/>
+            <Picker x:Name="DepartmentPicker" />
 
             <Label Text="Floor" FontSize="18" TextColor="#F9DCC0"/>
             <Entry x:Name="Floor" Placeholder="Enter the Floor number" />

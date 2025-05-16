@@ -2,12 +2,13 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="E_Vita.Views.CancelAppointment"
-             Title="Cancel Appointment">
+             Title="Cancel Appointment"
+             BackgroundColor="#F5F5F5">
 
     <Grid RowDefinitions="Auto, Auto, Auto, *">
 
         <!-- Top bar -->
-        <Grid Grid.Row="0" BackgroundColor="#4B0082" HeightRequest="80">
+        <Grid Grid.Row="0" BackgroundColor="#2C3E50" HeightRequest="80">
             <Label Text="Cancel Appointment"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
@@ -17,24 +18,22 @@
         </Grid>
 
         <!-- Search section -->
-        <Grid Grid.Row="1" BackgroundColor="#4B0082" Padding="20">
+        <Grid Grid.Row="1" BackgroundColor="#34495E" Padding="20">
             <HorizontalStackLayout Spacing="10"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center">
                 <Entry Placeholder="Search by Patient ID or Doctor ID"
                        x:Name="searchEntry"
                        WidthRequest="250"
-                       BackgroundColor="#F0F0F0"
-                       TextColor="Black" />
-                <Button Text="Search"
-                        BackgroundColor="#4B0082"
-                        TextColor="White"
-                        Clicked="OnSearchClicked" />
+                       BackgroundColor="White"
+                       TextColor="#2C3E50"
+                       PlaceholderColor="#95A5A6"
+                       TextChanged="OnSearchTextChanged" />
             </HorizontalStackLayout>
         </Grid>
 
         <!-- Table Headers -->
-        <Grid Grid.Row="2" ColumnSpacing="10" Padding="10" BackgroundColor="#4B0082">
+        <Grid Grid.Row="2" ColumnSpacing="10" Padding="10" BackgroundColor="#34495E">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -43,15 +42,17 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label Text="Patient Name" Grid.Column="0" FontAttributes="Bold" />
-            <Label Text="Patient ID" Grid.Column="1" FontAttributes="Bold" />
-            <Label Text="Doctor Name" Grid.Column="2" FontAttributes="Bold" />
-            <Label Text="Doctor ID" Grid.Column="3" FontAttributes="Bold" />
-            <Label Text="Specialty" Grid.Column="4" FontAttributes="Bold" />
-            <Label Text="Time" Grid.Column="5" FontAttributes="Bold" />
-            <Label Text="Cancel" Grid.Column="6" FontAttributes="Bold" />
+            <Label Text="Patient Name" Grid.Column="0" FontAttributes="Bold" TextColor="White" />
+            <Label Text="Patient ID" Grid.Column="1" FontAttributes="Bold" TextColor="White" />
+            <Label Text="Doctor Name" Grid.Column="2" FontAttributes="Bold" TextColor="White" />
+            <Label Text="Doctor ID" Grid.Column="3" FontAttributes="Bold" TextColor="White" />
+            <Label Text="Specialty" Grid.Column="4" FontAttributes="Bold" TextColor="White" />
+            <Label Text="Time" Grid.Column="5" FontAttributes="Bold" TextColor="White" />
+            <Label Text="No Show" Grid.Column="6" FontAttributes="Bold" TextColor="White" />
+            <Label Text="Cancel" Grid.Column="7" FontAttributes="Bold" TextColor="White" />
         </Grid>
 
         <!-- Appointments list -->
@@ -63,7 +64,7 @@
                 <DataTemplate>
                     <Grid Padding="10"
                           ColumnSpacing="10"
-                          BackgroundColor="#4B0082"
+                          BackgroundColor="White"
                           Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -73,21 +74,53 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <!-- Values for each column -->
-                        <Label Text="{Binding Patient_appointment.Patient_Name}" Grid.Column="0" VerticalOptions="Center" />
-                        <Label Text="{Binding Patient_appointment.Patient_ID}" Grid.Column="1" VerticalOptions="Center" />
-                        <Label Text="{Binding Doctor_appointment.Doctor_Name}" Grid.Column="2" VerticalOptions="Center" />
-                        <Label Text="{Binding Doctor_appointment.ID}" Grid.Column="3" VerticalOptions="Center" />
-                        <Label Text="{Binding Doctor_appointment.Specialty}" Grid.Column="4" VerticalOptions="Center" />
-                        <Label Text="{Binding Time}" Grid.Column="5" VerticalOptions="Center" />
+                        <Label Text="{Binding Patient_appointment.Patient_Name}" 
+                               Grid.Column="0" 
+                               VerticalOptions="Center"
+                               TextColor="#2C3E50" />
+                        <Label Text="{Binding Patient_appointment.Patient_ID}" 
+                               Grid.Column="1" 
+                               VerticalOptions="Center"
+                               TextColor="#2C3E50" />
+                        <Label Text="{Binding Doctor_appointment.Doctor_Name}" 
+                               Grid.Column="2" 
+                               VerticalOptions="Center"
+                               TextColor="#2C3E50" />
+                        <Label Text="{Binding Doctor_appointment.ID}" 
+                               Grid.Column="3" 
+                               VerticalOptions="Center"
+                               TextColor="#2C3E50" />
+                        <Label Text="{Binding Doctor_appointment.Specialty}" 
+                               Grid.Column="4" 
+                               VerticalOptions="Center"
+                               TextColor="#2C3E50" />
+                        <Label Text="{Binding Time}" 
+                               Grid.Column="5" 
+                               VerticalOptions="Center"
+                               TextColor="#2C3E50" />
+
+                        <!-- No Show Button -->
+                        <Button Text="🚫"
+                                Grid.Column="6"
+                                BackgroundColor="#E67E22"
+                                TextColor="White"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                CornerRadius="20"
+                                VerticalOptions="Center"
+                                Clicked="OnNoShowClicked"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NoShowCommand}"
+                                CommandParameter="{Binding}" />
 
                         <!-- Delete Button -->
                         <Button Text="X"
-                                Grid.Column="6"
-                                BackgroundColor="Red"
-                                TextColor="Black"
+                                Grid.Column="7"
+                                BackgroundColor="#E74C3C"
+                                TextColor="White"
                                 WidthRequest="40"
                                 HeightRequest="40"
                                 CornerRadius="20"
@@ -100,7 +133,6 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
     </Grid>
-
 
     <!-- navigation for ReceptionistDashboard-->
     <ContentPage.ToolbarItems>

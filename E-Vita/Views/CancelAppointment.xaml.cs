@@ -8,15 +8,15 @@ public partial class CancelAppointment : ContentPage
     public ObservableCollection<AppointmentModel> ScheduleList { get; set; }
 
     // The master list of all appointments
-    public List<AppointmentModel> AllAppointments { get; set; } = new List<AppointmentModel>();
+    private List<AppointmentModel> _allAppointments = new List<AppointmentModel>();
 
     public CancelAppointment()
     {
         InitializeComponent();
-        AllAppointments = new List<AppointmentModel> { };
+        _allAppointments = new List<AppointmentModel> { };
 
         // Dummy data for testing  
-        ScheduleList = new ObservableCollection<AppointmentModel>
+        _allAppointments = new List<AppointmentModel>
         {
             new AppointmentModel
             {
@@ -68,7 +68,38 @@ public partial class CancelAppointment : ContentPage
             }
         };
 
+        // Initialize ScheduleList with all appointments
+        ScheduleList = new ObservableCollection<AppointmentModel>(_allAppointments);
         BindingContext = this;
+    }
+
+    // Dynamic search as user types
+    private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+    {
+        string searchText = e.NewTextValue?.Trim() ?? string.Empty;
+
+        if (string.IsNullOrEmpty(searchText))
+        {
+            // If search is empty, show all appointments
+            ScheduleList.Clear();
+            foreach (var appointment in _allAppointments)
+            {
+                ScheduleList.Add(appointment);
+            }
+            return;
+        }
+
+        // Filter appointments by Patient ID or Doctor ID
+        var filtered = _allAppointments.Where(appt =>
+            appt.Patient_appointment.Patient_ID.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
+            appt.Doctor_appointment.ID.Contains(searchText, StringComparison.OrdinalIgnoreCase)
+        ).ToList();
+
+        ScheduleList.Clear();
+        foreach (var item in filtered)
+        {
+            ScheduleList.Add(item);
+        }
     }
 
     // Delete appointment button 
@@ -87,45 +118,38 @@ public partial class CancelAppointment : ContentPage
         if (isConfirmed)
         {
             ScheduleList.Remove(appointment);
+            _allAppointments.Remove(appointment);
             await DisplayAlert("Deleted", "Appointment has been deleted.", "OK");
         }
     }
 
-    // Search appointment button
-    private void OnSearchClicked(object sender, EventArgs e)
-    {
-        string searchText = searchEntry?.Text?.Trim(); // Prevent null reference
-
-        if (string.IsNullOrEmpty(searchText))
-        {
-            DisplayAlert("Invalid Input", "Please enter a Patient ID or Doctor ID.", "OK");
-            return;
-        }
-
-        if (!searchText.All(char.IsDigit))
-        {
-            DisplayAlert("Invalid Input", "Only digits are allowed in the search field.", "OK");
-            return;
-        }
-
-        // Filter appointments by Patient ID or Doctor ID
-        var filtered = AllAppointments.Where(appt =>
-            appt.Patient_appointment.Patient_ID.Equals(searchText, StringComparison.OrdinalIgnoreCase) ||
-            appt.Doctor_appointment.ID.Equals(searchText, StringComparison.OrdinalIgnoreCase)
-        ).ToList();
-
-        ScheduleList.Clear(); // Clear previous items
-        foreach (var item in filtered)
-        {
-            ScheduleList.Add(item); // Add filtered results
-        }
-    }
-
     //navigate back to ReceptionistDashboard
-    private async void OnBackClicked (object sender, EventArgs e)
+    private async void OnBackClicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new ReceptionistDashboard());
-        
+    }
+
+    // No Show button handler
+    private async void OnNoShowClicked(object sender, EventArgs e)
+    {
+        var button = sender as Button;
+        var appointment = button?.CommandParameter as AppointmentModel;
+
+        if (appointment == null)
+            return;
+
+        bool isConfirmed = await DisplayAlert("Confirm No Show",
+                                              $"Mark {appointment.Patient_appointment.Patient_Name}'s appointment as No Show?",
+                                              "Yes", "No");
+
+        if (isConfirmed)
+        {
+            appointment.IsNoShow = true;
+            // You might want to update the button appearance here
+            button.BackgroundColor = Colors.Gray;
+            button.IsEnabled = false;
+            await DisplayAlert("Updated", "Appointment has been marked as No Show.", "OK");
+        }
     }
 }
 
@@ -135,6 +159,7 @@ public class AppointmentModel
     public string Time { get; set; } = string.Empty;
     public Patient Patient_appointment { get; set; } = new Patient();
     public Doctor Doctor_appointment { get; set; } = new Doctor();
+    public bool IsNoShow { get; set; } = false;
 }
 
 public class Patient
