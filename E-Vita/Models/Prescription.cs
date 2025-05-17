@@ -9,7 +9,7 @@ namespace E_Vita_APIs.Models
         public Medication Medication { get; set; } // Medication class
         public string Diseases { get; set; } // List of diseases
         public Lab Labtest { get; set; } // Lab test class
-        public Radiology RadiologyTest { get; set; } // Radiology test class
+        public string RadiologyTest { get; set; } // Radiology test class
         public string Examination { get; set; } // Examination details
         public bool Reserve { get; set; } // Reserve for future use
         public bool sergery { get; set; } // Surgery details
