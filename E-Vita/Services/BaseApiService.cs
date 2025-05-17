@@ -16,7 +16,7 @@ namespace E_Vita.Services
         {
             _httpClient = new HttpClient
             {
-                BaseAddress = new Uri("https://localhost:7037/api/")
+                BaseAddress = new Uri("https://localhost:7192/api/")
             };
         }
 

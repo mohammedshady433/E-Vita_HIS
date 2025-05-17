@@ -9,6 +9,7 @@ namespace E_Vita_APIs.Models
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
+        public string PasswordHash { get; set; }
         public Gender Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
         public ICollection<Appointment> Appointment { get; set; } = new List<Appointment>();

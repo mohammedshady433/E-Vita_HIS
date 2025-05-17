@@ -1,5 +1,6 @@
 ﻿using E_Vita.Views;
-
+using E_Vita.Services;
+using E_Vita_APIs.Models;
 namespace E_Vita
 {
     public partial class MainPage : ContentPage
@@ -10,7 +11,8 @@ namespace E_Vita
         double windowHeight = 390; // Example value, replace with actual window height
         double x;
         double y;
-
+        Task<List<Practitioner>> practlist;
+        private readonly PractitionerServices _apiPractServices = new PractitionerServices();
         public MainPage()
         {
             InitializeComponent();
@@ -20,34 +22,61 @@ namespace E_Vita
             // Calculate the position to center the window
             x = (screenWidth - windowWidth) / 2;
             y = (screenHeight - windowHeight) / 2;
+
+            practlist=LoadPractData();
         }
 
+        public Task<List<Practitioner>> LoadPractData()
+        {
+            var practlist = _apiPractServices.GetPractitionersAsync();
+            return practlist;
+        }
         private async void login(object sender, EventArgs e)
         {
             try
             {
-                if (username.Text == "1")
+                // Get entered ID
+                if (!int.TryParse(userIdEntry.Text?.Trim(), out int enteredId))
                 {
-                    await Shell.Current.GoToAsync(nameof(NurseDashboard));
+                    await DisplayAlert("Error", "Please enter a valid numerical ID.", "OK");
+                    return;
                 }
-                else if (username.Text == "2")
+                var practitioners = await practlist;
+                var practitioner = practitioners.FirstOrDefault(p => p.Id == enteredId && p.PasswordHash.Equals(Passentry.Text));
+                if (practitioner == null)
+                {
+                    await DisplayAlert("Error", "Practitioner not found.", "OK");
+                    return;
+                }
+                var ID=enteredId.ToString();
+                if (ID.EndsWith("1"))
                 {
                     await Shell.Current.GoToAsync(nameof(DoctorDashboard));
+                    await DisplayAlert("Approved", $"Welcome {practitioner.Name}", "OK");
+
                 }
-                else if (username.Text == "3")
+                else if (ID.EndsWith("2"))
+                {
+                    await Shell.Current.GoToAsync(nameof(NurseDashboard));
+                    await DisplayAlert("Approved", $"Welcome {practitioner.Name}", "OK");
+
+                }
+                else if (ID.EndsWith("3"))
                 {
                     await Shell.Current.GoToAsync(nameof(ReceptionistDashboard));
+                    await DisplayAlert("Approved", $"Welcome {practitioner.Name}", "OK");
+
                 }
-                else if (username.Text == "4")
+                else if (ID.EndsWith("4"))
                 {
                     await Shell.Current.GoToAsync(nameof(InpatientDoctorDashboard));
+                    await DisplayAlert("Approved", $"Welcome {practitioner.Name}", "OK");
+
                 }
                 else
                 {
-                    await DisplayAlert("Error", "Invalid username or password", "OK");
+                    await DisplayAlert("Error", "Invalid ID. Please check your ID.", "OK");
                 }
-                //await Shell.Current.GoToAsync(nameof(PassReset));
-
             }
             catch (Exception ex)
             {
