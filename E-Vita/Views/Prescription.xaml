@@ -26,19 +26,19 @@
                 <!-- Patient Details -->
                 <HorizontalStackLayout>
                     <Label Text="Patient Name:" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="0,13,0,0"/>
-                    <Entry x:Name="NameLabel" WidthRequest="200" Margin="5" Background="#FFECECE4" IsReadOnly="True"/>
+                    <Entry x:Name="NameLabel" WidthRequest="200" Margin="5" Background="#FFECECE4" IsReadOnly="True" TextColor="Black"/>
                     <Label Text="Patient ID:" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="50,13,0,0"/>
-                    <Editor x:Name="IdLabel" WidthRequest="200" Margin="5" Background="#FFECECE4" IsReadOnly="True"/>
+                    <Editor x:Name="IdLabel" WidthRequest="200" Margin="5" Background="#FFECECE4" IsReadOnly="True" TextColor="Black"/>
                 </HorizontalStackLayout>
                 <HorizontalStackLayout>
                     <Label Text="Nationality:" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="0,13,0,0"/>
-                    <Entry x:Name="NationalityLabel" WidthRequest="200" Margin="24,5,5,5" Background="#FFECECE4" IsReadOnly="True"/>
+                    <Entry x:Name="NationalityLabel" WidthRequest="200" Margin="24,5,5,5" Background="#FFECECE4" IsReadOnly="True" TextColor="Black"/>
                     <Label Text="Reason for Visit:" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="5,13,0,0"/>
                     <Entry x:Name="ReasonForVisitEntry" WidthRequest="200" Margin="5" Background="#FFECECE4" TextColor="Black"/>
                 </HorizontalStackLayout>
                 <HorizontalStackLayout>
                     <Label Text="Age:" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="5"/>
-                    <Entry x:Name="Ageentry" WidthRequest="200" Margin="70,5,5,5" Background="#FFECECE4" IsReadOnly="True"/>
+                    <Entry x:Name="Ageentry" WidthRequest="200" Margin="70,5,5,5" Background="#FFECECE4" IsReadOnly="True" TextColor="Black"/>
                     <Label Text="Gender:" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="5,5,100,5"/>
                     <RadioButton x:Name="MaleRadioButton" Content="Male" IsChecked="False" IsEnabled="False" Margin="5"/>
                     <RadioButton x:Name="FemaleRadioButton" Content="Female" IsChecked="False" IsEnabled="False" Margin="5"/>
@@ -211,7 +211,7 @@
                                 <Entry x:Name="RadiologyTests" Placeholder="enter the test name" WidthRequest="300" Margin="10" TextChanged="SearchEntry_TextChangedforRadio"/>
                                 <Button Text="+" FontSize="18" WidthRequest="20" Margin="10" Clicked="addRaidologybtn"/>
                             </HorizontalStackLayout>
-                            
+
                             <CollectionView x:Name="SuggestionsListofRadio"  
                                 IsVisible="False"  
                                 SelectionMode="Single"  
@@ -239,13 +239,13 @@
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
-                            
+
                             <VerticalStackLayout x:Name="radiologyStackpanel">
                                 <!-- Radiology entries will be added here -->
                             </VerticalStackLayout>
-                            
                         </VerticalStackLayout>
                     </Grid>
+                    <Button Text="Save" Clicked="saveData"/>
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </Grid>

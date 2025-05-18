@@ -65,7 +65,7 @@
                     <VerticalStackLayout>
                         <Label Text="Select chronic disease" TextColor="AntiqueWhite" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="10"/>
                         <Entry x:Name="SearchEntry" Placeholder="Start typing..." TextChanged="OnSearchTextChanged"/>
-                        <ListView x:Name="SuggestionsListView" IsVisible="False">
+                        <ListView x:Name="SuggestionsListView" ItemSelected="SuggestionsListView_ItemSelected" IsVisible="False">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <TextCell Text="{Binding}" />
@@ -78,7 +78,7 @@
                     <VerticalStackLayout>
                         <Label Text="Select patient's nationality" TextColor="AntiqueWhite" FontFamily="Qatar2022 Arabic" FontSize="18" Margin="10"/>
 
-                        <Picker x:Name="NationalityPicker">
+                        <Picker x:Name="NationalityPicker" >
                         </Picker>
                     </VerticalStackLayout>
 

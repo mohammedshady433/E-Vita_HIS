@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using E_Vita.Models;
 
 namespace E_Vita.Services
 {

@@ -51,6 +51,8 @@ namespace E_Vita
                 var ID=enteredId.ToString();
                 if (ID.EndsWith("1"))
                 {
+                    // Store the doctor ID in preferences before navigation
+                    Preferences.Set("CurrentDoctorId", enteredId);
                     await Shell.Current.GoToAsync(nameof(DoctorDashboard));
                     await DisplayAlert("Approved", $"Welcome {practitioner.Name}", "OK");
 

@@ -17,10 +17,10 @@ public partial class ReceptionistDashboard : ContentPage
     {
         var doctors = new List<Doctor>
         {
-            new Doctor { Name = "Dr. John Smith", Specialty = "Cardiologist", PhoneNumber = "123-456-7890" },
-            new Doctor { Name = "Dr. Emily Johnson", Specialty = "Dermatologist", PhoneNumber = "987-654-3210" },
-            new Doctor { Name = "Dr. Michael Brown", Specialty = "Pediatrician", PhoneNumber = "555-123-4567" },
-            new Doctor { Name = "Dr. Sarah Davis", Specialty = "Neurologist", PhoneNumber = "444-987-6543" }
+            new Doctor { Name = "Dr. Sahar Fawzi", Specialty = "Cardiologist", PhoneNumber = "01001236585" },
+            new Doctor { Name = "Dr. Shady Mohammed", Specialty = "Dermatologist", PhoneNumber = "0156625842" },
+            new Doctor { Name = "Dr. Sandy Melad", Specialty = "Pediatrician", PhoneNumber = "01108409974" },
+            new Doctor { Name = "Dr. Dalia Saudi", Specialty = "Neurologist", PhoneNumber = "01180860990" }
         };
 
         DoctorListBox.ItemsSource = doctors;

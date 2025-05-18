@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Mime;
+using System.Text.Json.Serialization;
 
 namespace E_Vita_APIs.Models
 {
@@ -13,6 +14,7 @@ namespace E_Vita_APIs.Models
         public DateTime Availability { get; set; }
         public int PractitionerId { get; set; }
         [ForeignKey("PractitionerId")]
+        [JsonIgnore]
         public Practitioner Practitioner { get; set; } // Navigation property   
     }
 }

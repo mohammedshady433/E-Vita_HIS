@@ -29,20 +29,20 @@ public partial class Room_Reservation : ContentPage
         // Initialize with some sample data - replace with your actual data source
         _patients = new ObservableCollection<Person>
         {
-            new Person { ID = "P001", Name = "John Smith" },
-            new Person { ID = "P002", Name = "Mary Johnson" },
-            new Person { ID = "P003", Name = "Robert Brown" },
-            new Person { ID = "P004", Name = "Sarah Davis" },
-            new Person { ID = "P005", Name = "Michael Wilson" }
+            new Person { ID = "200", Name = "Mohammed Shady" },
+            new Person { ID = "201", Name = "Mohammed Hesham" },
+            new Person { ID = "202", Name = "Shahd Mostafa" },
+            new Person { ID = "203", Name = "Mohammed Hamaki" },
+            new Person { ID = "204", Name = "Sausan Badr" }
         };
 
         _doctors = new ObservableCollection<Person>
         {
-            new Person { ID = "D001", Name = "Dr. James Wilson" },
-            new Person { ID = "D002", Name = "Dr. Emily Parker" },
-            new Person { ID = "D003", Name = "Dr. Robert Chen" },
-            new Person { ID = "D004", Name = "Dr. Lisa Anderson" },
-            new Person { ID = "D005", Name = "Dr. David Miller" }
+            new Person { ID = "605", Name = "Dr. Sahar Fawzi" },
+            new Person { ID = "654", Name = "Dr. Sandy Melad" },
+            new Person { ID = "632", Name = "Dr. Shady Mohammed" },
+            new Person { ID = "614", Name = "Dr. Dalia Saudi" },
+            new Person { ID = "678", Name = "Dr. Ali Rabia" }
         };
     }
 
@@ -168,10 +168,11 @@ public partial class Room_Reservation : ContentPage
 		avialable_rooms.SelectedItem = null;
 	}
 
-	private async void close(object sender, EventArgs e)
-	{
-		await Navigation.PopAsync();
-	}
+    private async void close(object sender, EventArgs e)
+    {
+        // Corrected the usage of Shell navigation
+        await Shell.Current.GoToAsync(nameof(ReceptionistDashboard));
+    }
 }
 
 public class Person

@@ -1,4 +1,6 @@
-﻿namespace E_Vita_APIs.Models
+﻿using System.Text.Json.Serialization;
+
+namespace E_Vita_APIs.Models
 {
     public class Lab
     {
@@ -6,6 +8,7 @@
         public byte[]? Photo { get; set; }  // This stores the image as binary
         public string Note { get; set; }
         public string LabType { get; set; } // e.g. Blood Test, X-Ray, etc.
+        [JsonIgnore]
         public ICollection<Results> Results { get; set; }
 
     }

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using E_Vita_APIs.Models;
-
+using System.Text.Json.Serialization;
 
 namespace E_Vita_APIs.Models
 {
@@ -13,10 +12,12 @@ namespace E_Vita_APIs.Models
         public int PatientId { get; set; } // FK property
 
         [ForeignKey("PatientId")]
+        [JsonIgnore]
         public Patient Patient { get; set; } // Navigation property
 
         public int BedId { get; set; } // FK property
         [ForeignKey("BedId")]
+        [JsonIgnore]
         public Bed Bed { get; set; }
 
     }

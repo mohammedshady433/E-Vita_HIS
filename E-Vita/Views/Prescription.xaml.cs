@@ -1,4 +1,7 @@
+using E_Vita.Services;
 using E_Vita.ViewModels;
+using E_Vita_APIs.Models;
+using Syncfusion.Maui.Graphics.Internals;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +12,9 @@ namespace E_Vita.Views
 {
     public partial class Prescription : ContentPage
     {
+        int _patientid;
+        private readonly PatientServices _patientService = new PatientServices();
+        private readonly PrescriptionService _prescriptionService = new PrescriptionService();
         private readonly Disease _diseaseVar;
         private List<Disease.NodeWithMeta> _nodesWithMeta;
 
@@ -32,6 +38,14 @@ namespace E_Vita.Views
         public Prescription()
         {
             InitializeComponent();
+
+
+            if (Preferences.ContainsKey("SelectedPatientId"))
+            {
+                _patientid = Preferences.Get("SelectedPatientId", 0);
+            }
+
+
             _diseaseVar = new Disease();
             SuggestionsList.SelectionChanged += SuggestionsList_SelectionChanged;
 
@@ -53,8 +67,29 @@ namespace E_Vita.Views
             await LoadDrugDataAsync();
             await loadlabdata();
             await loadradiologydata();
+            getpatientbyIDandfetchthedata();
         }
+        private async void getpatientbyIDandfetchthedata()
+        {
+            //search for the patient by the id using the services of it then return it on patient var
+            var patient = await _patientService.GetPatientsAsync(_patientid);
+            NameLabel.Text = patient.Name;
+            NationalityLabel.Text = patient.Nationality;
+            var today = DateTime.Now;
+            var age = today.Year - patient.DateOfBirth.Year;
+            Ageentry.Text = age.ToString();
+            IdLabel.Text = patient.ID.ToString();
+            if (patient.Gender == Gender.Male)
+            {
+                FemaleRadioButton.IsChecked = true;
 
+            }
+            else
+            {
+                MaleRadioButton.IsChecked = true;
+            }
+
+        }
         private async Task LoadDataAsync()
         {
             _nodesWithMeta = await _diseaseVar.LoadDataWithMetaAsync();
@@ -902,6 +937,30 @@ namespace E_Vita.Views
         private void ShowReserveCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             checkboxentry3.IsVisible = e.Value;
+        }
+
+        private void saveData(object sender, EventArgs e)
+        {
+            string DrugsText=SearchEntryforDrugs.Text;
+            string searchentrylabTeststext = searchentrylabTests.Text;
+            string RadiologyTeststext = RadiologyTests.Text;
+            string complainttext = complaint.Text;
+            string Examinationtext = Examination.Text;
+            string SearchEntrytext = SearchEntry.Text;
+            string checkboxentry2text = checkboxentry2.Text;
+            string checkboxentrytext = checkboxentry.Text;
+            string ReasonForVisitEntrytxt = ReasonForVisitEntry.Text;
+
+            // Create a new prescription object
+            var prescription = new E_Vita_APIs.Models.Prescription();
+            prescription.ReasonForVisit = ReasonForVisitEntrytxt;
+            //prescription.Medication = new Medication
+            //{
+            //    DrugName = DrugsText,
+            //    Dosage = "Dosage info here" // Replace with actual dosage info
+            //};
+
+
         }
     }
 

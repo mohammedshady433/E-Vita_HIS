@@ -1,4 +1,3 @@
-using E_Vita.Models;
 using E_Vita.Services;
 using System.Collections.ObjectModel;
 using E_Vita_APIs.Models;
@@ -40,8 +39,8 @@ namespace E_Vita.Views
                 if (selectedItem != null)
                 {
                     _selectedPatient = selectedItem;
-                    PatientNameEntry.Text = _selectedPatient.Patient_Name;
-                    //RoomNumberEntry.Text = _selectedPatient.RoomNumber;
+                    PatientNameEntry.Text = _selectedPatient.Name;
+                    RoomNumberEntry.Text = _selectedPatient.ID.ToString();
                     DischargeDatePicker.Date = DateTime.Today;
                 }
             }
@@ -71,7 +70,7 @@ namespace E_Vita.Views
             {
                 var dischargeInfo = new DischargeInfo
                 {
-                    PatientId = _selectedPatient.Patient_ID,
+                    PatientId = _selectedPatient.ID.ToString(),
                     DischargeDate = DischargeDatePicker.Date,
                     Notes = DischargeNotesEditor.Text,
                     DischargeType = DischargeTypePicker.SelectedItem.ToString()
@@ -101,5 +100,13 @@ namespace E_Vita.Views
             DischargeTypePicker.SelectedItem = null;
             DischargeDatePicker.Date = DateTime.Today;
         }
+    }
+
+    internal class DischargeInfo
+    {
+        public string PatientId { get; set; }
+        public DateTime DischargeDate { get; set; }
+        public string Notes { get; set; }
+        public string DischargeType { get; set; }
     }
 } 

@@ -38,9 +38,9 @@ public partial class BookAppointment : ContentPage
         // This would typically come from a database or API
         doctors = new List<Doctor>
         {
-            new Doctor { Id = "123456789", Name = "Dr. Smith", AvailableDates = new List<DateTime> { DateTime.Today.AddDays(1), DateTime.Today.AddDays(2) } },
-            new Doctor { Id = "234567890", Name = "Dr. Johnson", AvailableDates = new List<DateTime> { DateTime.Today, DateTime.Today.AddDays(3) } },
-            new Doctor { Id = "345678901", Name = "Dr. Williams", AvailableDates = new List<DateTime> { DateTime.Today.AddDays(1), DateTime.Today.AddDays(4) } }
+            new Doctor { Id = "123456789", Name = "Dr. Sahar", AvailableDates = new List<DateTime> { DateTime.Today.AddDays(1), DateTime.Today.AddDays(2) } },
+            new Doctor { Id = "234567890", Name = "Dr. Shady", AvailableDates = new List<DateTime> { DateTime.Today, DateTime.Today.AddDays(3) } },
+            new Doctor { Id = "345678901", Name = "Dr. Sandy", AvailableDates = new List<DateTime> { DateTime.Today.AddDays(1), DateTime.Today.AddDays(4) } }
         };
     }
 
@@ -49,11 +49,11 @@ public partial class BookAppointment : ContentPage
         // This would typically come from a database or API
         patients = new List<Patient>
         {
-            new Patient { Id = "11", Name = "John Doe" },
-            new Patient { Id = "22", Name = "Jane Smith" },
-            new Patient { Id = "33", Name = "Robert Brown" },
-            new Patient { Id = "44", Name = "Alice Johnson" },
-            new Patient { Id = "55", Name = "Michael Wilson" }
+            new Patient { Id = "200", Name = "Mohammed Shady" },
+            new Patient { Id = "201", Name = "Mohammed Hesham" },
+            new Patient { Id = "202", Name = "Shahd Mostafa" },
+            new Patient { Id = "203", Name = "Sausan Badr" },
+            new Patient { Id = "204", Name = "Mohammed Hamaki" }
         };
     }
 

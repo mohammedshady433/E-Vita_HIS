@@ -112,4 +112,9 @@ public partial class AddPatient : ContentPage
     {
         await Shell.Current.GoToAsync(nameof(ReceptionistDashboard));
     }
+
+    private void SuggestionsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        SearchEntry.Text = SuggestionsListView.SelectedItem.ToString();
+    }
 }

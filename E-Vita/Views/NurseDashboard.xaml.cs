@@ -5,7 +5,7 @@ namespace E_Vita.Views;
 
 public partial class NurseDashboard : ContentPage
 {
-    public ObservableCollection<Appointment> ScheduleList { get; set; }
+    private ObservableCollection<Appointment> ScheduleList { get; set; }
     public ObservableCollection<MedicationSchedule> MedicationsList { get; set; }
     private System.Timers.Timer _medicationCheckTimer;
 
@@ -18,9 +18,9 @@ public partial class NurseDashboard : ContentPage
         // Sample data
         ScheduleList = new ObservableCollection<Appointment>
         {
-            new Appointment { Time = "10:00 AM", PatientName = "John Doe", PatientPhone = "123-456-7890", PatientID = "001" },
-            new Appointment { Time = "11:00 AM", PatientName = "Jane Smith", PatientPhone = "234-567-8901", PatientID = "002" },
-            new Appointment { Time = "12:00 PM", PatientName = "Emily Johnson", PatientPhone = "345-678-9012", PatientID = "003" },
+            new Appointment { Time = "10:00 AM", PatientName = "Mohammed Shady", PatientPhone = "01119636882", PatientID = "201" },
+            new Appointment { Time = "11:00 AM", PatientName = "Mohammed Hesham", PatientPhone = "01118566425", PatientID = "202" },
+            new Appointment { Time = "12:00 PM", PatientName = "Shahd Mostafa", PatientPhone = "01233424242", PatientID = "203" },
         };
 
         // Setting the BindingContext
@@ -35,8 +35,8 @@ public partial class NurseDashboard : ContentPage
         {
             new MedicationSchedule
             {
-                PatientId = "001",
-                PatientName = "John Doe",
+                PatientId = "201",
+                PatientName = "Mohammed Shady",
                 MedicationName = "Amoxicillin",
                 DosageInstructions = "500mg",
                 ScheduledTime = DateTime.Now.AddMinutes(2), // Set to 2 minutes from now for testing
@@ -44,16 +44,16 @@ public partial class NurseDashboard : ContentPage
             },
             new MedicationSchedule
             {
-                PatientId = "002",
-                PatientName = "Jane Smith",
+                PatientId = "202",
+                PatientName = "Mohammed Hesham",
                 MedicationName = "Lisinopril",
                 DosageInstructions = "10mg",
                 ScheduledTime = DateTime.Now.AddMinutes(5), // Set to 5 minutes from now for testing
                 Status = MedicationStatus.Pending
             },new MedicationSchedule
             {
-                PatientId = "003",
-                PatientName = "Emily Johnson",
+                PatientId = "203",
+                PatientName = "Shahd Mostafa",
                 MedicationName = "Atorvastatin",
                 DosageInstructions = "20mg",
                 ScheduledTime = DateTime.Now.AddHours(1),
@@ -430,6 +430,14 @@ public partial class NurseDashboard : ContentPage
     {
         // Example: Navigate back to the login page
         Application.Current.MainPage = new MainPage(); // Replace with your actual login page
+    }
+
+    private class Appointment
+    {
+        public string Time { get; internal set; }
+        public string PatientName { get; internal set; }
+        public string PatientPhone { get; internal set; }
+        public string PatientID { get; internal set; }
     }
 }
     public class MedicationSchedule

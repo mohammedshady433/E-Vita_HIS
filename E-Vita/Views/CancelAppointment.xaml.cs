@@ -21,49 +21,49 @@ public partial class CancelAppointment : ContentPage
             new AppointmentModel
             {
                 Time = "10:30 AM",
-                Patient_appointment = new Patient { Patient_ID = "123", Patient_Name = "John Doe", Time = "10:00 AM" },
+                Patient_appointment = new Patientsooooo { Patient_ID = "123", Patient_Name = "John Doe", Time = "10:00 AM" },
                 Doctor_appointment = new Doctor { Doctor_Name = "Dr. Smith", ID = "001", Specialty = "Cardiology" }
             },
             new AppointmentModel
             {
                 Time = "11:00 AM",
-                Patient_appointment = new Patient { Patient_ID = "456", Patient_Name = "Alice Johnson", Time = "11:00 AM" },
+                Patient_appointment = new Patientsooooo { Patient_ID = "456", Patient_Name = "Alice Johnson", Time = "11:00 AM" },
                 Doctor_appointment = new Doctor { Doctor_Name = "Dr. Johnson", ID = "002", Specialty = "Neurology" }
             },
             new AppointmentModel
             {
                 Time = "11:30 AM",
-                Patient_appointment = new Patient { Patient_ID = "789", Patient_Name = "Mark Lee", Time = "11:30 AM" },
+                Patient_appointment = new Patientsooooo { Patient_ID = "789", Patient_Name = "Mark Lee", Time = "11:30 AM" },
                 Doctor_appointment = new Doctor { Doctor_Name = "Dr. Smith", ID = "001", Specialty = "Neurology" }
             },
             new AppointmentModel
             {
                 Time = "12:00 PM",
-                Patient_appointment = new Patient { Patient_ID = "234", Patient_Name = "Nina Patel", Time = "12:00 PM" },
+                Patient_appointment = new Patientsooooo { Patient_ID = "234", Patient_Name = "Nina Patel", Time = "12:00 PM" },
                 Doctor_appointment = new Doctor { Doctor_Name = "Dr. Johnson", ID = "002", Specialty = "Neurology" }
             },
             new AppointmentModel
             {
                 Time = "12:30 PM",
-                Patient_appointment = new Patient { Patient_ID = "867", Patient_Name = "Tom Hardy", Time = "12:30 PM" },
+                Patient_appointment = new Patientsooooo { Patient_ID = "867", Patient_Name = "Tom Hardy", Time = "12:30 PM" },
                 Doctor_appointment = new Doctor { Doctor_Name = "Dr. Smith", ID = "001", Specialty = "Cardiology" }
             },
             new AppointmentModel
             {
                 Time = "01:00 PM",
-                Patient_appointment = new Patient { Patient_ID = "476", Patient_Name = "Emma Stone", Time = "01:00 PM" },
+                Patient_appointment = new Patientsooooo { Patient_ID = "476", Patient_Name = "Emma Stone", Time = "01:00 PM" },
                 Doctor_appointment = new Doctor { Doctor_Name = "Dr. Smith", ID = "001", Specialty = "Neurology" }
             },
             new AppointmentModel
             {
                 Time = "01:30 PM",
-                Patient_appointment = new Patient { Patient_ID = "453", Patient_Name = "Luke Wilson", Time = "01:30 PM" },
+                Patient_appointment = new Patientsooooo { Patient_ID = "453", Patient_Name = "Luke Wilson", Time = "01:30 PM" },
                 Doctor_appointment = new Doctor { Doctor_Name = "Dr. Johnson", ID = "002", Specialty = "Neurology" }
             },
             new AppointmentModel
             {
                 Time = "02:00 PM",
-                Patient_appointment = new Patient { Patient_ID = "456", Patient_Name = "Alice Johnson", Time = "02:00 PM" },
+                Patient_appointment = new Patientsooooo { Patient_ID = "456", Patient_Name = "Alice Johnson", Time = "02:00 PM" },
                 Doctor_appointment = new Doctor { Doctor_Name = "Dr. Smith", ID = "001", Specialty = "Neurology" }
             }
         };
@@ -157,12 +157,12 @@ public partial class CancelAppointment : ContentPage
 public class AppointmentModel
 {
     public string Time { get; set; } = string.Empty;
-    public Patient Patient_appointment { get; set; } = new Patient();
+    public Patientsooooo Patient_appointment { get; set; } = new Patientsooooo();
     public Doctor Doctor_appointment { get; set; } = new Doctor();
     public bool IsNoShow { get; set; } = false;
 }
 
-public class Patient
+ public class Patientsooooo
 {
     public string Patient_ID { get; set; } = string.Empty;
     public string Patient_Name { get; set; } = string.Empty;

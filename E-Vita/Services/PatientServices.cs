@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using E_Vita.Models;
 using E_Vita_APIs.Models;
 namespace E_Vita.Services
 {
@@ -13,9 +12,9 @@ namespace E_Vita.Services
         {
             return await GetAsync<List<Patient>>("Patient");
         }
-        public async Task<List<Patient>> GetPatientsAsync(int id)
+        public async Task<Patient> GetPatientsAsync(int id)
         {
-            return await GetAsync<List<Patient>>($"Patient/{id}");
+            return await GetAsync<Patient>($"Patient/{id}");
         }
         public async Task<bool> AddPatientAsync(Patient patient)
         {

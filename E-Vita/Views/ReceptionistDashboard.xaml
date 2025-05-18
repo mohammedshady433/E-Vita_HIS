@@ -161,10 +161,10 @@
             <VerticalStackLayout>
                 <Label Text="Bed Availability" TextColor="AliceBlue" FontSize="22" Margin="0,20,0,10"/>
                 <!-- Available Beds -->
-                <Label x:Name="AvailableBedsLabel" Text="0" TextColor="#f9dcc0" FontSize="16" VerticalOptions="Center"/>
+                <Label x:Name="AvailableBedsLabel" Text="100" TextColor="#f9dcc0" FontSize="16" VerticalOptions="Center"/>
                 <Label Text="Available Beds" TextColor="#f9dcc0" FontSize="14" VerticalOptions="Center"/>
                 <!-- Reserved Beds -->
-                <Label x:Name="ReservedBedsLabel" Text="0" TextColor="#f9dcc0" FontSize="16" VerticalOptions="Center"/>
+                <Label x:Name="ReservedBedsLabel" Text="73" TextColor="#f9dcc0" FontSize="16" VerticalOptions="Center"/>
                 <Label Text="Reserved Beds" TextColor="#f9dcc0" FontSize="14" VerticalOptions="Center"/>
             </VerticalStackLayout>
 

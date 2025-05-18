@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using E_Vita.Models;
 using E_Vita_APIs.Models;
 
 namespace E_Vita.Services
