@@ -51,7 +51,7 @@ namespace E_Vita
                 var ID=enteredId.ToString();
                 if (ID.EndsWith("1"))
                 {
-                    await Shell.Current.GoToAsync(nameof(DoctorDashboard));
+                    await Shell.Current.Navigation.PushAsync(new DoctorDashboard(practitioner));
                     await DisplayAlert("Approved", $"Welcome {practitioner.Name}", "OK");
 
                 }
@@ -112,3 +112,4 @@ namespace E_Vita
         }
     }
 }
+

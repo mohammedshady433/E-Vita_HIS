@@ -5,23 +5,37 @@
              Title="Operation Room Reservation">
 
     <Grid BackgroundColor="#1f1f1f" RowDefinitions="Auto,Auto,*,Auto" ColumnDefinitions="*" Padding="20">
-        <!-- Header -->
-        <Border Grid.Row="0" 
-               BackgroundColor="#3b0054"
-               StrokeThickness="2"
-               Stroke="#2c003f"
-               Padding="15"
-               Margin="0,0,0,20">
-            <Border.StrokeShape>
-                <RoundRectangle CornerRadius="20"/>
-            </Border.StrokeShape>
-            <Label Text="Operation Rooms" 
-                   FontSize="24"
-                   FontFamily="Qatar2022 Arabic"
-                   TextColor="AntiqueWhite"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"/>
-        </Border>
+        <!-- Header with Back Button -->
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
+            <Border Grid.Column="0"
+                   BackgroundColor="#3b0054"
+                   StrokeThickness="2"
+                   Stroke="#2c003f"
+                   Padding="15"
+                   Margin="0,0,0,20">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20"/>
+                </Border.StrokeShape>
+                <Label Text="Operation Rooms" 
+                       FontSize="24"
+                       FontFamily="Qatar2022 Arabic"
+                       TextColor="AntiqueWhite"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+            </Border>
+
+            <!-- Back Button -->
+            <Button Grid.Column="1"
+                    Text="Back"
+                    FontFamily="Qatar2022 Arabic"
+                    BackgroundColor="#3b0054"
+                    TextColor="AntiqueWhite"
+                    CornerRadius="20"
+                    HeightRequest="50"
+                    WidthRequest="80"
+                    Margin="10,0,0,20"
+                    Clicked="OnBackClicked"/>
+        </Grid>
 
         <!-- Current Time -->
         <Label x:Name="CurrentTimeLabel"

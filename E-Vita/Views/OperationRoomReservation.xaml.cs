@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
+using E_Vita.Services;
+using E_Vita_APIs.Models;
 
 namespace E_Vita.Views
 {
@@ -23,13 +25,53 @@ namespace E_Vita.Views
         }
 
         private Dictionary<string, RoomReservation> reservations = new Dictionary<string, RoomReservation>();
-        private int roomCount = 4;
+        private int roomCount = 0;
         private IDispatcherTimer timer;
+        private readonly OperationRoomServices _operationRoomServices;
+        private readonly Practitioner _loggedInDoctor;
 
-        public OperationRoomReservation()
+        public OperationRoomReservation(Practitioner loggedInDoctor)
         {
             InitializeComponent();
+            _operationRoomServices = new OperationRoomServices();
+            _loggedInDoctor = loggedInDoctor;
+            LoadOperationRooms();
             StartReservationTimer();
+        }
+
+        private async void LoadOperationRooms()
+        {
+            try
+            {
+                var rooms = await _operationRoomServices.GetAllAsync();
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    RoomStack.Children.Clear();
+                    foreach (var room in rooms)
+                    {
+                        var roomButton = new Button
+                        {
+                            Text = $"Room {room.Id}",
+                            WidthRequest = 120,
+                            HeightRequest = 120,
+                            CornerRadius = 20,
+                            BackgroundColor = room.RoomStatus == RoomStatus.Available ? 
+                                Color.FromArgb("#3b0054") : Colors.Red,
+                            TextColor = Colors.AntiqueWhite,
+                            FontFamily = "Qatar2022 Arabic",
+                            FontSize = 16,
+                            Margin = 10
+                        };
+                        roomButton.Clicked += OnRoomClicked;
+                        RoomStack.Children.Add(roomButton);
+                    }
+                    roomCount = rooms.Count;
+                });
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "Failed to load operation rooms: " + ex.Message, "OK");
+            }
         }
 
         private void StartReservationTimer()
@@ -105,31 +147,16 @@ namespace E_Vita.Views
 
         private async void OnAddRoomClicked(object sender, EventArgs e)
         {
-            // Show confirmation dialog
-            bool confirm = await DisplayAlert("Add New Room",
-                "Are you sure you want to add a new operation room?",
-                "Yes", "No");
+            var addRoomForm = new AddOperationRoomForm();
+            await Navigation.PushModalAsync(addRoomForm);
+            
+            // Refresh the room list after the form is closed
+            LoadOperationRooms();
+        }
 
-            if (confirm)
-            {
-                roomCount++;
-                var newRoom = new Button
-                {
-                    Text = $"Room {roomCount}",
-                    WidthRequest = 120,
-                    HeightRequest = 120,
-                    CornerRadius = 20,
-                    BackgroundColor = Color.FromArgb("#3b0054"),
-                    TextColor = Colors.AntiqueWhite,
-                    FontFamily = "Qatar2022 Arabic",
-                    FontSize = 16,
-                    Margin = 10
-                };
-                newRoom.Clicked += OnRoomClicked;
-
-                RoomStack.Children.Add(newRoom);
-                await DisplayAlert("Success", $"Room {roomCount} has been added successfully!", "OK");
-            }
+        private async void OnBackClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopAsync();
         }
 
         private async void OnRoomClicked(object sender, EventArgs e)
@@ -139,6 +166,10 @@ namespace E_Vita.Views
                 await button.ScaleTo(1.2, 100);
                 await button.ScaleTo(1.0, 100);
 
+                // Get room ID from button text (e.g., "Room 1" -> "1")
+                var roomId = button.Text.Split(' ')[1];
+
+                // Check if room is already reserved
                 if (button.BackgroundColor == Colors.Red)
                 {
                     if (reservations.TryGetValue(button.Text, out var reservation))
@@ -159,10 +190,11 @@ namespace E_Vita.Views
                     return;
                 }
 
-                var reservationForm = new ReservationForm();
+                // Show reservation form for available rooms
+                var reservationForm = new RoomReservationForm(roomId, _loggedInDoctor);
                 await Navigation.PushModalAsync(reservationForm);
 
-                reservationForm.ReservationCompleted += (s, reservationData) =>
+                reservationForm.ReservationCompleted += async (s, reservationData) =>
                 {
                     if (reservationData != null)
                     {
@@ -244,6 +276,22 @@ namespace E_Vita.Views
             {
                 Content = new StackLayout { Spacing = 20, Padding = 20 } // Added padding for better appearance
             };
+
+            // Add Back Button at the top
+            var backButton = new Button
+            {
+                Text = "Back",
+                FontFamily = "Qatar2022 Arabic",
+                BackgroundColor = Color.FromArgb("#3b0054"),
+                TextColor = Colors.AntiqueWhite,
+                CornerRadius = 20,
+                HeightRequest = 50,
+                WidthRequest = 80,
+                HorizontalOptions = LayoutOptions.End,
+                Margin = new Thickness(0, 0, 0, 20)
+            };
+            backButton.Clicked += OnBackClicked;
+            ((StackLayout)mainLayout.Content).Children.Add(backButton);
 
             // Doctor Selection
             var doctorFrame = new Frame
@@ -434,7 +482,11 @@ namespace E_Vita.Views
 
             Content = mainLayout;
         }
-    
+
+        private async void OnBackClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("..");
+        }
 
         private void LoadSurgicalSpecialties()
         {
@@ -443,7 +495,7 @@ namespace E_Vita.Views
                 // Get the path to the JSON file
                 var assembly = GetType().Assembly;
                 var resourceName = "E_Vita.Resources.Raw.surgical_operations.json";
-                
+
                 using (Stream stream = assembly.GetManifestResourceStream(resourceName))
                 {
                     if (stream != null)
@@ -478,7 +530,7 @@ namespace E_Vita.Views
                 var selectedSpecialty = surgicalSpecialties[specialtyPicker.SelectedIndex];
                 Console.WriteLine($"Selected specialty: {selectedSpecialty.Specialty}");
                 Console.WriteLine($"Number of operations: {selectedSpecialty.Operations.Count}");
-                
+
                 operationPicker.ItemsSource = selectedSpecialty.Operations;
                 operationPicker.IsEnabled = true;
                 operationPicker.SelectedIndex = -1;
@@ -487,7 +539,7 @@ namespace E_Vita.Views
 
         private async void OnSaveClicked(object sender, EventArgs e)
         {
-            if (doctorPicker.SelectedItem == null || patientPicker.SelectedItem == null || 
+            if (doctorPicker.SelectedItem == null || patientPicker.SelectedItem == null ||
                 specialtyPicker.SelectedItem == null || operationPicker.SelectedItem == null)
             {
                 await DisplayAlert("Error", "Please fill in all required fields", "OK");
@@ -537,4 +589,4 @@ namespace E_Vita.Views
         public string Specialty { get; set; }
         public List<string> Operations { get; set; }
     }
-} 
+}

@@ -2,13 +2,15 @@ using Microsoft.Maui.Graphics;
 using System.Collections.ObjectModel;
 using Syncfusion.Maui.Calendar;
 using System.Threading.Tasks;
+using E_Vita_APIs.Models;
 
 namespace E_Vita.Views;
 public partial class DoctorDashboard : ContentPage
 {
     public ObservableCollection<Appointment> Appointments { get; set; }
+    private readonly Practitioner _loggedInDoctor;
 
-    public DoctorDashboard()
+    public DoctorDashboard(Practitioner doctor)
     {
 		InitializeComponent();
         Appointments = new ObservableCollection<Appointment>
@@ -17,6 +19,8 @@ public partial class DoctorDashboard : ContentPage
                 new Appointment { PatientName = "Sara", Time = "10:30 AM", PatientPhone = "01087654321", PatientID = "P1002" },
                 new Appointment { PatientName = "Omar", Time = "11:00 AM", PatientPhone = "01099999999", PatientID = "P1003" }
             };
+
+        _loggedInDoctor = doctor;
         // Set the BindingContext so the ListView can access the Appointments property
         this.BindingContext = this;
     }
@@ -58,7 +62,9 @@ public partial class DoctorDashboard : ContentPage
 
     private async void oproombtn(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(OperationRoomReservation));
+        //await Shell.Current.GoToAsync(nameof(OperationRoomReservation));
+        await Shell.Current.Navigation.PushAsync(new OperationRoomReservation(_loggedInDoctor));
+
     }
 }
 
