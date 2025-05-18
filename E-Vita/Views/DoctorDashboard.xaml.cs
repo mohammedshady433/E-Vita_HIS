@@ -14,7 +14,7 @@ public partial class DoctorDashboard : ContentPage
     private readonly PatientServices _patientService = new PatientServices();
     private readonly AppointmentPractitionerService _appointmentPractitionerService = new AppointmentPractitionerService();
     private int _currentDoctorId;
-    public DoctorDashboard()
+    public DoctorDashboard(Practitioner doctor)
     {
 		InitializeComponent();
         Appointments = new ObservableCollection<Patient>();
@@ -168,7 +168,9 @@ public partial class DoctorDashboard : ContentPage
 
     private async void oproombtn(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(OperationRoomReservation));
+        //await Shell.Current.GoToAsync(nameof(OperationRoomReservation));
+        await Shell.Current.Navigation.PushAsync(new OperationRoomReservation(_loggedInDoctor));
+
     }
 
     private void OnCalendarDateSelected(object sender, CalendarSelectionChangedEventArgs e)
