@@ -8,16 +8,16 @@ using System.Linq;
 namespace E_Vita.Views;
 public partial class DoctorDashboard : ContentPage
 {
-    public ObservableCollection<Patient> Appointments { get; set; }
+    public ObservableCollection<Patient> Appointments { get; set; } = new ObservableCollection<Patient>();
     private readonly AppointmentsService _appointmentsService= new AppointmentsService();
     private readonly PractitionerServices _practitionerService;
     private readonly PatientServices _patientService = new PatientServices();
     private readonly AppointmentPractitionerService _appointmentPractitionerService = new AppointmentPractitionerService();
     private int _currentDoctorId;
-    public DoctorDashboard(Practitioner doctor)
+    public DoctorDashboard()
     {
 		InitializeComponent();
-        Appointments = new ObservableCollection<Patient>();
+        //Appointments = new ObservableCollection<Patient>();
 
         //_appointmentsService = new AppointmentsService();
         //Appointments = new ObservableCollection<Appointment>
@@ -169,7 +169,7 @@ public partial class DoctorDashboard : ContentPage
     private async void oproombtn(object sender, EventArgs e)
     {
         //await Shell.Current.GoToAsync(nameof(OperationRoomReservation));
-        await Shell.Current.Navigation.PushAsync(new OperationRoomReservation(_loggedInDoctor));
+        //await Shell.Current.Navigation.PushAsync(new OperationRoomReservation(_loggedInDoctor));
 
     }
 
