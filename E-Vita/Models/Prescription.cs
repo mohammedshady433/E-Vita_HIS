@@ -7,16 +7,19 @@ namespace E_Vita_APIs.Models
     {
         public int Id { get; set; }
         public string ReasonForVisit { get; set; }
+
         [JsonIgnore]
-        public Medication Medication { get; set; } // Medication class
-        public string Medication_name { get; set; } // Medication name
+        public ICollection<Medication> Medications { get; set; } = new List<Medication>();
         public string Diseases { get; set; } // List of diseases
         [JsonIgnore]
         public Lab Labtest { get; set; } // Lab test class
+        public string LabTest { get; set; } // Lab test class
+        public string patientcomplaint { get; set; } // Patient note
         public string RadiologyTest { get; set; } // Radiology test class
         public string Examination { get; set; } // Examination details
         public bool Reserve { get; set; } // Reserve for future use
-        public bool sergery { get; set; } // Surgery details
+        public string? Surgery { get; set; } // Surgery details
+        public string familyHistory { get; set; } // Family history
         public int PatientId { get; set; } // FK property
 
         [ForeignKey("PatientId")]

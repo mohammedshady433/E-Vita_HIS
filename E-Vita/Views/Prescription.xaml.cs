@@ -4,25 +4,31 @@ using E_Vita_APIs.Models;
 using Syncfusion.Maui.Graphics.Internals;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static E_Vita.Views.Prescription;
 
 namespace E_Vita.Views
 {
     public partial class Prescription : ContentPage
     {
+        public ObservableCollection<Appointment> AppointmentsObservablecollection { get; set; } = new ObservableCollection<Appointment>();
+        private readonly Disease _diseaseVar;
         int _patientid;
+        int _currentDoctorId;
+        private readonly MedicationServices medicationServices = new MedicationServices();
         private readonly PatientServices _patientService = new PatientServices();
         private readonly PrescriptionService _prescriptionService = new PrescriptionService();
-        private readonly Disease _diseaseVar;
         private List<Disease.NodeWithMeta> _nodesWithMeta;
 
         private readonly Drug _drugvar;
         private List<Drug> _druglist;
         //this store the selected drugs to use it with the pharma app
         private List<Drug> _selectedDrugs;
-
+        //this will be used for the medication model to send the data to the DB
+        private List<Medication> _medicationsWillGotoDB = new List<Medication>();
 
         private readonly LabTest _labtestvar;
         private List<LabTest> _labtestList;
@@ -44,7 +50,11 @@ namespace E_Vita.Views
             {
                 _patientid = Preferences.Get("SelectedPatientId", 0);
             }
-
+            // Get doctor ID from preferences (set during login in MainPage.xaml.cs)
+            if (Preferences.ContainsKey("CurrentDoctorId"))
+            {
+                _currentDoctorId = Preferences.Get("CurrentDoctorId", 0);
+            }
 
             _diseaseVar = new Disease();
             SuggestionsList.SelectionChanged += SuggestionsList_SelectionChanged;
@@ -68,7 +78,141 @@ namespace E_Vita.Views
             await loadlabdata();
             await loadradiologydata();
             getpatientbyIDandfetchthedata();
+            showprevPrescriptions();
         }
+
+        private List<string> GetAllDosages()
+        {
+            var dosages = new List<string>();
+
+            // 1. Add the main dosage field from the XAML (if filled)
+            var mainDosage = DoseEntry.Text?.Trim();
+            if (!string.IsNullOrEmpty(mainDosage))
+            {
+                var firstPart = mainDosage.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
+                dosages.Add(firstPart);
+            }
+
+            // 2. Add all dynamically generated dosage fields
+            foreach (var child in DrugNotesContainer.Children)
+            {
+                if (child is VerticalStackLayout verticalLayout && verticalLayout.Children.Count > 0)
+                {
+                    if (verticalLayout.Children[0] is HorizontalStackLayout horizontalStack && horizontalStack.Children.Count >= 2)
+                    {
+                        var dosageEntry = horizontalStack.Children[1] as Entry;
+                        if (dosageEntry != null)
+                        {
+                            var dosageText = dosageEntry.Text?.Trim();
+                            if (!string.IsNullOrEmpty(dosageText))
+                            {
+                                var firstPart = dosageText.Split(' ', StringSplitOptions.RemoveEmptyEntries)[0];
+                                dosages.Add(firstPart);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return dosages;
+        }
+
+        private List<string> GetAllLabTestEntries()
+        {
+            var labTestEntries = new List<string>();
+
+            // Add the main entry if filled
+            var mainLabTest = searchentrylabTests.Text?.Trim();
+            if (!string.IsNullOrEmpty(mainLabTest))
+                labTestEntries.Add(mainLabTest);
+
+            // Add dynamically added entries
+            foreach (var child in labteststackpanel.Children)
+            {
+                if (child is Entry entry)
+                {
+                    var text = entry.Text?.Trim();
+                    if (!string.IsNullOrEmpty(text))
+                        labTestEntries.Add(text);
+                }
+            }
+            return labTestEntries;
+        }
+        private List<string> GetAllRadiologyEntries()
+        {
+            var radiologyEntries = new List<string>();
+
+            // Add the main entry if filled
+            var mainRadiology = RadiologyTests.Text?.Trim();
+            if (!string.IsNullOrEmpty(mainRadiology))
+                radiologyEntries.Add(mainRadiology);
+
+            // Add dynamically added entries
+            foreach (var child in radiologyStackpanel.Children)
+            {
+                if (child is Entry entry)
+                {
+                    var text = entry.Text?.Trim();
+                    if (!string.IsNullOrEmpty(text))
+                        radiologyEntries.Add(text);
+                }
+            }
+            return radiologyEntries;
+        }
+
+        private List<string> GetAllDiseaseEntries()
+        {
+            var diseaseEntries = new List<string>();
+
+            // Add the main entry if filled
+            var mainDisease = SearchEntry.Text?.Trim();
+            if (!string.IsNullOrEmpty(mainDisease))
+                diseaseEntries.Add(mainDisease);
+
+            // Add dynamically added entries
+            foreach (var child in DiseaseNotesContainer.Children)
+            {
+                if (child is Entry entry)
+                {
+                    var text = entry.Text?.Trim();
+                    if (!string.IsNullOrEmpty(text))
+                        diseaseEntries.Add(text);
+                }
+            }
+            return diseaseEntries;
+        }
+
+        private List<(string DrugName, string Dosage)> GetAllDrugEntries()
+        {
+            var drugEntries = new List<(string DrugName, string Dosage)>();
+
+            foreach (var child in DrugNotesContainer.Children)
+            {
+                if (child is VerticalStackLayout verticalLayout && verticalLayout.Children.Count > 0)
+                {
+                    // The first child is a HorizontalStackLayout with the entries
+                    if (verticalLayout.Children[0] is HorizontalStackLayout horizontalStack && horizontalStack.Children.Count >= 2)
+                    {
+                        var drugEntry = horizontalStack.Children[0] as Entry;
+                        var dosageEntry = horizontalStack.Children[1] as Entry;
+
+                        if (drugEntry != null && dosageEntry != null)
+                        {
+                            var drugName = drugEntry.Text?.Trim();
+                            var dosage = dosageEntry.Text?.Trim();
+
+                            if (!string.IsNullOrEmpty(drugName) || !string.IsNullOrEmpty(dosage))
+                            {
+                                drugEntries.Add((drugName, dosage));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return drugEntries;
+        }
+
         private async void getpatientbyIDandfetchthedata()
         {
             //search for the patient by the id using the services of it then return it on patient var
@@ -330,7 +474,7 @@ namespace E_Vita.Views
                 {
                     entry.Text = drug.Tradename; // Update the specific entry that triggered the search
                     collectionView.IsVisible = false;
-                    _selectedDrugs.Add(drug);
+                    _selectedDrugs.Add(drug);                    
                 }
 
                 try
@@ -363,26 +507,24 @@ namespace E_Vita.Views
 
         private void OnAddDrugNoteClicked(object sender, EventArgs e)
         {
+            // Drug search Entry
             var newDrugEntry = new Entry
             {
                 Placeholder = "Search drugs by name...",
-                WidthRequest = 300,
-                Margin = new Thickness(5),
+                WidthRequest = 200,
                 BackgroundColor = Color.FromArgb("#FFECECE4"),
                 TextColor = Colors.Black
             };
 
-            newDrugEntry.TextChanged += SearchEntry_TextChangedforDrugs;
-
+            // Suggestions CollectionView for this entry
             var newCollectionView = new CollectionView
             {
                 IsVisible = false,
                 SelectionMode = SelectionMode.Single,
-                WidthRequest = 300,
+                WidthRequest = 200,
                 HeightRequest = 200,
-                Margin = new Thickness(5)
+                Margin = new Thickness(0, 0, 0, 5)
             };
-
             newCollectionView.ItemTemplate = new DataTemplate(() =>
             {
                 var label = new Label
@@ -394,18 +536,77 @@ namespace E_Vita.Views
                 };
                 label.SetBinding(Label.TextProperty, "Tradename");
                 var tapGestureRecognizer = new TapGestureRecognizer();
-                tapGestureRecognizer.Tapped += OnSuggestionTappedforDrug;
+                tapGestureRecognizer.Tapped += (s, e) =>
+                {
+                    if (label.BindingContext is Drug drug)
+                    {
+                        newDrugEntry.Text = drug.Tradename;
+                        newCollectionView.IsVisible = false;
+                        _selectedDrugs.Add(drug);
+                        DisplayAlert("Remember", $"Description: {drug.Pharmacology}\nPrice: {drug.new_price}", "I know");
+
+                    }
+                };
                 label.GestureRecognizers.Add(tapGestureRecognizer);
                 return label;
             });
 
-            DrugNotesContainer.Children.Add(newDrugEntry);
-            DrugNotesContainer.Children.Add(newCollectionView);
+            newDrugEntry.TextChanged += (s, e) =>
+            {
+                var keyword = e.NewTextValue?.ToLowerInvariant() ?? "";
+                var filtered = _druglist
+                    .Where(d => d.Tradename != null && d.Tradename.ToLowerInvariant().Contains(keyword))
+                    .ToList();
+                newCollectionView.ItemsSource = filtered;
+                newCollectionView.IsVisible = filtered.Any();
+            };
+
+            // Medication info Entry (e.g., dosage)
+            var medicationInfoEntry = new Entry
+            {
+                Placeholder = "Dosage, e.g. 500mg 2x/day",
+                WidthRequest = 180,
+                BackgroundColor = Color.FromArgb("#FFECECE4"),
+                TextColor = Colors.Black
+            };
+
+            // Layout: DrugEntry (top), Suggestions (under it), DoseEntry (under both)
+            var verticalLayout = new VerticalStackLayout
+            {
+                Spacing = 0,
+                Margin = new Thickness(0, 0, 0, 0)
+            };
+            var HorizontalStack = new HorizontalStackLayout
+            {
+                Spacing = 0,
+                Margin = new Thickness(100, 0, 0, 0)
+            };
+            HorizontalStack.Children.Add(newDrugEntry);
+            HorizontalStack.Children.Add(medicationInfoEntry);
+            verticalLayout.Children.Add(HorizontalStack);
+            verticalLayout.Children.Add(newCollectionView);
+
+
+            DrugNotesContainer.Children.Add(verticalLayout);
         }
 
-
-
-
+        private void GettheDrugstothemedicationlist()
+        {
+            var Dosages = GetAllDosages();
+             foreach(var Dosage in Dosages)
+            {
+                var drug = _selectedDrugs.FirstOrDefault();
+                Medication medication = new Medication();
+                medication.MedID = drug.Id;
+                medication.ActiveIngrediant = drug.ActiveIngredient;
+                medication.Dose = Dosage;
+                medication.Medication_name = drug.Tradename;
+                medication.Time = TimeOnly.FromTimeSpan(DateTime.Now.TimeOfDay);
+                medication.PatientId = _patientid;
+                medication.PractitionerID = _currentDoctorId;
+                _medicationsWillGotoDB.Add(medication);
+            }
+        }
 
         ///////////////////////////////////
         private void ShowSurgeriesCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -941,26 +1142,74 @@ namespace E_Vita.Views
 
         private void saveData(object sender, EventArgs e)
         {
-            string DrugsText=SearchEntryforDrugs.Text;
-            string searchentrylabTeststext = searchentrylabTests.Text;
-            string RadiologyTeststext = RadiologyTests.Text;
-            string complainttext = complaint.Text;
-            string Examinationtext = Examination.Text;
-            string SearchEntrytext = SearchEntry.Text;
-            string checkboxentry2text = checkboxentry2.Text;
-            string checkboxentrytext = checkboxentry.Text;
-            string ReasonForVisitEntrytxt = ReasonForVisitEntry.Text;
+            GettheDrugstothemedicationlist();
+            // Save the selected drugs, lab tests, and radiology tests to the database
+            foreach (var medication in _medicationsWillGotoDB)
+            {
+                medicationServices.AddMedication(medication);
+            }
+            E_Vita_APIs.Models.Prescription prescription = new E_Vita_APIs.Models.Prescription();
+            prescription.ReasonForVisit = ReasonForVisitEntry.Text;
+            prescription.Surgery = checkboxentry.IsVisible ? checkboxentry.Text : null;
+            prescription.Reserve = checkboxentry3.IsVisible ? true : false;
+            prescription.familyHistory = checkboxentry2.IsVisible ? checkboxentry2.Text : null;
+            List<string> diseases = GetAllDiseaseEntries();
+            string diseasesString = string.Join(", ", diseases);
+            prescription.Diseases = diseasesString;
+            List<string> labTests = GetAllLabTestEntries();
+            string labTestsString = string.Join(", ", labTests);
+            prescription.LabTest = labTestsString;
+            List<string> radiologyTests = GetAllRadiologyEntries();
+            string radiologyTestsString = string.Join(", ", radiologyTests);
+            prescription.RadiologyTest = radiologyTestsString;
+            prescription.PatientId = _patientid;
+            prescription.PractitionerID = _currentDoctorId;
+            prescription.Examination = Examination.Text;
+            prescription.patientcomplaint = complaint.Text;
 
-            // Create a new prescription object
-            var prescription = new E_Vita_APIs.Models.Prescription();
-            prescription.ReasonForVisit = ReasonForVisitEntrytxt;
-            //prescription.Medication = new Medication
-            //{
-            //    DrugName = DrugsText,
-            //    Dosage = "Dosage info here" // Replace with actual dosage info
-            //};
+            _prescriptionService.AddPrescriptionAsync(prescription);
+        }
 
+        private async void showprevPrescriptions()
+        {
+            // Await the task to get the list of prescriptions
+            var _allPrescriptions = await _prescriptionService.GetPrescriptionsAsync();
 
+            // Search for the prescriptions that have our patient ID
+            var _patientPrescriptions = _allPrescriptions.Where(p => p.PatientId == _patientid).ToList();
+            var prescriptions = new List<PrescriptionBindingContextClass>();
+
+            foreach (var prescription in _patientPrescriptions)
+            {
+                // Create a new PrescriptionBindingContextClass object
+                var bindingContext = new PrescriptionBindingContextClass
+                {
+                    ReasonForVisit = prescription.ReasonForVisit,
+                    Diseases = prescription.Diseases,
+                    LabTest = prescription.LabTest,
+                    RadiologyTest = prescription.RadiologyTest,
+                    Surgery = prescription.Surgery ?? string.Empty, // Handle null
+                    familyHistory = prescription.familyHistory ?? string.Empty, // Handle null
+                    practitionerID = prescription.PractitionerID.ToString()
+                };
+
+                // Add the binding context to the list
+                prescriptions.Add(bindingContext);
+            }
+
+            // Set the ItemsSource of the DataGrid
+            ScheduleDataGrid.ItemsSource = prescriptions;
+        }
+
+        internal class PrescriptionBindingContextClass
+        {
+            public string ReasonForVisit { set; get; }
+            public string Diseases { set; get; }
+            public string LabTest { set; get; }
+            public string RadiologyTest { set; get; }
+            public string Surgery { set; get; }
+            public string familyHistory { set; get; }
+            public string practitionerID { set; get; }
         }
     }
 

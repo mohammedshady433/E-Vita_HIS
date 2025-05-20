@@ -51,7 +51,7 @@ namespace E_Vita.Views
                     {
                         var roomButton = new Button
                         {
-                            Text = $"Room {room.Id}",
+                            Text = $"Room {room.RoomId}",
                             WidthRequest = 120,
                             HeightRequest = 120,
                             CornerRadius = 20,

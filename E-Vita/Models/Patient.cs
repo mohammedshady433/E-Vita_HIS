@@ -9,8 +9,9 @@ namespace E_Vita_APIs.Models
         public int ID { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
-        public string ?Nationality { get; set; }
         public string Email { get; set; }
+        public string? Nationality { get; set; }
+
         public string Address { get; set; }
         public OUTIN_Patient Status { get; set; }
         public DateTime DateOfBirth { get; set; }
@@ -22,7 +23,7 @@ namespace E_Vita_APIs.Models
         [JsonIgnore]
         public WardRound? WardRound { get; set; } // Navigation property   
         [JsonIgnore]
-        public ICollection<Results> Results { get; set; }
+        public ICollection<Results>? Results { get; set; }
 
 
     }

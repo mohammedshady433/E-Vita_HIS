@@ -17,15 +17,6 @@ public partial class DoctorDashboard : ContentPage
     public DoctorDashboard()
     {
 		InitializeComponent();
-        //Appointments = new ObservableCollection<Patient>();
-
-        //_appointmentsService = new AppointmentsService();
-        //Appointments = new ObservableCollection<Appointment>
-        //    {
-        //        new Appointment { PatientName = "Ahmed", Time = "10:00 AM", PatientPhone = "01012345678", PatientID = "P1001" },
-        //        new Appointment { PatientName = "Sara", Time = "10:30 AM", PatientPhone = "01087654321", PatientID = "P1002" },
-        //        new Appointment { PatientName = "Omar", Time = "11:00 AM", PatientPhone = "01099999999", PatientID = "P1003" }
-        //    };
         // Set the BindingContext so the ListView can access the Appointments property
         this.BindingContext = this;
 

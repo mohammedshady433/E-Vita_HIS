@@ -103,23 +103,23 @@
                                            ShowColumnWhenGrouped="True"
                                            RowHeight="40"
                                            HeaderRowHeight="50"
-                                           BackgroundColor="DarkViolet"
+                                           BackgroundColor="#AC99EA"
                                            GridLinesVisibility="Both"
                                            HeaderGridLinesVisibility="Both"
                                            AllowLoadMore="True"
                                            SortingMode="Single"
-                                           WidthRequest="1300"
-                                           HeightRequest="500"
-                                           Margin="10"
-                                           ItemsSource="{Binding ScheduleList}">
+                                           WidthRequest="1500"
+                                           HeightRequest="600"
+                                           Margin="0"
+                                           ItemsSource="{Binding PrescriptionBindingContextClass}">
                         <syncfusion:SfDataGrid.Columns>
-                            <syncfusion:DataGridTextColumn MappingName="Time" HeaderText="Time"/>
-                            <syncfusion:DataGridTextColumn MappingName="Patient_appointment.name" HeaderText="Reason of visit"/>
-                            <syncfusion:DataGridTextColumn MappingName="Patient_appointment.contact" HeaderText="Last Plans"/>
-                            <syncfusion:DataGridTextColumn MappingName="Patient_appointment.Patient_ID" HeaderText="Surgery"/>
-                            <syncfusion:DataGridTextColumn MappingName="Patient_appointment.Time" HeaderText="Medication"/>
-                            <syncfusion:DataGridTextColumn MappingName="Patient_appointment.Time" HeaderText="Medical Diseases"/>
-                            <syncfusion:DataGridTextColumn MappingName="Patient_appointment.Time" HeaderText="Family History"/>
+                            <syncfusion:DataGridTextColumn Width="214" MappingName="ReasonForVisit" HeaderText="Reason For Visit"/>
+                            <syncfusion:DataGridTextColumn Width="214" MappingName="Diseases" HeaderText="Diseases"/>
+                            <syncfusion:DataGridTextColumn Width="214" MappingName="LabTest" HeaderText="LabTest"/>
+                            <syncfusion:DataGridTextColumn Width="214" MappingName="RadiologyTest" HeaderText="RadiologyTest"/>
+                            <syncfusion:DataGridTextColumn Width="214" MappingName="Surgery" HeaderText="Surgery"/>
+                            <syncfusion:DataGridTextColumn Width="214" MappingName="familyHistory" HeaderText="Family History"/>
+                            <syncfusion:DataGridTextColumn Width="214" MappingName="practitionerID" HeaderText="Doctor ID"/>
                         </syncfusion:SfDataGrid.Columns>
                     </syncfusion:SfDataGrid>
 
@@ -132,6 +132,7 @@
                            WidthRequest="300" 
                            Margin="50,5,5,5"  
                            TextChanged="SearchEntry_TextChangedforDrugs"/>
+                            <Entry x:Name="DoseEntry" Placeholder="Dosage, e.g. 500mg 2x/day" WidthRequest="300" Margin="10,5,5,5"/>
                             <Button Text="+" 
                             FontSize="18" 
                             Margin="10,5,5,5" 
@@ -140,9 +141,8 @@
                             <CheckBox Color="#991130" BackgroundColor="Transparent" Margin="5" IsChecked="False" CheckedChanged="ShowReserveCheckBox_CheckedChanged"/>
                             <Entry x:Name="checkboxentry3"  Background="Transparent" WidthRequest="400" IsVisible="False" TextColor="White" Placeholder="Reason,Clarification............."/>
                         </HorizontalStackLayout>
-                        <VerticalStackLayout x:Name="DrugNotesContainer" Margin="-900,5,5,5">
-                            <!-- Duplicated drug entries and collection views will be added here -->
-                        </VerticalStackLayout>
+                        <VerticalStackLayout x:Name="DrugNotesContainer" Margin="-600,5,10,5" Spacing="5" WidthRequest="600"/>
+
                         <CollectionView x:Name="SuggestionsListofDrugs"  
                                 IsVisible="False"
                                 SelectionMode="Single"  
