@@ -1,3 +1,5 @@
+using E_Vita.Services;
+using E_Vita_APIs.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -8,10 +10,16 @@ public partial class Room_Reservation : ContentPage
     private ObservableCollection<string> _allRooms; // Stores all rooms
     private ObservableCollection<string> _availableRooms; // Stores only available rooms
     private Dictionary<string, bool> _roomAvailability;
-    private ObservableCollection<Person> _patients;
-    private ObservableCollection<Person> _doctors;
-    private Person _selectedPatient;
-    private Person _selectedDoctor;
+    //-------------------------------------------------------------
+    private Practitioner _selectedNurse;
+    private List<Practitioner> filteredNurses = new List<Practitioner>();
+    //-------------------------------------------------------------
+    public bool IsNurseSearchVisible { get; set; }
+    private Practitioner _selectedPatient;
+    private Practitioner _selectedDoctor;
+    private List<Patient> patients;
+    private List<Practitioner> practitioners = new List<Practitioner>();
+    private List<Practitioner> filtereddoctors = new List<Practitioner>();
 
     public bool IsPatientSearchVisible { get; set; }
     public bool IsDoctorSearchVisible { get; set; }
@@ -20,31 +28,11 @@ public partial class Room_Reservation : ContentPage
 	{
 		InitializeComponent();
 		InitializeRooms();
-		InitializePeople();
-		BindingContext = this;
+        LoadPatients();
+        LoadNurses();
+        LoadDoctors();
+        BindingContext = this;
 	}
-
-	private void InitializePeople()
-	{
-        // Initialize with some sample data - replace with your actual data source
-        _patients = new ObservableCollection<Person>
-        {
-            new Person { ID = "200", Name = "Mohammed Shady" },
-            new Person { ID = "201", Name = "Mohammed Hesham" },
-            new Person { ID = "202", Name = "Shahd Mostafa" },
-            new Person { ID = "203", Name = "Mohammed Hamaki" },
-            new Person { ID = "204", Name = "Sausan Badr" }
-        };
-
-        _doctors = new ObservableCollection<Person>
-        {
-            new Person { ID = "605", Name = "Dr. Sahar Fawzi" },
-            new Person { ID = "654", Name = "Dr. Sandy Melad" },
-            new Person { ID = "632", Name = "Dr. Shady Mohammed" },
-            new Person { ID = "614", Name = "Dr. Dalia Saudi" },
-            new Person { ID = "678", Name = "Dr. Ali Rabia" }
-        };
-    }
 
 	private void InitializeRooms()
 	{
@@ -79,37 +67,122 @@ public partial class Room_Reservation : ContentPage
             }
         }
     }
+    // Add this method to the constructor after InitializeComponent();
+    private async void LoadNurses()
+    {
+
+        PractitionerServices nurseServices = new PractitionerServices();
+        var nursePractitioners = await nurseServices.GetPractitionersAsync(); // Use a separate variable
+        PractitionerRoleService roleService = new PractitionerRoleService();
+        var allpractRolesList = await roleService.GetPractitionerRolesAsync();
+
+        // Clear the list before adding new items
+        filteredNurses.Clear();
+
+        foreach (var role in allpractRolesList)
+        {
+            if (role.Service == Service.Nurse)
+            {
+                var nurse = nursePractitioners.FirstOrDefault(n => n.Id == role.PractitionerId);
+                if (nurse != null)
+                {
+                    filteredNurses.Add(new Practitioner
+                    {
+                        Id = nurse.Id,
+                        Name = nurse.Name,
+                    });
+                }
+            }
+        }
+
+        // Debug information
+        Console.WriteLine($"Loaded {filteredNurses.Count} nurses");
+    }
+
+    private async void LoadDoctors()
+    {
+        PractitionerServices doctorServices = new PractitionerServices();
+        practitioners = await doctorServices.GetPractitionersAsync();
+        PractitionerRoleService roleService = new PractitionerRoleService();
+        var allpractRolesList = await roleService.GetPractitionerRolesAsync();
+        foreach (var role in allpractRolesList)
+        {
+            if (role.Service == Service.DoctorIN || role.Service == Service.DoctorOUT)
+            {
+                var doctor = practitioners.FirstOrDefault(d => d.Id == role.PractitionerId);
+                if (doctor != null)
+                {
+                    filtereddoctors.Add(new Practitioner
+                    {
+                        Id = doctor.Id,
+                        Name = doctor.Name,
+                    });
+                }
+            }
+        }
+    }
+
+    private async void LoadPatients()
+    {
+        PatientServices patientServices = new PatientServices();
+        patients = await patientServices.GetPatientsAsync();
+
+    }
 
     private void OnPatientSearchTextChanged(object sender, TextChangedEventArgs e)
     {
-        string searchText = e.NewTextValue?.ToLower() ?? string.Empty;
-        var filteredPatients = _patients.Where(p => 
-            p.Name.ToLower().Contains(searchText) || 
-            p.ID.ToLower().Contains(searchText)).ToList();
-        
+        if (string.IsNullOrWhiteSpace(e.NewTextValue))
+        {
+            IsPatientSearchVisible = false;
+            OnPropertyChanged(nameof(IsPatientSearchVisible));
+            return;
+        }
+
+        var searchText = e.NewTextValue.ToLower();
+        var filteredPatients = patients
+            .Where(p => p.ID.ToString().Contains(searchText) || p.Name.ToLower().Contains(searchText))
+            .Select(p => new Practitioner { Id = p.ID, Name = p.Name })
+            .ToList();
+
         patientSearchResults.ItemsSource = filteredPatients;
-        IsPatientSearchVisible = !string.IsNullOrEmpty(searchText);
+        IsPatientSearchVisible = filteredPatients.Any();
         OnPropertyChanged(nameof(IsPatientSearchVisible));
     }
 
+
     private void OnDoctorSearchTextChanged(object sender, TextChangedEventArgs e)
     {
-        string searchText = e.NewTextValue?.ToLower() ?? string.Empty;
-        var filteredDoctors = _doctors.Where(d => 
-            d.Name.ToLower().Contains(searchText) || 
-            d.ID.ToLower().Contains(searchText)).ToList();
-        
-        doctorSearchResults.ItemsSource = filteredDoctors;
-        IsDoctorSearchVisible = !string.IsNullOrEmpty(searchText);
+        if (string.IsNullOrWhiteSpace(e.NewTextValue))
+        {
+            IsDoctorSearchVisible = false;
+            OnPropertyChanged(nameof(IsDoctorSearchVisible));
+            return;
+        }
+
+        var searchText = e.NewTextValue.ToLower();
+
+        // If using a loaded list of doctors (from a service)
+        if (filtereddoctors != null && filtereddoctors.Any())
+        {
+            var filteredDoctors = filtereddoctors
+                .Where(d => d.Id.ToString().Contains(searchText) || d.Name.ToLower().Contains(searchText))
+                .Select(d => new Practitioner { Id = d.Id, Name = d.Name })
+                .ToList();
+
+            doctorSearchResults.ItemsSource = filteredDoctors;
+            IsDoctorSearchVisible = filteredDoctors.Any();
+        }
+
         OnPropertyChanged(nameof(IsDoctorSearchVisible));
     }
 
+
     private void OnPatientSelected(object sender, SelectedItemChangedEventArgs e)
     {
-        if (e.SelectedItem is Person selectedPatient)
+        if (e.SelectedItem is Practitioner selectedPatient)
         {
             _selectedPatient = selectedPatient;
-            selectedPatientLabel.Text = $"Selected Patient: {selectedPatient.Name} ({selectedPatient.ID})";
+            selectedPatientLabel.Text = $"Selected Patient: {selectedPatient.Name} ({selectedPatient.Id})";
             patientSearchBar.Text = string.Empty;
             IsPatientSearchVisible = false;
             OnPropertyChanged(nameof(IsPatientSearchVisible));
@@ -118,10 +191,10 @@ public partial class Room_Reservation : ContentPage
 
     private void OnDoctorSelected(object sender, SelectedItemChangedEventArgs e)
     {
-        if (e.SelectedItem is Person selectedDoctor)
+        if (e.SelectedItem is Practitioner selectedDoctor)
         {
             _selectedDoctor = selectedDoctor;
-            selectedDoctorLabel.Text = $"Selected Doctor: {selectedDoctor.Name} ({selectedDoctor.ID})";
+            selectedDoctorLabel.Text = $"Selected Doctor: {selectedDoctor.Name} ({selectedDoctor.Id})";
             doctorSearchBar.Text = string.Empty;
             IsDoctorSearchVisible = false;
             OnPropertyChanged(nameof(IsDoctorSearchVisible));
@@ -155,13 +228,26 @@ public partial class Room_Reservation : ContentPage
 			await DisplayAlert("Error", "This room is already occupied", "OK");
 			return;
 		}
+        if (_selectedNurse == null)
+        {
+            await DisplayAlert("Error", "Please select a nurse", "OK");
+            return;
+        }
 
-		_roomAvailability[selectedRoom] = false;
+        _roomAvailability[selectedRoom] = false;
         UpdateAvailableRooms();
         await DisplayAlert("Success", $"Room {selectedRoom} has been reserved for Patient {_selectedPatient.Name}", "OK");
-		
-		// Clear the form
-		_selectedPatient = null;
+        Room reserved_Room = new Room();
+        reserved_Room.availablity = RoomStatus.Occupied;
+        reserved_Room.Floor = selectedRoom[0];
+        reserved_Room.PatientId = _selectedPatient.Id;
+        reserved_Room.Name = _selectedPatient.Name;
+        reserved_Room.DoctorId = _selectedDoctor.Id;
+        reserved_Room.NurseId = _selectedNurse.Id;  // Add the nurse ID to the room
+        RoomService roomServices = new RoomService();
+        roomServices.AddAsync(reserved_Room);
+        // Clear the form
+        _selectedPatient = null;
 		_selectedDoctor = null;
 		selectedPatientLabel.Text = "Selected Patient: None";
 		selectedDoctorLabel.Text = "Selected Doctor: None";
@@ -173,10 +259,43 @@ public partial class Room_Reservation : ContentPage
         // Corrected the usage of Shell navigation
         await Shell.Current.GoToAsync(nameof(ReceptionistDashboard));
     }
+    // Add this method to handle nurse search
+    private void OnNurseSearchTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(e.NewTextValue))
+        {
+            IsNurseSearchVisible = false;
+            OnPropertyChanged(nameof(IsNurseSearchVisible));
+            return;
+        }
+
+        var searchText = e.NewTextValue.ToLower();
+
+        // If using a loaded list of nurses
+        if (filteredNurses != null && filteredNurses.Any())
+        {
+            var filteredResults = filteredNurses
+                .Where(n => n.Id.ToString().Contains(searchText) || n.Name.ToLower().Contains(searchText))
+                .Select(n => new Practitioner { Id = n.Id, Name = n.Name })
+                .ToList();
+
+            nurseSearchResults.ItemsSource = filteredResults;
+            IsNurseSearchVisible = filteredResults.Any();
+        }
+
+        OnPropertyChanged(nameof(IsNurseSearchVisible));
+    }
+    // Add this method to handle nurse selection
+    private void OnNurseSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem is Practitioner selectedNurse)
+        {
+            _selectedNurse = selectedNurse;
+            selectedNurseLabel.Text = $"Selected Nurse: {selectedNurse.Name} ({selectedNurse.Id})";
+            nurseSearchBar.Text = string.Empty;
+            IsNurseSearchVisible = false;
+            OnPropertyChanged(nameof(IsNurseSearchVisible));
+        }
+    }
 }
 
-public class Person
-{
-    public string ID { get; set; }
-    public string Name { get; set; }
-}

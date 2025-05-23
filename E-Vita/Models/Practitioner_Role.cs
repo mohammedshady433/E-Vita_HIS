@@ -7,11 +7,12 @@ namespace E_Vita_APIs.Models
 {
     public class Practitioner_Role
     {
-        public DateOnly Period { get; set; }
         public string Code { get; set; }
         public MedicalSpecialty Specialty { get; set; }
         public Service Service { get; set; }
-        public DateTime Availability { get; set; }
+        public string DayOfWeek { get; set; } // e.g., "Monday"
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
         public int PractitionerId { get; set; }
         [ForeignKey("PractitionerId")]
         [JsonIgnore]

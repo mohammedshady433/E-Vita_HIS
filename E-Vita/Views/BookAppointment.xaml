@@ -59,7 +59,9 @@
                             BackgroundColor="AntiqueWhite" 
                             TextColor="DarkViolet" 
                             FontSize="18"
-                            IsEnabled="False"/>
+                            IsEnabled="True"
+                            SelectedIndexChanged="OnDoctorPickerSelectedIndexChanged"
+                            />
 
                     <Label Text="Patient Search" 
                            TextColor="white" 
@@ -86,7 +88,7 @@
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Frame BorderColor="DarkViolet" Padding="10" Margin="5">
-                                    <Label Text="{Binding DisplayText}" TextColor="DarkViolet" FontSize="18"/>
+                                    <Label Text="{Binding Name}" TextColor="DarkViolet" FontSize="18" />
                                 </Frame>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>

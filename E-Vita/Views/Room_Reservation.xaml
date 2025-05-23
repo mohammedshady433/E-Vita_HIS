@@ -77,7 +77,7 @@
                             <ViewCell>
                                 <VerticalStackLayout>
                                     <Label Text="{Binding Name}" FontAttributes="Bold"/>
-                                    <Label Text="{Binding ID}" TextColor="Gray"/>
+                                    <Label Text="{Binding Id}" TextColor="Gray"/>
                                 </VerticalStackLayout>
                             </ViewCell>
                         </DataTemplate>
@@ -89,6 +89,42 @@
                    FontSize="16"
                    TextColor="#4B0082"
                    HorizontalOptions="Center"/>
+
+            <!-- Nurse Search Section -->
+            <Label Text="Nurse Search" 
+       FontSize="18" 
+       TextColor="#4B0082"/>
+            <SearchBar x:Name="nurseSearchBar"
+          Placeholder="Search Nurse by ID or Name"
+          TextChanged="OnNurseSearchTextChanged"
+          WidthRequest="300"
+          HorizontalOptions="Center"/>
+            <Frame BorderColor="#4B0082" 
+       Padding="10" 
+       WidthRequest="300"
+       HorizontalOptions="Center"
+       IsVisible="{Binding IsNurseSearchVisible}">
+                <ListView x:Name="nurseSearchResults"
+             HeightRequest="150"
+             ItemSelected="OnNurseSelected">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Name}" FontAttributes="Bold"/>
+                                    <Label Text="{Binding Id}" TextColor="Gray"/>
+                                </VerticalStackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
+            <Label x:Name="selectedNurseLabel"
+       Text="Selected Nurse: None"
+       FontSize="16"
+       TextColor="#4B0082"
+       HorizontalOptions="Center"/>
+
 
             <Button Text="Reserve Room" 
                     BackgroundColor="#4B0082"

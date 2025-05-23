@@ -9,16 +9,20 @@ namespace E_Vita_APIs.Models
         public RoomStatus availablity { get; set; }
         public int Floor { get; set; }
         public string Name { get; set; }
+        public int NurseId { get; set; }
+        public int DoctorId { get; set; }
+        [ForeignKey("DoctorId")]
+        public Practitioner? Practitioner { get; set; }
         public int PatientId { get; set; } // FK property
 
         [ForeignKey("PatientId")]
         [JsonIgnore]
-        public Patient Patient { get; set; } // Navigation property
+        public Patient? Patient { get; set; } // Navigation property
 
-        public int BedId { get; set; } // FK property
-        [ForeignKey("BedId")]
+        //public int BedId { get; set; } // FK property
+        //[ForeignKey("BedId")]
         [JsonIgnore]
-        public Bed Bed { get; set; }
+        public Bed? Bed { get; set; }
 
     }
     public enum RoomType

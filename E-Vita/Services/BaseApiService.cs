@@ -33,13 +33,13 @@ namespace E_Vita.Services
         protected async Task<bool> PostAsync<T>(string endpoint, T data)
         {
             var json = JsonSerializer.Serialize(data);
-            await Application.Current.MainPage.DisplayAlert("JSON Sent", json, "OK");
+            //await Application.Current.MainPage.DisplayAlert("JSON Sent", json, "OK");
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(endpoint, content);
 
             var responseContent = await response.Content.ReadAsStringAsync();
-            await Application.Current.MainPage.DisplayAlert("responseContent", responseContent, "OK");
+            //await Application.Current.MainPage.DisplayAlert("responseContent", responseContent, "OK");
 
 
             return response.IsSuccessStatusCode;

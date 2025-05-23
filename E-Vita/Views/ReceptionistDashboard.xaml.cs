@@ -1,3 +1,5 @@
+using E_Vita.Services;
+using E_Vita_APIs.Models;
 using Microsoft.Maui.Controls;
 using System;
 using System.Threading.Tasks;
@@ -13,16 +15,41 @@ public partial class ReceptionistDashboard : ContentPage
         StartClock();
         LoadDoctors(); // Load dummy doctor data
     }
-    private void LoadDoctors()
+    private async void LoadDoctors()
     {
-        var doctors = new List<Doctor>
+        string currentDay = DateTime.Now.DayOfWeek.ToString();       // e.g., "Monday"
+        TimeSpan currentTime = DateTime.Now.TimeOfDay;
+        List<Practitioner_Role> availabilityList = new List<Practitioner_Role>();
+        PractitionerRoleService practitionerRoleService = new PractitionerRoleService();
+        var allpractRolesList = await practitionerRoleService.GetPractitionerRolesAsync();
+        allpractRolesList = allpractRolesList
+        .Where(a => a.DayOfWeek == currentDay && currentTime >= a.StartTime && currentTime <= a.EndTime)
+        .ToList();
+        foreach (var item in allpractRolesList)
         {
-            new Doctor { Name = "Dr. Sahar Fawzi", Specialty = "Cardiologist", PhoneNumber = "01001236585" },
-            new Doctor { Name = "Dr. Shady Mohammed", Specialty = "Dermatologist", PhoneNumber = "0156625842" },
-            new Doctor { Name = "Dr. Sandy Melad", Specialty = "Pediatrician", PhoneNumber = "01108409974" },
-            new Doctor { Name = "Dr. Dalia Saudi", Specialty = "Neurologist", PhoneNumber = "01180860990" }
-        };
+            if (item.Service == Service.DoctorIN || item.Service == Service.DoctorOUT)
+            {
+                availabilityList.Add(item);
+            }
+        }
+        List<Doctor> doctors = new List<Doctor>();
+        PractitionerServices practitionerServices = new PractitionerServices();
+        //get the name of the doctor
+        foreach (var item in availabilityList)
+        {
+            var doctor = await practitionerServices.GetPractitionerByIdAsync(item.PractitionerId);
+            if (doctor != null)
+            {
+                doctors.Add(new Doctor
+                {
+                    Name = doctor.Name,
+                    Specialty = item.Specialty.ToString(),
+                    
+                });
 
+            }
+        }
+        
         DoctorListBox.ItemsSource = doctors;
     }
 
