@@ -239,7 +239,7 @@ public partial class Room_Reservation : ContentPage
         await DisplayAlert("Success", $"Room {selectedRoom} has been reserved for Patient {_selectedPatient.Name}", "OK");
         Room reserved_Room = new Room();
         reserved_Room.availablity = RoomStatus.Occupied;
-        reserved_Room.Floor = selectedRoom[0];
+        reserved_Room.RoomNumber = int.Parse(selectedRoom);
         reserved_Room.PatientId = _selectedPatient.Id;
         reserved_Room.Name = _selectedPatient.Name;
         reserved_Room.DoctorId = _selectedDoctor.Id;
