@@ -8,11 +8,10 @@ namespace E_Vita_APIs.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Phone { get; set; }
+        public string Rank { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
-        public Gender Gender { get; set; }
         public string PasswordHash { get; set; }
-        public DateTime DateOfBirth { get; set; }
         [JsonIgnore]
         public ICollection<Operation_Room> operation_Rooms { get; set; } = new List<Operation_Room>();
         [JsonIgnore]

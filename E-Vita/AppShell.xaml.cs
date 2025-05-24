@@ -27,6 +27,7 @@ namespace E_Vita
             Routing.RegisterRoute(nameof(InpatientDoctorDashboard), typeof(InpatientDoctorDashboard));
             Routing.RegisterRoute(nameof(WardRounds), typeof(WardRounds));
             Routing.RegisterRoute(nameof(DischargePlanning), typeof(DischargePlanning));
+            Routing.RegisterRoute(nameof(RoomReservationForm), typeof(RoomReservationForm));
 
         }
     }

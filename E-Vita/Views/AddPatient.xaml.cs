@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 using System;
 using System.Runtime.Intrinsics.Arm;
 using E_Vita.Views;
+using E_Vita_APIs.Models;
+using E_Vita.Services;
 
 
 namespace E_Vita.Views;
 
 public partial class AddPatient : ContentPage
 {
+    Patient patient = new Patient();
 
-    private List<string> _nationalities = new();
     public AddPatient()
     {
         InitializeComponent();
@@ -31,13 +33,25 @@ public partial class AddPatient : ContentPage
         Console.WriteLine($"Phone Number: {phoneNumber}");
     }
 
+    // Assuming the error occurs when assigning a string value to a property of type Gender.
+    // Fix: Use Enum.Parse or Enum.TryParse to convert the string to the Gender enum.
+
     private void OnGenderSelected(object sender, CheckedChangedEventArgs e)
     {
-        var selectedRadioButton = sender as RadioButton;
-        if (selectedRadioButton != null && e.Value)
+        if (e.Value is true) // Ensure the RadioButton is checked
         {
-            string gender = selectedRadioButton.Value.ToString();
-            Console.WriteLine($"Selected Gender: {gender}");
+            var radioButton = sender as RadioButton;
+            if (radioButton != null)
+            {
+                if (Enum.TryParse<Gender>(radioButton.Value.ToString(), out var selectedGender))
+                {
+                    patient.Gender = selectedGender;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid gender value selected.");
+                }
+            }
         }
     }
     private void OnDateSelected(object sender, DateChangedEventArgs e)
@@ -45,8 +59,8 @@ public partial class AddPatient : ContentPage
         DateTime selectedDate = e.NewDate;
         int age = DateTime.Today.Year - selectedDate.Year;
         if (selectedDate > DateTime.Today.AddYears(-age)) age--;
-
-        Console.WriteLine($"Patient age: {age}");
+        patient.DateOfBirth = selectedDate;
+        
     }
     private void OnBloodTypeSelected(object sender, EventArgs e)
     {
@@ -102,10 +116,22 @@ public partial class AddPatient : ContentPage
 
         // You can add validation and saving logic here
     }
-    private void OnSaveClicked(object sender, EventArgs e)
+    private async void OnSaveClicked(object sender, EventArgs e)
     {
-        // Your save logic here
-        Console.WriteLine("Save button clicked.");
+        string name = PatientNameEntry.Text;
+        string patientId = PatientIdEntry.Text;
+        string phoneNumber = PhoneNumberEntry.Text;
+        patient.Name = name;
+        patient.Phone = phoneNumber;
+        patient.Nationality = NationalityPicker.SelectedItem as string;
+        patient.WardRoundId = null;
+        patient.Email = EmailEntry.Text;
+        patient.Address = AddressEntry.Text;
+        patient.Status = OUTIN_Patient.Out_Patient;
+
+        PatientServices patientServices = new PatientServices();
+        await patientServices.AddPatientAsync(patient);
+        await DisplayAlert("Success", "Patient added successfully!", "OK");
     }
 
     private async void close(object sender, EventArgs e)

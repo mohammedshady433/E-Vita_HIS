@@ -13,9 +13,21 @@
             <Label Text="Phone Number" FontSize="18" TextColor="#F9DCC0" />
             <Entry x:Name="PhoneNumberEntry" Placeholder="Enter phone number" Keyboard="Telephone" />
             
+            <!--Address-->
+            <Label Text="Address" FontSize="18" TextColor="#F9DCC0"/>
+            <Entry x:Name="AddressEntry" Placeholder="Address" />
+
+            <!--patient email-->
+            <Label Text="Email" FontSize="18" TextColor="#F9DCC0"/>
+            <Entry x:Name="EmailEntry" Placeholder="Email" />
+
             <!--ID-->
             <Label Text="ID" FontSize="18" TextColor="#F9DCC0"/>
             <Entry x:Name="DocID" Placeholder="Enter Doctor's ID" />
+            <!--password -->
+            <Label Text="Password" FontSize="18" TextColor="#F9DCC0"/>
+            <Entry x:Name="DocPassword" Placeholder="Enter Doctor's Password" IsPassword="True" />
+
             <!-- Nationality -->
             <Label Text="Nationality" FontSize="18" TextColor="#F9DCC0" />
             <Picker x:Name="NationalityPicker" ItemsSource="{Binding Specialties}" />
@@ -23,10 +35,29 @@
             <!-- Specialty -->
             <Label Text="Specialty" FontSize="18" TextColor="#F9DCC0" />
             <Picker x:Name="SpecialtyPicker" />
-
+        
             <!-- Rank -->
             <Label Text="Rank" FontSize="18" TextColor="#F9DCC0" />
             <Picker x:Name="RankPicker" />
+            <!-- Available Days -->
+            <Label Text="Available Days" FontSize="18" TextColor="#F9DCC0" />
+            <CollectionView x:Name="DaysCollectionView" SelectionMode="Multiple" ItemsSource="{Binding DaysOfWeek}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal" Padding="5">
+                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                            <Label Text="{Binding Name}" VerticalOptions="Center" TextColor="White"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Working Hours -->
+            <Label Text="Start Working Time" FontSize="18" TextColor="#F9DCC0" />
+            <TimePicker x:Name="StartTimePicker" />
+
+            <Label Text="End Working Time" FontSize="18" TextColor="#F9DCC0" />
+            <TimePicker x:Name="EndTimePicker" />
 
             <!-- Save Button -->
             <Button Text="Save Doctor"

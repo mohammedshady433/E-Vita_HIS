@@ -21,7 +21,7 @@ namespace E_Vita_APIs.Models
         [JsonIgnore]
         public Patient? Patient { get; set; } // Navigation property
         [JsonIgnore]
-        public ICollection<AppointmentPractitioner> AppointmentPractitioners { get; set; }
+        public ICollection<AppointmentPractitioner> ?AppointmentPractitioners { get; set; }
 
 
     }

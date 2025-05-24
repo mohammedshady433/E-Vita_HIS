@@ -1,11 +1,13 @@
+using E_Vita.Services;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace E_Vita.Views;
 
 public partial class CancelAppointment : ContentPage
 {
-    public ObservableCollection<AppointmentModel> ScheduleList { get; set; }
+    public ObservableCollection<AppointmentModel> ScheduleList { get; set; }= new ObservableCollection<AppointmentModel>();
 
     // The master list of all appointments
     private List<AppointmentModel> _allAppointments = new List<AppointmentModel>();
@@ -14,66 +16,57 @@ public partial class CancelAppointment : ContentPage
     {
         InitializeComponent();
         _allAppointments = new List<AppointmentModel> { };
-
+        // Set the binding context
+        BindingContext = this;
         // Dummy data for testing  
-        _allAppointments = new List<AppointmentModel>
-        {
-            new AppointmentModel
-            {
-                Time = "10:30 AM",
-                Patient_appointment = new Patientsooooo { Patient_ID = "123", Patient_Name = "John Doe", Time = "10:00 AM" },
-                Doctor_appointment = new Doctor { Doctor_Name = "Dr. Smith", ID = "001", Specialty = "Cardiology" }
-            },
-            new AppointmentModel
-            {
-                Time = "11:00 AM",
-                Patient_appointment = new Patientsooooo { Patient_ID = "456", Patient_Name = "Alice Johnson", Time = "11:00 AM" },
-                Doctor_appointment = new Doctor { Doctor_Name = "Dr. Johnson", ID = "002", Specialty = "Neurology" }
-            },
-            new AppointmentModel
-            {
-                Time = "11:30 AM",
-                Patient_appointment = new Patientsooooo { Patient_ID = "789", Patient_Name = "Mark Lee", Time = "11:30 AM" },
-                Doctor_appointment = new Doctor { Doctor_Name = "Dr. Smith", ID = "001", Specialty = "Neurology" }
-            },
-            new AppointmentModel
-            {
-                Time = "12:00 PM",
-                Patient_appointment = new Patientsooooo { Patient_ID = "234", Patient_Name = "Nina Patel", Time = "12:00 PM" },
-                Doctor_appointment = new Doctor { Doctor_Name = "Dr. Johnson", ID = "002", Specialty = "Neurology" }
-            },
-            new AppointmentModel
-            {
-                Time = "12:30 PM",
-                Patient_appointment = new Patientsooooo { Patient_ID = "867", Patient_Name = "Tom Hardy", Time = "12:30 PM" },
-                Doctor_appointment = new Doctor { Doctor_Name = "Dr. Smith", ID = "001", Specialty = "Cardiology" }
-            },
-            new AppointmentModel
-            {
-                Time = "01:00 PM",
-                Patient_appointment = new Patientsooooo { Patient_ID = "476", Patient_Name = "Emma Stone", Time = "01:00 PM" },
-                Doctor_appointment = new Doctor { Doctor_Name = "Dr. Smith", ID = "001", Specialty = "Neurology" }
-            },
-            new AppointmentModel
-            {
-                Time = "01:30 PM",
-                Patient_appointment = new Patientsooooo { Patient_ID = "453", Patient_Name = "Luke Wilson", Time = "01:30 PM" },
-                Doctor_appointment = new Doctor { Doctor_Name = "Dr. Johnson", ID = "002", Specialty = "Neurology" }
-            },
-            new AppointmentModel
-            {
-                Time = "02:00 PM",
-                Patient_appointment = new Patientsooooo { Patient_ID = "456", Patient_Name = "Alice Johnson", Time = "02:00 PM" },
-                Doctor_appointment = new Doctor { Doctor_Name = "Dr. Smith", ID = "001", Specialty = "Neurology" }
-            }
-        };
+        LoadAppointments();
+        //    new AppointmentModel
+        //    {
+        //        Time = "02:00 PM",
+        //        Patient_appointment = new Patientsooooo { Patient_ID = "456", Patient_Name = "Alice Johnson", Time = "02:00 PM" },
+        //        Doctor_appointment = new Doctor { Doctor_Name = "Dr. Smith", ID = "001", Specialty = "Neurology" }
 
         // Initialize ScheduleList with all appointments
-        ScheduleList = new ObservableCollection<AppointmentModel>(_allAppointments);
-        BindingContext = this;
+        //ScheduleList = new ObservableCollection<AppointmentModel>(_allAppointments);
+        //BindingContext = this;
     }
 
-    // Dynamic search as user types
+    private async void LoadAppointments()
+    {
+        AppointmentsService appointmentsService = new AppointmentsService();
+        var allappointments = await appointmentsService.GetAllAsync();
+        PractitionerServices practitionerServices = new PractitionerServices();
+        List<AppointmentModel> finallist = new List<AppointmentModel>();
+        PatientServices patientService = new PatientServices();
+        ScheduleList.Clear();
+        foreach (var appointment in allappointments)
+        {
+            var patient = await patientService.GetPatientsAsync(appointment.PatientId);
+            if (appointment.Start <= DateTime.Now.AddHours(2) || appointment.Status == E_Vita_APIs.Models.AppointmentStatus.Completed || appointment.Status == E_Vita_APIs.Models.AppointmentStatus.Cancelled)
+            {
+                continue;
+            }
+            else
+            {
+                AppointmentModel appointmentModel = new AppointmentModel
+                {
+                    Time = appointment.Start.ToString("hh:mm tt"),
+                    id = appointment.Id,
+                    Patient_appointment = new Patientsooooo
+                    {
+                        Patient_ID = patient.ID,
+                        Patient_Name = patient.Name,
+                        Time = appointment.Start.ToString("hh:mm tt")
+                    },
+                };
+                // Add the appointment to the final list
+                _allAppointments.Add(appointmentModel);
+                ScheduleList.Add(appointmentModel);
+            }
+        }
+    }
+
+    // Update the filtering logic in OnSearchTextChanged to convert the integer Patient_ID to a string before calling Contains.
     private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
     {
         string searchText = e.NewTextValue?.Trim() ?? string.Empty;
@@ -91,9 +84,7 @@ public partial class CancelAppointment : ContentPage
 
         // Filter appointments by Patient ID or Doctor ID
         var filtered = _allAppointments.Where(appt =>
-            appt.Patient_appointment.Patient_ID.Contains(searchText, StringComparison.OrdinalIgnoreCase) ||
-            appt.Doctor_appointment.ID.Contains(searchText, StringComparison.OrdinalIgnoreCase)
-        ).ToList();
+            appt.Patient_appointment.Patient_ID.ToString().Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
 
         ScheduleList.Clear();
         foreach (var item in filtered)
@@ -119,6 +110,11 @@ public partial class CancelAppointment : ContentPage
         {
             ScheduleList.Remove(appointment);
             _allAppointments.Remove(appointment);
+            AppointmentsService appointmentsService = new AppointmentsService();
+            var updatedAppointment = await appointmentsService.GetByIdAsync(appointment.id);
+            updatedAppointment.Cancelation_Date = DateTime.Now;
+            updatedAppointment.Status = E_Vita_APIs.Models.AppointmentStatus.Cancelled;
+            appointmentsService.UpdateAsync(updatedAppointment.Id, updatedAppointment);
             await DisplayAlert("Deleted", "Appointment has been deleted.", "OK");
         }
     }
@@ -148,6 +144,10 @@ public partial class CancelAppointment : ContentPage
             // You might want to update the button appearance here
             button.BackgroundColor = Colors.Gray;
             button.IsEnabled = false;
+            AppointmentsService appointmentsService = new AppointmentsService();
+            var updatedAppointment = await appointmentsService.GetByIdAsync(appointment.id);
+            updatedAppointment.Status = E_Vita_APIs.Models.AppointmentStatus.NoShow;
+            appointmentsService.UpdateAsync(updatedAppointment.Id, updatedAppointment);
             await DisplayAlert("Updated", "Appointment has been marked as No Show.", "OK");
         }
     }
@@ -157,22 +157,14 @@ public partial class CancelAppointment : ContentPage
 public class AppointmentModel
 {
     public string Time { get; set; } = string.Empty;
+    public int id { get; set; }
     public Patientsooooo Patient_appointment { get; set; } = new Patientsooooo();
-    public Doctor Doctor_appointment { get; set; } = new Doctor();
     public bool IsNoShow { get; set; } = false;
 }
 
  public class Patientsooooo
 {
-    public string Patient_ID { get; set; } = string.Empty;
+    public int Patient_ID { get; set; }
     public string Patient_Name { get; set; } = string.Empty;
     public string Time { get; set; } = string.Empty;
 }
-
-public class Doctor
-{
-    public string Doctor_Name { get; set; } = string.Empty;
-    public string ID { get; set; } = string.Empty;
-    public string Specialty { get; set; } = string.Empty;
-}
-

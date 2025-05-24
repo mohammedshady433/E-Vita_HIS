@@ -134,7 +134,36 @@ public partial class BookAppointment : ContentPage
                         $"Doctor: {selectedDoctor}\n" +
                         $"Time: {appointmentTime}\n" +
                         $"Date: {datePicker.Date:yyyy-MM-dd}";
-        
+        AppointmentsService appointmentsService = new AppointmentsService();
+        var selectedDoctorvar = doctors.FirstOrDefault(d => d.Name == selectedDoctor);
+        var selectedDoctRole = Roles.FirstOrDefault(r => r.PractitionerId == selectedDoctorvar.Id);
+        string dateString = datePicker.Date.ToString("yyyy-MM-dd");
+        string dateTimeString = $"{dateString} {appointmentTime}";
+        DateTime startDateTime = DateTime.ParseExact(
+    dateTimeString,
+    "yyyy-MM-dd hh:mm tt",
+    System.Globalization.CultureInfo.InvariantCulture
+);
+        int uniqueId = (int)(DateTime.Now.Ticks & 0x7FFFFFFF);
+        AppointmentPractitionerService appointmentPractitionerService = new AppointmentPractitionerService();
+        Appointment newAppointment = new Appointment
+        {
+            PatientId = selectedPatient.ID,
+            Actor = selectedDoctRole.Service,
+            Start = startDateTime,
+            End = startDateTime.AddMinutes(15),
+            Service_Type = ServiceType.clincal,
+            Status = AppointmentStatus.Scheduled,
+            Id = uniqueId
+
+        };
+        await appointmentsService.CreateAsync(newAppointment);
+        AppointmentPractitioner appointmentPractitioner = new AppointmentPractitioner
+        {
+            AppointmentId = uniqueId,
+            PractitionersId = selectedDoctorvar.Id
+        };
+        await appointmentPractitionerService.AddAsync(appointmentPractitioner);
         await DisplayAlert("Appointment has been confirmed", message, "OK");
     }
 
@@ -178,7 +207,27 @@ public partial class BookAppointment : ContentPage
                 DateTime endTime = DateTime.Today.Add(selectedRole.EndTime);
                 List<string> timeSlots = new List<string>();
                 while (startTime <= endTime)
-                {
+                {                    
+                    if (startTime > DateTime.Now) // Skip past times
+                    {
+                        startTime = startTime.AddMinutes(15);
+                        continue;
+                    }
+                    AppointmentsService appointmentsService = new AppointmentsService();
+                    var appointments = await appointmentsService.GetAllAsync();
+                    AppointmentPractitionerService appointmentPractitionerService = new AppointmentPractitionerService();
+                    var appointmentandpractiotioner = await appointmentPractitionerService.GetAllAsync();
+
+                    //Check if the time slot is already booked
+                    bool isBooked = appointments.Any(a => a.Start.Date == selectedDate && a.Start.TimeOfDay == startTime.TimeOfDay
+                    && appointmentandpractiotioner.Any(ap => ap.PractitionersId == targetdoc.Id && ap.AppointmentId == a.Id));
+
+
+                    if (isBooked)
+                    {
+                        startTime = startTime.AddMinutes(15);
+                        continue;
+                    }
                     timeSlots.Add(startTime.ToString("hh:mm tt"));
                     startTime = startTime.AddMinutes(15); // 15-minute intervals
                 }

@@ -89,12 +89,12 @@
                    CornerRadius="20" Clicked="addNewNurse"
                    HorizontalOptions="Center" VerticalOptions="Center"/>
                 
-                <Button Text="Finance"   
+                <!--<Button Text="Finance"   
                    FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
                    BackgroundColor="#3b0054" TextColor="#f9dcc0"  
                    WidthRequest="166" HeightRequest="46" Margin="10"  
                    CornerRadius="20"   Clicked="financebtn"
-                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                   HorizontalOptions="Center" VerticalOptions="Center"/>-->
                 <!-- Logout Button -->
                 <Button Text="LogOut"  
                    FontFamily="Qatar2022 Arabic" FontSize="14"   
@@ -102,7 +102,7 @@
                    WidthRequest="166" HeightRequest="46" Margin="10"  
                    CornerRadius="20"  
                    HorizontalOptions="Center" VerticalOptions="Center" Clicked="LogOut_Click"/>
-                <Button ImageSource="settings.png" BackgroundColor="Transparent" WidthRequest="10" HeightRequest="10" Margin="-10"/>
+                <Button ImageSource="settings.png" BackgroundColor="Transparent" WidthRequest="20" HeightRequest="20" Margin="10,50,10,10"/>
             </VerticalStackLayout>
         </Border>
         <VerticalStackLayout Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="6" Margin="10">
