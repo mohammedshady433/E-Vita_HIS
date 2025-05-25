@@ -86,6 +86,9 @@
 	  <MauiXaml Update="Views\InpatientDoctorDashboard.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\InpatientOrdersPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Prescription.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

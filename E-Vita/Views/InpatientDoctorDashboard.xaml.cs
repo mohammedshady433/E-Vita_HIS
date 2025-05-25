@@ -2,6 +2,8 @@ using Microsoft.Maui.Graphics;
 using System.Collections.ObjectModel;
 using Syncfusion.Maui.Calendar;
 using System.Threading.Tasks;
+using E_Vita_APIs.Models;
+using E_Vita.Services;
 
 namespace E_Vita.Views;
 
@@ -10,11 +12,23 @@ public partial class InpatientDoctorDashboard : ContentPage
     public ObservableCollection<Inpatient> Inpatients { get; set; }
     public ObservableCollection<CriticalAlert> CriticalAlerts { get; set; }
     public ObservableCollection<WardStatistic> WardStatistics { get; set; }
-
+    public ObservableCollection<Patient> Appointments { get; set; } = new ObservableCollection<Patient>();
+    private readonly AppointmentsService _appointmentsService = new AppointmentsService();
+    private readonly PractitionerServices _practitionerService;
+    private readonly PatientServices _patientService = new PatientServices();
+    private readonly AppointmentPractitionerService _appointmentPractitionerService = new AppointmentPractitionerService();
+    private int _currentDoctorId;
     public InpatientDoctorDashboard()
     {
         InitializeComponent();
-
+        if (Preferences.ContainsKey("CurrentDoctorId"))
+        {
+            _currentDoctorId = Preferences.Get("CurrentDoctorId", 0);
+            if (_currentDoctorId > 0)
+            {
+                LoadAppointmentsForDoctor(123456784);
+            }
+        }
         // Initialize collections
         Inpatients = new ObservableCollection<Inpatient>
         {
@@ -40,6 +54,42 @@ public partial class InpatientDoctorDashboard : ContentPage
 
         // Set the BindingContext
         this.BindingContext = this;
+    }
+    private async void LoadAppointmentsForDoctor(int doctorId)
+    {
+        try
+        {
+            //get all data from the AppointmentPractitionerService
+            var appointmentPractitioners = await _appointmentPractitionerService.GetByPractitionerIdAsync(doctorId);
+            //get the all data that is in AppointmentService by the Appointments IDs that is in the appointmentPractitioners
+            var appointments = await _appointmentsService.GetAllAsync();
+            // Filter appointments for this doctor
+            var filteredAppointments = appointments
+                .Where(a => appointmentPractitioners.Any(ap => ap.AppointmentId == a.Id))
+                .ToList();
+            // from the patint IDs in the filteredAppointments get all the patients data from the PatientService by this IDs
+            var patients = await _patientService.GetPatientsAsync();
+            // Clear the existing appointments
+            Appointments?.Clear();
+            if (filteredAppointments != null && filteredAppointments.Any())
+            {
+                foreach (var apiAppointment in filteredAppointments)
+                {
+                    var patient = patients.FirstOrDefault(p => p.ID == apiAppointment.PatientId);
+                    Appointments.Add(new Patient
+                    {
+                        Name = patient?.Name ?? "Unknown Patient",
+                        Phone = patient?.Phone ?? "No phone",
+                        ID = apiAppointment.PatientId
+                    });
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Keep the dummy data as fallback
+            Console.WriteLine($"Error loading doctor appointments: {ex.Message}");
+        }
     }
 
     private async void LogOut_Click(object sender, EventArgs e)
@@ -83,6 +133,19 @@ public partial class InpatientDoctorDashboard : ContentPage
         if (e.DataItem is Inpatient selectedPatient)
         {
             // Navigate to patient details page with the selected patient
+        }
+    }
+
+    private async void SfListView_ItemTapped(object sender, Syncfusion.Maui.ListView.ItemTappedEventArgs e)
+    {
+        //DisplayAlert("Tapped", "You selected: " + ((Appointment)e.DataItem).PatientName, "OK");
+        var patient = listView.SelectedItem;
+        if (patient != null)
+        {
+            var patientId = ((Patient)patient).ID;
+            // Store the selected patient ID in preferences
+            await Shell.Current.GoToAsync(nameof(InpatientOrdersPage));
+
         }
     }
 }

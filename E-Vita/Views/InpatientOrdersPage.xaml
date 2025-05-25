@@ -1,0 +1,53 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="E_Vita.Views.InpatientOrdersPage"
+             Title="Inpatient Orders">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Patient Info -->
+            <Label Text="Patient Name:" FontAttributes="Bold"/>
+            <Label x:Name="PatientNameLabel"/>
+            <Label Text="Room Number:" FontAttributes="Bold"/>
+            <Label x:Name="RoomNumberLabel"/>
+
+            <!-- Vital Signs Section -->
+            <Frame BorderColor="#e1b184" CornerRadius="10" Padding="10">
+                <VerticalStackLayout>
+                    <Label Text="Vital Signs" FontSize="20" FontAttributes="Bold"/>
+                    <HorizontalStackLayout Spacing="10">
+                        <Entry x:Name="TemperatureEntry" Placeholder="Temperature (°C)" Keyboard="Numeric" WidthRequest="120"/>
+                        <Entry x:Name="PulseEntry" Placeholder="Pulse (bpm)" Keyboard="Numeric" WidthRequest="120"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Spacing="10">
+                        <Entry x:Name="BPEntry" Placeholder="Blood Pressure (mmHg)" WidthRequest="180"/>
+                        <Entry x:Name="RespEntry" Placeholder="Resp. Rate (bpm)" Keyboard="Numeric" WidthRequest="120"/>
+                    </HorizontalStackLayout>
+                    <Button Text="Record Vital Signs" Clicked="OnRecordVitalsClicked" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Lab Test Requests -->
+            <Label Text="Lab Test Requests" FontSize="18" FontAttributes="Bold"/>
+            <Entry x:Name="LabTestEntry" Placeholder="Enter lab test name"/>
+            <Button Text="Add Lab Test" Clicked="OnAddLabTestClicked"/>
+            <CollectionView x:Name="LabTestsList" HeightRequest="100"/>
+
+            <!-- Medication Requests -->
+            <Label Text="Medication Requests" FontSize="18" FontAttributes="Bold"/>
+            <Entry x:Name="MedicationEntry" Placeholder="Enter medication name"/>
+            <Entry x:Name="MedicationDoseEntry" Placeholder="Dosage"/>
+            <Button Text="Add Medication" Clicked="OnAddMedicationClicked"/>
+            <CollectionView x:Name="MedicationsList" HeightRequest="100"/>
+
+            <!-- Radiology Requests -->
+            <Label Text="Radiology Requests" FontSize="18" FontAttributes="Bold"/>
+            <Entry x:Name="RadiologyEntry" Placeholder="Enter radiology test"/>
+            <Button Text="Add Radiology" Clicked="OnAddRadiologyClicked"/>
+            <CollectionView x:Name="RadiologiesList" HeightRequest="100"/>
+
+            <!-- Save All Orders -->
+            <Button Text="Submit All Orders" BackgroundColor="Green" TextColor="White" Clicked="OnSubmitOrdersClicked"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -208,7 +208,7 @@ public partial class BookAppointment : ContentPage
                 List<string> timeSlots = new List<string>();
                 while (startTime <= endTime)
                 {                    
-                    if (startTime > DateTime.Now) // Skip past times
+                    if (startTime < DateTime.Now) // Skip past times
                     {
                         startTime = startTime.AddMinutes(15);
                         continue;

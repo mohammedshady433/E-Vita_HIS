@@ -95,33 +95,33 @@
                                   BackgroundColor="AliceBlue"/>
         </VerticalStackLayout>
 
-        <!-- Inpatient List -->
-        <VerticalStackLayout Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="4" Grid.RowSpan="4" Margin="5">
-            <sfListView:SfListView x:Name="InpatientListView"
-                                  ItemsSource="{Binding Inpatients}"
-                                  SelectionMode="Single"
-                                  ItemTapped="InpatientListView_ItemTapped"
-                                  ItemSize="100"
-                                  ItemSpacing="5"
-                                  AllowSwiping="True"
-                                  HeightRequest="384">
+        <!-- patient listview -->
+        <VerticalStackLayout Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="4" Grid.RowSpan="9" Margin="5">
+            <sfListView:SfListView 
+               x:Name="listView"
+               ItemsSource="{Binding Appointments}"
+               SelectionMode="Single"
+               ItemTapped="SfListView_ItemTapped"
+               ItemSize="100"
+               ItemSpacing="5"
+               AllowSwiping="True"
+               HeightRequest="720"
+        Background="Black">
+
                 <sfListView:SfListView.ItemTemplate>
                     <DataTemplate>
-                        <Frame BackgroundColor="#f9dcc0" CornerRadius="15" Padding="10">
+                        <Frame BackgroundColor="#f9dcc0"
+                CornerRadius="15"
+                Padding="10">
                             <StackLayout>
-                                <Label Text="{Binding PatientName}"
-                                       FontSize="14"
-                                       TextColor="#34111e"
-                                       HorizontalOptions="Center"/>
-                                <Label Text="{Binding RoomNumber}"
-                                       FontSize="14"
-                                       TextColor="#34111e"/>
-                                <Label Text="{Binding AdmissionDate}"
-                                       FontSize="12"
-                                       TextColor="#3b0054"/>
-                                <Label Text="{Binding Condition}"
-                                       FontSize="12"
-                                       TextColor="#3b0054"/>
+                                <Label Text="{Binding Name}"
+                   FontSize="14"
+                   TextColor="#34111e"
+                   HorizontalOptions="Center"/>
+                                <Label TextColor="Black" Text="{Binding Phone}"
+                   FontSize="12"/>
+                                <Label TextColor="Black" Text="{Binding ID}"
+                   FontSize="12"/>
                             </StackLayout>
                         </Frame>
                     </DataTemplate>
@@ -161,23 +161,6 @@
                     </DataTemplate>
                 </sfListView:SfListView.ItemTemplate>
             </sfListView:SfListView>
-        </VerticalStackLayout>
-
-        <!-- Ward Statistics -->
-        <VerticalStackLayout Grid.Row="4" Grid.RowSpan="4" Grid.Column="3" Grid.ColumnSpan="4">
-            <Label Text="Ward Statistics" FontSize="16" FontAttributes="Bold" TextColor="#9880E5"/>
-            <syncfusion:SfCircularChart HeightRequest="330" BackgroundColor="#FFF5E6">
-                <syncfusion:SfCircularChart.Series>
-                    <syncfusion:DoughnutSeries ItemsSource="{Binding WardStatistics}" 
-                                             XBindingPath="Category" 
-                                             YBindingPath="Value" 
-                                             InnerRadius="0.7">
-                        <syncfusion:DoughnutSeries.DataLabelSettings>
-                            <syncfusion:CircularDataLabelSettings LabelPosition="Outside"/>
-                        </syncfusion:DoughnutSeries.DataLabelSettings>
-                    </syncfusion:DoughnutSeries>
-                </syncfusion:SfCircularChart.Series>
-            </syncfusion:SfCircularChart>
         </VerticalStackLayout>
     </Grid>
 </ContentPage>

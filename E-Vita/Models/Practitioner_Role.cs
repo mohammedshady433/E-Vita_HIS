@@ -72,8 +72,37 @@ public enum Service
             ThoracicSurgery,
             TransplantSurgery,
             Urology,
-            VascularSurgery
-        }
+            VascularSurgery,
+            CriticalCareNursing,
+            EmergencyNursing,
+            PediatricNursing,
+            NeonatalNursing,
+            OncologyNursing,
+            CardiacNursing,
+            PsychiatricAndMentalHealthNursing,
+            GeriatricNursing,
+            OrthopedicNursing,
+            SurgicalNursing,
+            AnesthesiaNursingCRNA,
+            NurseMidwifery,
+            FamilyNursePractitioner,
+            WomensHealthNursing,
+            InfectionControlNursing,
+            PublicHealthNursing,
+            CommunityHealthNursing,
+            OccupationalHealthNursing,
+            SchoolNursing,
+            HospiceAndPalliativeCareNursing,
+            RehabilitationNursing,
+            DiabetesEducationNursing,
+            PerioperativeNursing,
+            WoundOstomyAndContinenceNursing,
+            CaseManagementNursing,
+            TelehealthNursing,
+            HomeHealthNursing,
+            ForensicNursing,
+            AddictionNursing
+}
     
 
 

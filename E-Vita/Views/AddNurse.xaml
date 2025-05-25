@@ -17,11 +17,17 @@
             <Label Text="ID" FontSize="18" TextColor="#F9DCC0"/>
             <Entry x:Name="NurseID" Placeholder="Enter Nurse's ID" />
 
+            <Label Text="Password" FontSize="18" TextColor="#F9DCC0"/>
+            <Entry x:Name="Passwordentry" Placeholder="Enter Nurse's Password" />
+
             <Label Text="Department" FontSize="18" TextColor="#F9DCC0"/>
             <Picker x:Name="DepartmentPicker" />
 
-            <Label Text="Floor" FontSize="18" TextColor="#F9DCC0"/>
-            <Entry x:Name="Floor" Placeholder="Enter the Floor number" />
+            <Label Text="Email" FontSize="18" TextColor="#F9DCC0"/>
+            <Entry x:Name="Emailentry" Placeholder="Enter the Email number" />
+
+            <Label Text="Address" FontSize="18" TextColor="#F9DCC0"/>
+            <Entry x:Name="Addressentry" Placeholder="Enter the Address number" />
 
             <!-- Nationality -->
             <Label Text="Nationality" FontSize="18" TextColor="#F9DCC0" />
@@ -30,6 +36,27 @@
             <!-- Specialty -->
             <Label Text="Specialty" FontSize="18" TextColor="#F9DCC0" />
             <Picker x:Name="SpecialtyPicker" />
+
+            <!-- Available Days -->
+            <Label Text="Available Days" FontSize="18" TextColor="#F9DCC0" />
+            <CollectionView x:Name="DaysCollectionView" SelectionMode="Multiple" ItemsSource="{Binding DaysOfWeek}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal" Padding="5">
+                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                            <Label Text="{Binding Name}" VerticalOptions="Center" TextColor="White"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Working Hours -->
+            <Label Text="Start Working Time" FontSize="18" TextColor="#F9DCC0" />
+            <TimePicker x:Name="StartTimePicker" />
+
+            <Label Text="End Working Time" FontSize="18" TextColor="#F9DCC0" />
+            <TimePicker x:Name="EndTimePicker" />
+
 
             <!-- Save Button -->
             <Button Text="Save Nurse"

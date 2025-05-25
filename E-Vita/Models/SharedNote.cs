@@ -10,6 +10,6 @@ namespace E_Vita_APIs.Models
         public int PractitionerID { get; set; }
         [ForeignKey("PractitionerID")]
         [JsonIgnore]
-        public Practitioner Practitioner { get; set; } // Navigation property   
+        public Practitioner? Practitioner { get; set; } // Navigation property   
     }
 }

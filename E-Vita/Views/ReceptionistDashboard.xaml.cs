@@ -81,6 +81,14 @@ public class Doctor
             AddNoteToUI(noteText, "You", DateTime.Now); // Temporary local addition
 
             NoteEditor.Text = string.Empty;
+            SharednotesServices sharednotesServices = new SharednotesServices();
+            SharedNote sharedNote = new SharedNote();
+            //need to be changed to the practitionerid
+            sharedNote.PractitionerID = 123456783;
+            sharedNote.content = noteText;
+
+            sharednotesServices.AddAsync(sharedNote);
+
         }
         else
         {
@@ -89,10 +97,25 @@ public class Doctor
     }
 
     // Simulate loading notes from the backend
-    private void LoadNotes()
+    private async void LoadNotes()
     {
-        // TODO: Replace with your API call
-        AddNoteToUI("i have to leave now, cancel john's appointment", "receptionist ali", DateTime.Now.AddMinutes(-30));
+        //// TODO: Replace with your API call
+        //AddNoteToUI("i have to leave now, cancel john's appointment", "receptionist ali", DateTime.Now.AddMinutes(-30));
+        SharednotesServices sharednotesServices = new SharednotesServices();
+        var notes = await sharednotesServices.GetAllAsync();
+        PractitionerServices practitionerServices = new PractitionerServices();
+        var practitioners = await practitionerServices.GetPractitionersAsync();
+        var receptionlist = practitioners.Where(a => a.Id.ToString().EndsWith("3")).ToList();
+        int i = 0;
+        foreach (var pract in receptionlist)
+        {
+            var filteredNotes = notes.Where(p => p.PractitionerID == pract.Id).ToList();
+            foreach (var note in filteredNotes)
+            {
+                AddNoteToUI(note.content, pract.Name, DateTime.Now.AddMinutes(-3+i));
+                i++;
+            }
+        }
     }
 
     // UI Helper

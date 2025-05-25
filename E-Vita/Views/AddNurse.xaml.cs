@@ -1,15 +1,44 @@
+using E_Vita.Services;
+using E_Vita_APIs.Models;
+using System;
+
 namespace E_Vita.Views;
 
 public partial class AddNurse : ContentPage
 {
     public List<string> Specialties { get; set; }
+    public List<DayOfWeekSelection> DaysOfWeek { get; set; }
+
     public AddNurse()
 	{
 		InitializeComponent();
         LoadSpecialities();
         LoadNationalities();
         LoadDepartments();
+        LoadDaysOfWeek();
+        BindingContext = this;
     }
+
+    public class DayOfWeekSelection
+    {
+        public string Name { get; set; }
+        public bool IsSelected { get; set; }
+    }
+
+    private void LoadDaysOfWeek()
+    {
+        DaysOfWeek = new List<DayOfWeekSelection>
+        {
+            new DayOfWeekSelection { Name = "Sunday" },
+            new DayOfWeekSelection { Name = "Monday" },
+            new DayOfWeekSelection { Name = "Tuesday" },
+            new DayOfWeekSelection { Name = "Wednesday" },
+            new DayOfWeekSelection { Name = "Thursday" },
+            new DayOfWeekSelection { Name = "Friday" },
+            new DayOfWeekSelection { Name = "Saturday" }
+        };
+    }
+
     private void LoadNationalities()
     {
         // Example nationalities (you can replace this with dynamic data if needed)
@@ -24,35 +53,35 @@ public partial class AddNurse : ContentPage
     {
         var specialties = new List<string>
 {
-    "Critical Care Nursing",
-    "Emergency Nursing",
-    "Pediatric Nursing",
-    "Neonatal Nursing",
-    "Oncology Nursing",
-    "Cardiac Nursing",
-    "Psychiatric and Mental Health Nursing",
-    "Geriatric Nursing",
-    "Orthopedic Nursing",
-    "Surgical Nursing",
-    "Anesthesia Nursing (CRNA)",
-    "Nurse Midwifery",
-    "Family Nurse Practitioner",
-    "Women's Health Nursing",
-    "Infection Control Nursing",
-    "Public Health Nursing",
-    "Community Health Nursing",
-    "Occupational Health Nursing",
-    "School Nursing",
-    "Hospice and Palliative Care Nursing",
-    "Rehabilitation Nursing",
-    "Diabetes Education Nursing",
-    "Perioperative Nursing",
-    "Wound, Ostomy, and Continence Nursing",
-    "Case Management Nursing",
-    "Telehealth Nursing",
-    "Home Health Nursing",
-    "Forensic Nursing",
-    "Addiction Nursing"
+    "CriticalCareNursing",
+    "EmergencyNursing",
+    "PediatricNursing",
+    "NeonatalNursing",
+    "OncologyNursing",
+    "CardiacNursing",
+    "PsychiatricAndMentalHealthNursing",
+    "GeriatricNursing",
+    "OrthopedicNursing",
+    "SurgicalNursing",
+    "AnesthesiaNursing(CRNA)",
+    "NurseMidwifery",
+    "FamilyNursePractitioner",
+    "WomensHealthNursing",
+    "InfectionControlNursing",
+    "PublicHealthNursing",
+    "CommunityHealthNursing",
+    "OccupationalHealthNursing",
+    "SchoolNursing",
+    "HospiceAndPalliativeCareNursing",
+    "RehabilitationNursing",
+    "DiabetesEducationNursing",
+    "PerioperativeNursing",
+    "Wound,Ostomy,AndContinenceNursing",
+    "CaseManagementNursing",
+    "TelehealthNursing",
+    "HomeHealthNursing",
+    "ForensicNursing",
+    "AddictionNursing"
 };
         SpecialtyPicker.ItemsSource = specialties;
     }
@@ -92,13 +121,38 @@ public partial class AddNurse : ContentPage
             await DisplayAlert("Error", "Please fill in all fields.", "OK");
             return;
         }
+        PractitionerServices practitionerServices = new PractitionerServices();
+        PractitionerRoleService practitionerRoleService = new PractitionerRoleService();
+        var selectedDays = DaysOfWeek.Where(d => d.IsSelected).Select(d => d.Name).ToList();
+        Practitioner practitioner = new Practitioner
+        {
+            Name = name,
+            Phone = phone,
+            Email = Emailentry.Text?.Trim(),
+            Address = Addressentry.Text?.Trim(),
+            Rank = specialty,
+            PasswordHash = Passwordentry.Text,
+            Id = int.Parse(NurseID.Text)
 
-        // Save the nurse (you can replace this with actual saving logic)
-        Console.WriteLine($"Nurse Saved: {name}, {phone}, {nationality}, {specialty}, {department}");
+        };
+        Practitioner_Role practitionerRole = new Practitioner_Role
+        {
+            Code = "Nurse" + practitioner.Id,
+            Specialty = (MedicalSpecialty)Enum.Parse(typeof(MedicalSpecialty), specialty),
+            Service = Service.Nurse,
+            PractitionerId = practitioner.Id,
+            DayOfWeek = selectedDays.FirstOrDefault(),
+            StartTime = StartTimePicker.Time,
+            EndTime = EndTimePicker.Time
+        };
+
+        // Save the practitioner and role
+        await practitionerServices.AddPractitionerAsync(practitioner);
+        await practitionerRoleService.AddPractitionerRoleAsync(practitionerRole);   
+
         await DisplayAlert("Success", "Nurse added successfully!", "OK");
 
         // Navigate back to the previous page
-        await Shell.Current.GoToAsync("..");
     }
 
     private async void close(object sender, EventArgs e)
