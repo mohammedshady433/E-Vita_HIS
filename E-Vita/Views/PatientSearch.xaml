@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:sfDataGrid="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+             x:Class="E_Vita.Views.PatientSearch"
+             Title="PatientSearch">
+    <ScrollView>
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#3b0054" Offset="0"/>
+                    <GradientStop Color="#3b0054" Offset="0.5"/>
+                    <GradientStop Color="#3b0054" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Logo -->
+            <VerticalStackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Start" VerticalOptions="Start" HeightRequest="250" WidthRequest="250" Margin="10,-10,0,0">
+                <Image Source="E-Vita_logo-01.png" HeightRequest="150" WidthRequest="200" />
+            </VerticalStackLayout>
+
+            <!-- Title -->
+            <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="4"
+                   Text="Patient Data"
+                   HeightRequest="60"
+                   FontSize="50"
+                   FontAttributes="Bold"
+                   FontFamily="Qatar2022 Arabic"
+                   TextColor="#e1b184"
+                   BackgroundColor="Transparent"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Margin="0,0,0,0"/>
+
+            <!-- Search Box and Button -->
+            <HorizontalStackLayout Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
+                <Entry x:Name="SearchForPatientTextBox" WidthRequest="200" HeightRequest="35" VerticalOptions="Center"/>
+                <Button Text="Search" BackgroundColor="#e1b184" Clicked="search2" ZIndex="1" HeightRequest="35"/>
+            </HorizontalStackLayout>
+
+            <!-- Patient Name Section (separate row for better alignment) -->
+            <HorizontalStackLayout Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" HorizontalOptions="Center" VerticalOptions="Center" Spacing="10">
+                <Label x:Name="NameofPatient" Text="Patient Name:" TextColor="#e1b184" FontSize="24" FontAttributes="Bold" VerticalOptions="Center"/>
+                <Entry x:Name="NameTextBlock" WidthRequest="250" HeightRequest="30" BackgroundColor="White" IsReadOnly="True" VerticalOptions="Center" TextColor="Black"/>
+            </HorizontalStackLayout>
+
+            <!-- Patient History DataGrid -->
+            <sfDataGrid:SfDataGrid x:Name="PatientsGrid"
+                  Grid.Row="3" 
+                  Grid.Column="1" 
+                  Grid.ColumnSpan="6"
+                  WidthRequest="1200"
+                  Grid.RowSpan="10"
+                  SelectionMode="Single"
+                  BackgroundColor="#e1b184"
+                  AutoGenerateColumnsMode="None">
+                <sfDataGrid:SfDataGrid.Columns>
+                    <sfDataGrid:DataGridTextColumn Width="150" HeaderText="Reason for Visit" MappingName="ReasonForVisit" />
+                    <sfDataGrid:DataGridTextColumn HeaderText="Diseases" MappingName="Diseases" />
+                    <sfDataGrid:DataGridTextColumn HeaderText="Lab tests" MappingName="LabTest" />
+                    <sfDataGrid:DataGridTextColumn Width="150" HeaderText="Patient Complaint" MappingName="patientcomplaint" />
+                    <sfDataGrid:DataGridTextColumn Width="120"  HeaderText="Radiologies" MappingName="RadiologyTest" />
+                    <sfDataGrid:DataGridTextColumn Width="120" HeaderText="Examination" MappingName="Examination" />
+                    <sfDataGrid:DataGridTextColumn HeaderText="Reserve" MappingName="Reserve" />
+                    <sfDataGrid:DataGridTextColumn HeaderText="Surgery" MappingName="Surgery" />
+                    <sfDataGrid:DataGridTextColumn Width="150" HeaderText="Family History" MappingName="familyHistory" />
+                    <sfDataGrid:DataGridTextColumn HeaderText="Doctor ID" MappingName="PractitionerID" />
+                </sfDataGrid:SfDataGrid.Columns>
+            </sfDataGrid:SfDataGrid>
+        </Grid>
+    </ScrollView>
+</ContentPage>

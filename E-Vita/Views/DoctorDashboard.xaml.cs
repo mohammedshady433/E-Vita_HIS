@@ -135,7 +135,7 @@ public partial class DoctorDashboard : ContentPage
 
     private async void PatientData(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(Patient_data));
+        await Shell.Current.GoToAsync(nameof(PatientSearch));
     }
 
     private async void labImagesbtn(object sender, EventArgs e)

@@ -1,27 +1,63 @@
+using E_Vita.Services;
+using E_Vita_APIs.Models;
+using System.Collections.ObjectModel;
+using System.IO;
+
 namespace E_Vita.Views
 {
     public partial class LabImages : ContentPage
     {
+        private readonly RadiologyService _radiologyService = new RadiologyService();
+        public ObservableCollection<ImageSource> Images { get; set; } = new ObservableCollection<ImageSource>();
+
         public LabImages()
         {
             InitializeComponent();
+            BindingContext = this;
         }
 
         // Search button
-        private void OnSearchClicked(object sender, EventArgs e)
+        private async void OnSearchClicked(object sender, EventArgs e)
         {
             var patientID = PatientIDEntry.Text;
 
-            // Check if the entry is empty
-            if (string.IsNullOrEmpty(patientID))
+            if (string.IsNullOrEmpty(patientID) || !int.TryParse(patientID, out int patientId))
             {
-                DisplayAlert("Error", "Please enter a Patient ID.", "OK");
+                await DisplayAlert("Error", "Please enter a valid Patient ID.", "OK");
                 return;
             }
 
+            await LoadPatientImages(patientId);
+        }
 
-            // If it's valid, proceed with the search
-            DisplayAlert("Search Result", $"You entered: {patientID}", "OK");
+        // Load images for the patient from the API
+        private async Task LoadPatientImages(int patientId)
+        {
+            try
+            {
+                Images.Clear();
+                var allRadiology = await _radiologyService.GetAllAsync();
+                var patientImages = allRadiology
+                    .Where(r => r.PatientId == patientId && r.Photo != null && r.Photo.Length > 0)
+                    .ToList();
+
+                if (!patientImages.Any())
+                {
+                    await DisplayAlert("Info", "No lab images found for this patient.", "OK");
+                    return;
+                }
+
+                foreach (var radiology in patientImages)
+                {
+                    // Convert byte[] to ImageSource
+                    ImageSource imgSource = ImageSource.FromStream(() => new MemoryStream(radiology.Photo));
+                    Images.Add(imgSource);
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to load images: {ex.Message}", "OK");
+            }
         }
 
         // Upload new image
@@ -29,7 +65,6 @@ namespace E_Vita.Views
         {
             try
             {
-                // Pick an image from the device
                 var result = await FilePicker.PickAsync(new PickOptions
                 {
                     PickerTitle = "Please select an image",
@@ -38,70 +73,45 @@ namespace E_Vita.Views
 
                 if (result != null)
                 {
-                    var stream = await result.OpenReadAsync();
+                    using var stream = await result.OpenReadAsync();
+                    using var ms = new MemoryStream();
+                    await stream.CopyToAsync(ms);
+                    var imageBytes = ms.ToArray();
 
-                    // Create an Image control dynamically
-                    var image = new Image
+                    // Get patient ID from entry
+                    if (!int.TryParse(PatientIDEntry.Text, out int patientId))
                     {
-                        Source = ImageSource.FromStream(() => stream),
-                        HeightRequest = 200,
-                        WidthRequest = 200,
-                        Aspect = Aspect.AspectFit
+                        await DisplayAlert("Error", "Please enter a valid Patient ID before uploading.", "OK");
+                        return;
+                    }
+
+                    // Create a new Radiology object
+                    var newRadiology = new Radiology
+                    {
+                        PatientId = patientId,
+                        Photo = imageBytes,
+                        Date = DateTime.Now,
+                        Note = "Uploaded from MAUI app"
                     };
 
-                    // Add the image to the grid
-                    AddImageToGrid(image);
+                    // Save to API
+                    var success = await _radiologyService.AddAsync(newRadiology);
+                    if (success)
+                    {
+                        await DisplayAlert("Success", "Image uploaded successfully.", "OK");
+                        // Refresh images
+                        await LoadPatientImages(patientId);
+                    }
+                    else
+                    {
+                        await DisplayAlert("Error", "Failed to upload image.", "OK");
+                    }
                 }
             }
             catch (Exception ex)
             {
-                // Handle any errors
                 await DisplayAlert("Error", ex.Message, "OK");
             }
         }
-
-        // Add image to grid dynamically
-        private void AddImageToGrid(Image image)
-        {
-            // Get the current row count of the grid
-            int currentRowCount = ImagesGrid.RowDefinitions.Count;
-
-            // Calculate the number of rows based on images
-            int columnCount = 3; // Adjust based on how many images you want per row
-
-            int rowIndex = currentRowCount / columnCount; // Calculate row based on the number of images
-            int columnIndex = currentRowCount % columnCount; // Determine which column to place the image in
-
-            // Create a new row if needed
-            if (columnIndex == 0)
-            {
-                ImagesGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            }
-
-            // Place the image in the appropriate row and column
-            Grid.SetRow(image, rowIndex);
-            Grid.SetColumn(image, columnIndex);
-
-            // Add the image to the grid
-            ImagesGrid.Children.Add(image);
-        }
-
-        // Handle checkbox changes
-        private void OnCheckboxChanged(object sender, CheckedChangedEventArgs e)
-        {
-            if (!(sender is CheckBox changedCheckBox) || !changedCheckBox.IsChecked)
-                return;
-
-            // Uncheck all other checkboxes except the one just checked
-            if (changedCheckBox != RadiologyCheckBox)
-                RadiologyCheckBox.IsChecked = false;
-
-            if (changedCheckBox != DermatologyCheckBox)
-                DermatologyCheckBox.IsChecked = false;
-
-            if (changedCheckBox != LaserTherapyCheckBox)
-                LaserTherapyCheckBox.IsChecked = false;
-        }
     }
 }
-

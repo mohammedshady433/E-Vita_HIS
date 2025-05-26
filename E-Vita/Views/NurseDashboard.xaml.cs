@@ -1,4 +1,7 @@
+using E_Vita.Services;
+using E_Vita_APIs.Models;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace E_Vita.Views;
@@ -8,7 +11,7 @@ public partial class NurseDashboard : ContentPage
     private ObservableCollection<Appointment> ScheduleList { get; set; }
     public ObservableCollection<MedicationSchedule> MedicationsList { get; set; }
     private System.Timers.Timer _medicationCheckTimer;
-
+    private int practid=0;
     public NurseDashboard()
     {
         InitializeComponent();
@@ -312,20 +315,10 @@ public partial class NurseDashboard : ContentPage
         _medicationCheckTimer = null;
 
         base.OnDisappearing();
-    } 
-    //------------------------------------------------------------------------------------
-
-
-
-    //notes functions 
-    private void OnCalendarDateSelected(object sender, Syncfusion.Maui.Calendar.CalendarSelectionChangedEventArgs e)
-    {
-        if (e.NewValue != null)
-        {
-            DateTime selectedDate = (DateTime)e.NewValue;
-            SelectedDateLabel.Text = $"You selected: {selectedDate.ToString("D")}";
-        }
     }
+
+    //-----------------------------------------notes functions-------------------------------------------
+
     private async void OnPostNoteClicked(object sender, EventArgs e)
     {
         string noteText = NoteEditor.Text?.Trim();
@@ -338,6 +331,18 @@ public partial class NurseDashboard : ContentPage
             AddNoteToUI(noteText, "You", DateTime.Now); // Temporary local addition
 
             NoteEditor.Text = string.Empty;
+            SharednotesServices sharednotesServices = new SharednotesServices();
+            SharedNote sharedNote = new SharedNote();
+            //need to be changed to the practitionerid
+            if (practid== 0)
+            {
+                practid = int.Parse(DisplayPromptAsync("Practitioner ID", "Please enter your Practitioner ID:").Result);
+            }
+            sharedNote.PractitionerID = practid;
+            sharedNote.content = noteText;
+
+            sharednotesServices.AddAsync(sharedNote);
+
         }
         else
         {
@@ -346,10 +351,25 @@ public partial class NurseDashboard : ContentPage
     }
 
     // Simulate loading notes from the backend
-    private void LoadNotes()
+    private async void LoadNotes()
     {
-        // TODO: Replace with your API call
-        AddNoteToUI("am leaving early today, please be more concentrated on john.", "Nurse Sarah", DateTime.Now.AddMinutes(-30));
+        //// TODO: Replace with your API call
+        //AddNoteToUI("i have to leave now, cancel john's appointment", "receptionist ali", DateTime.Now.AddMinutes(-30));
+        SharednotesServices sharednotesServices = new SharednotesServices();
+        var notes = await sharednotesServices.GetAllAsync();
+        PractitionerServices practitionerServices = new PractitionerServices();
+        var practitioners = await practitionerServices.GetPractitionersAsync();
+        var receptionlist = practitioners.Where(a => a.Id.ToString().EndsWith("2")).ToList();
+        int i = 0;
+        foreach (var pract in receptionlist)
+        {
+            var filteredNotes = notes.Where(p => p.PractitionerID == pract.Id).ToList();
+            foreach (var note in filteredNotes)
+            {
+                AddNoteToUI(note.content, pract.Name, DateTime.Now.AddMinutes(-3 + i));
+                i++;
+            }
+        }
     }
 
     // UI Helper
@@ -367,14 +387,13 @@ public partial class NurseDashboard : ContentPage
                 Children =
                 {
                     new Label { Text = text, FontSize = 16, TextColor = Colors.Black },
-                    new Label { Text = $"� {author}, {timestamp:t}", FontSize = 12, TextColor = Colors.Gray }
+                    new Label { Text = $"— {author}, {timestamp:t}", FontSize = 12, TextColor = Colors.Gray }
                 }
             }
         };
 
         NotesStack.Children.Insert(0, noteFrame); // insert at top
     }
-
     private async void turn_over(object sender, EventArgs e)
     {
         if (sender is Button button)

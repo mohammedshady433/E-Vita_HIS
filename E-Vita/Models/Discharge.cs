@@ -12,13 +12,12 @@ namespace E_Vita_APIs.Models
         public int PatientId { get; set; } // FK property
 
         [ForeignKey("PatientId")]
-        [JsonIgnore]
-        public Patient Patient { get; set; } // Navigation property
+        public Patient? Patient { get; set; } // Navigation property
     }
     public enum DischargeType
     {
-         Regular_Discharge,
-         Transfer_to_Another_Facility
-        ,Against_Medical_Advice
+        Regular_Discharge,
+        Transfer_to_Another_Facility
+        , Against_Medical_Advice
     }
 }

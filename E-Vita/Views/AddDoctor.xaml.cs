@@ -156,10 +156,9 @@ public partial class AddDoctor : ContentPage
         practitioner_Role.DayOfWeek = selectedDays.FirstOrDefault();
         practitioner_Role.StartTime = startTime;
         practitioner_Role.EndTime = endTime;
-        
 
-        await practitionerRoleService.AddPractitionerRoleAsync(practitioner_Role);
         await practitionerServices.AddPractitionerAsync(practitioner);
+        await practitionerRoleService.AddPractitionerRoleAsync(practitioner_Role);
         await DisplayAlert("Success", "Doctor added successfully!", "OK");
 
         // Navigate back to the previous page

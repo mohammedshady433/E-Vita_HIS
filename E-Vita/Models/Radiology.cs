@@ -13,6 +13,6 @@ namespace E_Vita_APIs.Models
 
         [ForeignKey("PatientId")]
         [JsonIgnore]
-        public Patient Patient { get; set; } // Navigation property
+        public Patient? Patient { get; set; } // Navigation property
     }
 }

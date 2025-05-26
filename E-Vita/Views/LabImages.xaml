@@ -3,125 +3,107 @@
              x:Class="E_Vita.Views.LabImages"
              Title="Lab Images">
 
-    <Grid RowDefinitions="Auto, *">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#4B0082" Offset="0.0"/>
+            <GradientStop Color="#2d003d" Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
-        <!-- Top bar -->
-        <Grid BackgroundColor="#4B0082" HeightRequest="80">
+    <VerticalStackLayout Padding="0,30,0,0" Spacing="0">
+        <!-- Top Bar -->
+        <Grid HeightRequest="80" BackgroundColor="#4B0082" VerticalOptions="Start">
             <Label Text="Lab Images"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
                    TextColor="White"
-                   FontSize="30"
-                   FontAttributes="Bold"/>
+                   FontSize="32"
+                   FontAttributes="Bold"
+                   FontFamily="Qatar2022 Arabic"/>
         </Grid>
 
-        <!-- Main content area -->
-        <Grid Grid.Row="1" ColumnDefinitions="2*, 6*">
+        <!-- Main Card -->
+        <Frame Margin="24,24,24,0"
+               Padding="24"
+               BackgroundColor="#fff"
+               CornerRadius="18"
+               HasShadow="True"
+               VerticalOptions="FillAndExpand"
+               HorizontalOptions="FillAndExpand">
+            <VerticalStackLayout Spacing="24" VerticalOptions="FillAndExpand">
 
-            <!-- Left Grid (Sidebar) -->
-            <Grid BackgroundColor="#E6E6FA"
-                  Padding="10"
-                  WidthRequest="300"
-                  VerticalOptions="Start">
-                <VerticalStackLayout  VerticalOptions="Center" Margin="0,20,0,0">
-
-                    <!-- Filters Header -->
-                    <Label Text="Filters"
-                           FontSize="25"
-                           FontAttributes="Bold"
-                           VerticalOptions="Center"
-                           Margin="0,0,0,20"/>
-
-                    <!-- Radiology Checkbox -->
-                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-                        <CheckBox x:Name="RadiologyCheckBox"
-                                  IsChecked="False"
-                                  VerticalOptions="Center"
-                                  CheckedChanged="OnCheckboxChanged" />
-                        <Label Text="Radiology"
-                               FontSize="20"
-                               Margin="0,0,0,8"
-                               VerticalOptions="Center" />
-                    </HorizontalStackLayout>
-
-                    <!-- Dermatology Checkbox -->
-                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-                        <CheckBox x:Name="DermatologyCheckBox"
-                                  IsChecked="False"
-                                  VerticalOptions="Center"
-                                  CheckedChanged="OnCheckboxChanged" />
-                        <Label Text="Dermatology"
-                               FontSize="20"
-                               Margin="0,0,0,8"
-                               VerticalOptions="Center" />
-                    </HorizontalStackLayout>
-
-                    <!-- Laser Therapy Checkbox -->
-                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-                        <CheckBox x:Name="LaserTherapyCheckBox"
-                                  IsChecked="False"
-                                  VerticalOptions="Center"
-                                  CheckedChanged="OnCheckboxChanged" />
-                        <Label Text="Laser Therapy"
-                               FontSize="20"
-                               VerticalOptions="Center" />
-                    </HorizontalStackLayout>
-
-                    <!-- Upload New Image Button -->
-                    <Button 
-                        Text="+Upload New Image"
-                        FontSize="16"
-                        BackgroundColor="#891739"
-                        TextColor="White"
-                        HorizontalOptions="Center"
-                        Margin="0,380,0,0"
-                        Clicked="Upload" />
-                </VerticalStackLayout>
-            </Grid>
-
-            <!-- Right Grid -->
-            <Grid Grid.Column="1"
-                  Padding="10"
-                  BackgroundColor="White"
-                  RowDefinitions="Auto, *">
-
-                <!-- Row 0: Search bar + button -->
-                <Grid Grid.Row="0"
-                      ColumnDefinitions="Auto, Auto"
-                      HorizontalOptions="CenterAndExpand"
-                      Margin="0,0,10,10">
-
-                    <!-- Entry for Patient ID -->
+                <!-- Search and Upload Controls -->
+                <Grid ColumnDefinitions="*,Auto,Auto"
+                      RowDefinitions="Auto"
+                      VerticalOptions="Center"
+                      HorizontalOptions="Center"
+                      Padding="0"
+                      Margin="0">
                     <Entry x:Name="PatientIDEntry"
+                           Grid.Column="0"
                            Placeholder="Enter Patient ID"
-                           WidthRequest="200"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center"
-                           Keyboard="Numeric" />
-                    <!-- Ensures numeric keyboard is shown -->
-
-                    <!-- Search Button -->
+                           WidthRequest="220"
+                           HeightRequest="44"
+                           BackgroundColor="#f3f3f3"
+                           TextColor="#4B0082"
+                           PlaceholderColor="#b0a7c7"
+                           FontSize="18"
+                           Margin="0,0,12,0"
+                           Keyboard="Numeric"
+                           VerticalOptions="Center"/>
                     <Button Grid.Column="1"
                             Text="Search"
-                            VerticalOptions="Center"
-                            Margin="10,0,0,0"
-                            Clicked="OnSearchClicked" />
+                            FontSize="18"
+                            BackgroundColor="#4B0082"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="44"
+                            WidthRequest="100"
+                            Margin="0,0,12,0"
+                            Clicked="OnSearchClicked"/>
+                    <Button Grid.Column="2"
+                            Text="+ Upload New Image"
+                            FontSize="18"
+                            BackgroundColor="#891739"
+                            TextColor="White"
+                            CornerRadius="8"
+                            HeightRequest="44"
+                            Clicked="Upload"/>
                 </Grid>
 
-                <!-- Row 1: Right-side images grid -->
-                <StackLayout Grid.Row="1">
-                    <Grid x:Name="ImagesGrid"
-                          Grid.Row="1"
-                          ColumnDefinitions="Auto, Auto, Auto"
-                          HorizontalOptions="CenterAndExpand"
-                          Margin="0,0,10,10">
-                        <!-- Dynamically added images will appear here -->
-                    </Grid>
-                </StackLayout>
-            </Grid>
-        </Grid>
-    </Grid>
+                <!-- Images Section Header -->
+                <Label Text="Patient Lab Images"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       TextColor="#4B0082"
+                       Margin="0,0,0,8"
+                       HorizontalOptions="Center"/>
+
+                <!-- Images CollectionView -->
+                <!-- Make sure to set BindingContext and Images property in code-behind or ViewModel -->
+                <CollectionView x:Name="ImagesCollectionView"
+                                ItemsSource="{Binding Images}"
+                                VerticalOptions="FillAndExpand"
+                                HorizontalOptions="FillAndExpand"
+                                Margin="0">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="3"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="6" HasShadow="False" BackgroundColor="Transparent">
+                                <Image Source="{Binding}" 
+                                       Aspect="AspectFill"
+                                       HeightRequest="120"
+                                       WidthRequest="120"
+                                       VerticalOptions="FillAndExpand"
+                                       HorizontalOptions="FillAndExpand"
+                                       Margin="4"/>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
 </ContentPage>
-
-
-
