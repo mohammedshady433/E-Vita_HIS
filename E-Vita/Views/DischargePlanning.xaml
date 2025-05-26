@@ -4,7 +4,7 @@
              xmlns:sfDataGrid="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
              x:Class="E_Vita.Views.DischargePlanning"
              Title="Discharge Planning">
-
+    <ScrollView>
     <Grid BackgroundColor="#1f1f1f">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -37,20 +37,10 @@
                        FontSize="18"
                        TextColor="#f9dcc0"
                        Margin="0,0,0,10"/>
-                
+
                 <sfDataGrid:SfDataGrid x:Name="PatientsGrid"
                                       SelectionMode="Single"
-                                      SelectionChanged="OnPatientSelected">
-                    <sfDataGrid:SfDataGrid.Columns>
-                        <sfDataGrid:DataGridTextColumn HeaderText="Patient ID" MappingName="PatientId"/>
-                        <sfDataGrid:DataGridTextColumn HeaderText="Name" MappingName="PatientName"/>
-                        <sfDataGrid:DataGridTextColumn HeaderText="Room" MappingName="RoomNumber"/>
-                        <sfDataGrid:DataGridTextColumn HeaderText="Admission Date" MappingName="AdmissionDate">
-                            <sfDataGrid:DataGridTextColumn.Format>
-                                <x:String>d</x:String>
-                            </sfDataGrid:DataGridTextColumn.Format>
-                        </sfDataGrid:DataGridTextColumn>
-                    </sfDataGrid:SfDataGrid.Columns>
+                                      SelectionChanged="OnPatientSelected" BackgroundColor="DarkViolet">
                 </sfDataGrid:SfDataGrid>
             </VerticalStackLayout>
 
@@ -77,10 +67,10 @@
                         
                         <Picker x:Name="DischargeTypePicker" 
                                Title="Discharge Type">
-                            <Picker.Items>
-                                <x:String>Regular Discharge</x:String>
-                                <x:String>Transfer to Another Facility</x:String>
-                                <x:String>Against Medical Advice</x:String>
+                                <Picker.Items>
+                                    <x:String>Regular_Discharge</x:String>
+                                    <x:String>Transfer_to_Another_Facility</x:String>
+                                    <x:String>Against_Medical_Advice</x:String>
                             </Picker.Items>
                         </Picker>
 
@@ -90,9 +80,16 @@
                                 CornerRadius="20"
                                 Clicked="OnProcessDischarge"
                                 Margin="0,20,0,0"/>
+                        <Button Text="Close"
+                        BackgroundColor="#3b0054"
+                        TextColor="#f9dcc0"
+                        CornerRadius="20"
+                        Clicked="Close"
+                        Margin="0,20,0,0"/>
                     </VerticalStackLayout>
                 </Frame>
             </VerticalStackLayout>
         </Grid>
     </Grid>
+    </ScrollView>
 </ContentPage> 

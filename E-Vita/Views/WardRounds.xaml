@@ -145,14 +145,12 @@
                                           HeaderRowHeight="40"
                                           SelectionMode="Single"
                                           NavigationMode="Cell"
-                                          Margin="0,5,0,0"
-                                          SelectionChanged="WardRoundsGrid_SelectionChanged">
+                                          Margin="160,5,0,0"
+                                          SelectionChanged="WardRoundsGrid_SelectionChanged"
+                                           AutoGenerateColumnsMode="None">
                         <sfDataGrid:SfDataGrid.Columns>
                             <sfDataGrid:DataGridTextColumn HeaderText="Time" 
                                                           MappingName="Time"
-                                                          Width="100"/>
-                            <sfDataGrid:DataGridTextColumn HeaderText="Ward" 
-                                                          MappingName="Ward"
                                                           Width="100"/>
                             <sfDataGrid:DataGridTextColumn HeaderText="Doctor" 
                                                           MappingName="Doctor"

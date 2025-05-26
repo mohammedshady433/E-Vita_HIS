@@ -44,28 +44,12 @@
 
                 <Image Source="e_vitalogo_01.png" Margin="0,40,10,40"/>
 
-                <!-- Inpatient Management Button -->
-                <Button Text="Inpatient Management"   
-                        FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
-                        BackgroundColor="#3b0054" TextColor="#f9dcc0"  
-                        WidthRequest="166" HeightRequest="46" Margin="10"  
-                        CornerRadius="20" Clicked="InpatientManagement_Click"
-                        HorizontalOptions="Center" VerticalOptions="Center"/>
-
                 <!-- Ward Rounds Button -->
                 <Button Text="Ward Rounds"   
                         FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
                         BackgroundColor="#3b0054" TextColor="#f9dcc0"  
-                        WidthRequest="166" HeightRequest="46" Margin="10"  
+                        WidthRequest="166" HeightRequest="46" Margin="10,50,10,10"  
                         CornerRadius="20" Clicked="WardRounds_Click"
-                        HorizontalOptions="Center" VerticalOptions="Center"/>
-
-                <!-- Patient Monitoring Button -->
-                <Button Text="Patient Monitoring"   
-                        FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
-                        BackgroundColor="#3b0054" TextColor="#f9dcc0"  
-                        WidthRequest="166" HeightRequest="46" Margin="10"  
-                        CornerRadius="20" Clicked="PatientMonitoring_Click"
                         HorizontalOptions="Center" VerticalOptions="Center"/>
 
                 <!-- Discharge Planning Button -->
@@ -80,7 +64,7 @@
                 <Button Text="LogOut"  
                         FontFamily="Qatar2022 Arabic" FontSize="14"   
                         BackgroundColor="#3b0054" TextColor="#f9dcc0"   
-                        WidthRequest="166" HeightRequest="46" Margin="10,100,10,10"  
+                        WidthRequest="166" HeightRequest="46" Margin="10,200,10,10"  
                         CornerRadius="20"
                         HorizontalOptions="Center" VerticalOptions="Center" 
                         Clicked="LogOut_Click"/>

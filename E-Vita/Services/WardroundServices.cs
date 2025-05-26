@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using E_Vita_APIs.Models; 
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
-using E_Vita_APIs.Models; 
 namespace E_Vita.Services
 {
     internal class WardroundServices : BaseApiService
@@ -24,8 +25,11 @@ namespace E_Vita.Services
         {
             return await PostAsync(endpoint, wardRound);
         }
+        public async Task<E_Vita_APIs.Models.WardRound> AddAsyncreturnID(E_Vita_APIs.Models.WardRound wardRound)
+        {
+            return await PostAsyncWithResponse<E_Vita_APIs.Models.WardRound>(endpoint, wardRound);
+        }
 
-        
         public async Task<bool> DeleteAsync(int id)
         {
             return await base.DeleteAsync($"{endpoint}/{id}");

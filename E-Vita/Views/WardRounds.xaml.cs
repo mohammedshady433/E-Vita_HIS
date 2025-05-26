@@ -1,6 +1,9 @@
+using E_Vita.Services;
+using E_Vita_APIs.Models;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace E_Vita.Views;
 
@@ -10,66 +13,74 @@ public partial class WardRounds : ContentPage
     private ObservableCollection<WardRound> filteredWardRounds;
     private WardRoundsViewModel viewModel;
     private WardRound selectedRound;
-
+    //------------------------------------------------------------------------------------------------
+    private List<Patient> patients = new List<Patient>();
     public WardRounds()
     {
         InitializeComponent();
         viewModel = new WardRoundsViewModel();
         BindingContext = viewModel;
         InitializeWardRounds();
+        loadPatients();
     }
 
-    private void InitializeWardRounds()
+    private async void loadPatients()
     {
-        // Sample data - replace with actual data from your database
-        wardRounds = new ObservableCollection<WardRound>
+        PatientServices patientServices = new PatientServices();
+        var listofpatients = await patientServices.GetPatientsAsync();
+        listofpatients = listofpatients.FindAll(p => p.Status == OUTIN_Patient.In_Patient);
+        patients = listofpatients;
+    }
+
+    private async void InitializeWardRounds()
     {
-        new WardRound
+        // Fetch data from the database using WardroundServices
+        var wardroundService = new WardroundServices();
+        var roundsFromDb = await wardroundService.GetAllAsync();
+        PractitionerServices practitionerServices = new PractitionerServices();
+        var allpract = await practitionerServices.GetPractitionersAsync();
+
+        // Map DB model to UI model
+        wardRounds = new ObservableCollection<WardRound>();
+        foreach (var dbRound in roundsFromDb)
         {
-            Time = "09:00 AM",
-            Ward = "Ward A",
-            Doctor = "Dr. Smith",
-            Status = "Scheduled",
-            Date = DateTime.Today,
-            Notes = "",
-            Patients = new ObservableCollection<PatientForRound>
+            // Map properties from DB model to UI model
+            var uiRound = new WardRound
             {
-                new PatientForRound { PatientId = "P001", PatientName = "Ahmed Mohamed", RoomNumber = "A101", Condition = "Stable", Visited = false },
-                new PatientForRound { PatientId = "P002", PatientName = "Fatima Ali", RoomNumber = "A102", Condition = "Improving", Visited = false },
-                new PatientForRound { PatientId = "P003", PatientName = "Ibrahim Hassan", RoomNumber = "A103", Condition = "Critical", Visited = false }
-            }
-        },
-        new WardRound
-        {
-            Time = "11:00 AM",
-            Ward = "Ward B",
-            Doctor = "Dr. Johnson",
-            Status = "In Progress",
-            Date = DateTime.Today,
-            Notes = "Patient in A205 needs additional tests",
-            Patients = new ObservableCollection<PatientForRound>
+                Id = dbRound.Id,
+                // Convert TimeOnly to string for display
+                Time = dbRound.Time.ToString("hh\\:mm tt"),
+                Ward = "", // You may need to fetch or map the ward name if available
+                Doctor = dbRound.PractitionerID != null ? allpract.Find(p => p.Id == dbRound.PractitionerID)?.Name ?? "Unknown" : "Unknown",
+                Status = "Scheduled",
+                Date = dbRound.Date,
+                Notes = dbRound.Note,
+                Patients = new ObservableCollection<PatientForRound>() // You may need to fetch patients for the round if available
+            };
+
+            // Load patients for this ward round
+            var patientsForRound = patients.Where(p => p.WardRoundId == dbRound.Id && p.Status == OUTIN_Patient.In_Patient).ToList();
+            if (patientsForRound.Any())
             {
-                new PatientForRound { PatientId = "P004", PatientName = "Layla Karim", RoomNumber = "B201", Condition = "Stable", Visited = true },
-                new PatientForRound { PatientId = "P005", PatientName = "Omar Youssef", RoomNumber = "B202", Condition = "Critical", Visited = false },
-                new PatientForRound { PatientId = "P006", PatientName = "Noor Mahmoud", RoomNumber = "B203", Condition = "Improving", Visited = false }
+                RoomService roomService = new RoomService();
+                var rooms = await roomService.GetAllAsync();
+
+                foreach (var patient in patientsForRound)
+                {
+                    var room = rooms.FirstOrDefault(r => r.PatientId == patient.ID);
+                    uiRound.Patients.Add(new PatientForRound
+                    {
+                        PatientId = patient.ID.ToString(),
+                        PatientName = patient.Name,
+                        RoomNumber = room != null ? room.RoomNumber.ToString() : "Unknown",
+                        Condition = "Unknown", // You may want to store/retrieve this information
+                        Visited = false // You may want to store/retrieve this information
+                    });
+                }
             }
-        },
-        new WardRound
-        {
-            Time = "02:00 PM",
-            Ward = "Ward C",
-            Doctor = "Dr. Williams",
-            Status = "Completed",
-            Date = DateTime.Today,
-            Notes = "All patients stable, follow-up scheduled for tomorrow",
-            Patients = new ObservableCollection<PatientForRound>
-            {
-                new PatientForRound { PatientId = "P007", PatientName = "Kareem Saleh", RoomNumber = "C301", Condition = "Stable", Visited = true },
-                new PatientForRound { PatientId = "P008", PatientName = "Amina Farouk", RoomNumber = "C302", Condition = "Improving", Visited = true },
-                new PatientForRound { PatientId = "P009", PatientName = "Ziad Ahmed", RoomNumber = "C303", Condition = "Stable", Visited = true }
-            }
+
+            wardRounds.Add(uiRound);
         }
-    };
 
         // Initialize filtered data
         filteredWardRounds = new ObservableCollection<WardRound>(wardRounds);
@@ -277,23 +288,58 @@ public partial class WardRounds : ContentPage
         string doctor = await DisplayPromptAsync("New Ward Round", "Enter Doctor Name:");
         if (string.IsNullOrWhiteSpace(doctor)) return;
 
-        // Add new ward round to the collection
-        var newRound = new WardRound
+        // Find the practitioner by name (assuming unique names)
+        PractitionerServices practitionerServices = new PractitionerServices();
+        var practitioners = await practitionerServices.GetPractitionersAsync();
+        var selectedPractitioner = practitioners.FirstOrDefault(p => p.Name.Equals(doctor, StringComparison.OrdinalIgnoreCase));
+        if (selectedPractitioner == null)
         {
-            Time = time,
-            Ward = ward,
-            Doctor = doctor,
-            Status = "Scheduled",
-            Date = WardRoundsCalendar.SelectedDate != null ?
-                   (DateTime)WardRoundsCalendar.SelectedDate : DateTime.Today,
-            Notes = "",
-            Patients = new ObservableCollection<PatientForRound>()
+            await DisplayAlert("Error", "Doctor not found. Please ensure the doctor is registered.", "OK");
+            return;
+        }
+
+        // Parse time to TimeOnly
+        if (!TimeOnly.TryParseExact(time, "hh:mm tt", null, System.Globalization.DateTimeStyles.None, out var parsedTime))
+        {
+            await DisplayAlert("Error", "Invalid time format. Please use HH:MM AM/PM.", "OK");
+            return;
+        }
+
+        // Create backend model
+        var newWardRound = new E_Vita_APIs.Models.WardRound
+        {
+            Date = WardRoundsCalendar.SelectedDate != null ? (DateTime)WardRoundsCalendar.SelectedDate : DateTime.Today,
+            Time = parsedTime,
+            Note = RoundNotes.Text, // Add notes if needed
+            PractitionerID = selectedPractitioner.Id
         };
+        // Save to database via API
+        var wardroundService = new WardroundServices();
+        var createdRound = await wardroundService.AddAsyncreturnID(newWardRound);
 
-        wardRounds.Add(newRound);
-        filteredWardRounds.Add(newRound);
+        if (createdRound != null)
+        {
+            // Add to UI collection
+            var uiRound = new WardRound
+            {
+                Id = createdRound.Id, // Now you have the real Id
+                Time = parsedTime.ToString("hh\\:mm tt"),
+                Ward = ward,
+                Doctor = doctor,
+                Status = "Scheduled",
+                Date = newWardRound.Date,
+                Notes = "",
+                Patients = new ObservableCollection<PatientForRound>()
+            };
+            wardRounds.Add(uiRound);
+            filteredWardRounds.Add(uiRound);
 
-        await DisplayAlert("Success", "New ward round scheduled successfully!", "OK");
+            await DisplayAlert("Success", "New ward round scheduled and saved to the database!", "OK");
+        }
+        else
+        {
+            await DisplayAlert("Error", "Failed to save ward round to the database.", "OK");
+        }
     }
 
     private async void CloseButton_Clicked(object sender, EventArgs e)
@@ -345,7 +391,14 @@ public partial class WardRounds : ContentPage
 
         // Add the patient to the collection
         selectedRound.Patients.Add(newPatient);
-
+        // Persist the patient-round relationship
+        var patient = patients.FirstOrDefault(p => p.ID.ToString() == patientId);
+        if (patient != null)
+        {
+            patient.WardRoundId = selectedRound.Id;
+            PatientServices patientService = new PatientServices();
+            await patientService.UpdatePatientAsync(patient); // Implement this API call in your service
+        }
         // Refresh the patients list
         PatientsList.ItemsSource = null;
         PatientsList.ItemsSource = selectedRound.Patients;
@@ -376,7 +429,7 @@ public partial class WardRounds : ContentPage
         }
 
         // Get patients by their IDs
-        var patientsToAdd = GetPatientsByIds(idArray);
+        var patientsToAdd = await GetPatientsByIds(idArray); // Await the Task to get the result
 
         // Initialize Patients collection if it's null
         if (selectedRound.Patients == null)
@@ -387,12 +440,22 @@ public partial class WardRounds : ContentPage
         int addedCount = 0;
 
         // Add the patients to the ward round
-        foreach (var patient in patientsToAdd)
+        foreach (var patient in patientsToAdd) // Now patientsToAdd is a List<PatientForRound>
         {
             // Add only if not already in the list
             if (!selectedRound.Patients.Any(p => p.PatientId == patient.PatientId))
             {
                 selectedRound.Patients.Add(patient);
+
+                // Persist the patient-round relationship
+                var dbPatient = patients.FirstOrDefault(p => p.ID.ToString() == patient.PatientId);
+                if (dbPatient != null)
+                {
+                    dbPatient.WardRoundId = selectedRound.Id;
+                    PatientServices patientService = new PatientServices();
+                    await patientService.UpdatePatientAsync(dbPatient); // Implement this API call in your service
+                }
+
                 addedCount++;
             }
         }
@@ -404,38 +467,45 @@ public partial class WardRounds : ContentPage
         await DisplayAlert("Success", $"Added {addedCount} patient(s) to the round", "OK");
     }
 
-    // Method to get patients by their IDs
-    private List<PatientForRound> GetPatientsByIds(string[] patientIds)
+    // Fix for CS0029 and CS8601 errors in the GetPatientsByIds method
+    private async Task<List<PatientForRound>> GetPatientsByIds(string[] patientIds)
     {
-        // This would typically query your database
-        // For demo purposes, we'll simulate looking up patients from a sample dataset
-        var allPatients = GetAllHospitalPatients();
+        // Ensure the patientIds array is not null
+        if (patientIds == null || patientIds.Length == 0)
+        {
+            return new List<PatientForRound>();
+        }
 
-        return allPatients.Where(p => patientIds.Contains(p.PatientId)).ToList();
+        RoomService roomService = new RoomService();
+        var rooms = await roomService.GetAllAsync();
+
+        // Filter patients based on the provided IDs
+        var filteredPatients = patients
+            .Where(p => patientIds.Contains(p.ID.ToString()))
+            .Select(p =>
+            {
+                // Find the room associated with the patient
+                var room = rooms.FirstOrDefault(r => r.PatientId == p.ID);
+
+                return new PatientForRound
+                {
+                    PatientId = p.ID.ToString(),
+                    PatientName = p.Name,
+                    RoomNumber = room != null ? room.RoomNumber.ToString() : "Unknown", // Convert RoomNumber to string
+                    Condition = "Unknown", // Default value, update as needed
+                    Visited = false
+                };
+            })
+            .ToList();
+
+        return filteredPatients;
     }
-
-    // Method to get all hospital patients (simulated database)
-    private List<PatientForRound> GetAllHospitalPatients()
-    {
-        // This would typically come from your database
-        // For demo purposes, return sample data with IDs
-        return new List<PatientForRound>
-    {
-        new PatientForRound { PatientId = "P001", PatientName = "Saeed Ahmed", RoomNumber = "A101", Condition = "Stable", Visited = false },
-        new PatientForRound { PatientId = "P002", PatientName = "Maha Omar", RoomNumber = "A102", Condition = "Improving", Visited = false },
-        new PatientForRound { PatientId = "P003", PatientName = "Jamal Karim", RoomNumber = "B103", Condition = "Critical", Visited = false },
-        new PatientForRound { PatientId = "P004", PatientName = "Leila Ali", RoomNumber = "B104", Condition = "Stable", Visited = false },
-        new PatientForRound { PatientId = "P005", PatientName = "Ahmed Mohamed", RoomNumber = "C201", Condition = "Stable", Visited = false },
-        new PatientForRound { PatientId = "P006", PatientName = "Fatima Hassan", RoomNumber = "C202", Condition = "Critical", Visited = false },
-        new PatientForRound { PatientId = "P007", PatientName = "Omar Youssef", RoomNumber = "C203", Condition = "Improving", Visited = false }
-    };
-    }
-
 }
 
 // WardRound Model (extended)
 public class WardRound
 {
+    public int Id { get; set; }
     public string Time { get; set; }
     public string Ward { get; set; }
     public string Doctor { get; set; }

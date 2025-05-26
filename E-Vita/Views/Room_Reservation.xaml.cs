@@ -236,7 +236,6 @@ public partial class Room_Reservation : ContentPage
 
         _roomAvailability[selectedRoom] = false;
         UpdateAvailableRooms();
-        await DisplayAlert("Success", $"Room {selectedRoom} has been reserved for Patient {_selectedPatient.Name}", "OK");
         Room reserved_Room = new Room();
         reserved_Room.availablity = RoomStatus.Occupied;
         reserved_Room.RoomNumber = int.Parse(selectedRoom);
@@ -245,7 +244,14 @@ public partial class Room_Reservation : ContentPage
         reserved_Room.DoctorId = _selectedDoctor.Id;
         reserved_Room.NurseId = _selectedNurse.Id;  // Add the nurse ID to the room
         RoomService roomServices = new RoomService();
-        roomServices.AddAsync(reserved_Room);
+        await roomServices.AddAsync(reserved_Room);
+
+        var patientupdateroom = patients.FirstOrDefault(p => p.ID == _selectedPatient.Id);
+        patientupdateroom.Status = OUTIN_Patient.In_Patient;
+        PatientServices patientServices = new PatientServices();
+        await patientServices.UpdatePatientAsync(patientupdateroom);
+        await DisplayAlert("Success", $"Room {selectedRoom} has been reserved for Patient {_selectedPatient.Name}", "OK");
+
         // Clear the form
         _selectedPatient = null;
 		_selectedDoctor = null;

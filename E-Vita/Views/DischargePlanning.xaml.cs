@@ -12,17 +12,26 @@ namespace E_Vita.Views
         {
             InitializeComponent();
             DischargeDatePicker.MinimumDate = DateTime.Today;
+        }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
             LoadPatients();
         }
-
         private async void LoadPatients()
         {
             try
             {
                 // TODO: Replace with actual service call
                 //var patients = await PatientServices.GetPatientsReadyForDischarge();
-                //_patients = new ObservableCollection<Patient>(patients);
-                //PatientsGrid.ItemsSource = _patients;
+
+                PatientServices patientServices = new PatientServices();
+                var patients = await patientServices.GetPatientsAsync();
+                patients = patients.Where(p => p.Status == OUTIN_Patient.In_Patient).ToList();
+                _patients = new ObservableCollection<Patient>(patients);
+                PatientsGrid.ItemsSource = _patients;
+
+
             }
             catch (Exception ex)
             {
@@ -32,10 +41,10 @@ namespace E_Vita.Views
 
         private void OnPatientSelected(object sender, Syncfusion.Maui.DataGrid.DataGridSelectionChangedEventArgs e)
         {
-            // Get the selected item using the SelectedIndex
-            if (PatientsGrid.SelectedIndex >= 0)
+            // Safely get the selected item directly from the event args
+            if (e.AddedRows != null && e.AddedRows.Count > 0)
             {
-                var selectedItem = _patients[PatientsGrid.SelectedIndex] as Patient;
+                var selectedItem = e.AddedRows[0] as Patient;
                 if (selectedItem != null)
                 {
                     _selectedPatient = selectedItem;
@@ -68,19 +77,33 @@ namespace E_Vita.Views
 
             try
             {
-                var dischargeInfo = new DischargeInfo
+                var dischargeInfo = new Discharge
                 {
-                    PatientId = _selectedPatient.ID.ToString(),
-                    DischargeDate = DischargeDatePicker.Date,
-                    Notes = DischargeNotesEditor.Text,
-                    DischargeType = DischargeTypePicker.SelectedItem.ToString()
+                    PatientId = _selectedPatient.ID,
+                    When = TimeOnly.FromDateTime(DischargeDatePicker.Date),
+                    Note = DischargeNotesEditor.Text,
+                    Date = DischargeDatePicker.Date,
+                    //DischargeType = (DischargeType)DischargeTypePicker.SelectedItem
                 };
+                // Convert the string to the enum value
+                string selectedDischargeTypeString = DischargeTypePicker.SelectedItem.ToString();
+                DischargeType dischargeTypeValue;
 
-                // TODO: Replace with actual service call
-                //await PatientServices.ProcessDischarge(dischargeInfo);
+                // Parse the string to get the enum value
+                if (Enum.TryParse<DischargeType>(selectedDischargeTypeString.Replace(" ", ""), out dischargeTypeValue))
+                {
+                    dischargeInfo.DischargeType = dischargeTypeValue;
+                }
+                DischargeService dischargeService = new DischargeService();
+                await dischargeService.CreateAsync(dischargeInfo);
+
+                //update the patient to be outpaitnet
+                _selectedPatient.Status = OUTIN_Patient.Out_Patient;
+                PatientServices patientServices = new PatientServices();
+                await patientServices.UpdatePatientAsync(_selectedPatient);
 
                 await DisplayAlert("Success", "Patient discharged successfully", "OK");
-                
+
                 // Clear form and refresh patient list
                 ClearForm();
                 LoadPatients();
@@ -100,13 +123,11 @@ namespace E_Vita.Views
             DischargeTypePicker.SelectedItem = null;
             DischargeDatePicker.Date = DateTime.Today;
         }
-    }
 
-    internal class DischargeInfo
-    {
-        public string PatientId { get; set; }
-        public DateTime DischargeDate { get; set; }
-        public string Notes { get; set; }
-        public string DischargeType { get; set; }
+
+        private async void Close(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync(nameof(InpatientDoctorDashboard));
+        }
     }
 } 

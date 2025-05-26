@@ -45,7 +45,19 @@ namespace E_Vita.Services
             return response.IsSuccessStatusCode;
         }
 
+        protected async Task<T> PostAsyncWithResponse<T>(string endpoint, object data) where T : class
+        {
+            var json = JsonSerializer.Serialize(data);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync(endpoint, content);
 
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return null;
+        }
 
         protected async Task<bool> PutAsync<T>(string endpoint, T data)
         {
