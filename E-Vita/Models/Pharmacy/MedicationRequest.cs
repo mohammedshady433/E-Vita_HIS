@@ -33,6 +33,9 @@ namespace Pharmacy_ASP_API.Models.Entities
 
         [JsonIgnore]
         public virtual Order? Order { get; set; }
+        [ForeignKey("PatientID")]
+        public Patient patientId { get; set; }
+        public string? PatientID { get; set; }
 
         public virtual MedicationKnowledge? MedicationKnowledge { get; set; }
 

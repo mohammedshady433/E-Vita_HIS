@@ -1154,23 +1154,23 @@ namespace E_Vita.Views
                 await medicationServices.AddMedication(medication);
                 
                 //send the patient data to the pharmacy API
-                PharmaApp.services.PatientService patientService = new PharmaApp.services.PatientService();
-                var patient = await patientService.GetByIdAsync(_patientid);
-                if (patient == null)
-                {
-                    PatientServices patientserv = new PatientServices();
-                    var patTOsend = await patientserv.GetPatientsAsync(_patientid);
-                    Pharmacy_ASP_API.Models.Entities.Patient patient1 = new Pharmacy_ASP_API.Models.Entities.Patient
-                    {
-                        PatientId = patTOsend.ID.ToString(),
-                        PatientName = patTOsend.Name,
-                        PhoneNo = patTOsend.Phone,
-                        Address = patTOsend.Address,
-                        DateOfBirth = patTOsend.DateOfBirth,
-                        Gender = (Pharmacy_ASP_API.Models.Entities.Gender)patTOsend.Gender
-                    };
-                    await patientService.AddAsync(patient1);
-                }
+                //PharmaApp.services.PatientService patientService = new PharmaApp.services.PatientService();
+                //var patient = await patientService.GetByIdAsync(_patientid);
+                //if (patient == null)
+                //{
+                //    PatientServices patientserv = new PatientServices();
+                //    var patTOsend = await patientserv.GetPatientsAsync(_patientid);
+                //    Pharmacy_ASP_API.Models.Entities.Patient patient1 = new Pharmacy_ASP_API.Models.Entities.Patient
+                //    {
+                //        PatientId = patTOsend.ID.ToString(),
+                //        PatientName = patTOsend.Name,
+                //        PhoneNo = patTOsend.Phone,
+                //        Address = patTOsend.Address,
+                //        DateOfBirth = patTOsend.DateOfBirth,
+                //        Gender = (Pharmacy_ASP_API.Models.Entities.Gender)patTOsend.Gender
+                //    };
+                //    await patientService.AddAsync(patient1);
+                //}
 
                 //send the medication data (( medication Request )) to the pharmacy API
                 PractitionerServices practitionerServices = new PractitionerServices();
@@ -1185,21 +1185,11 @@ namespace E_Vita.Views
                    DoseInstruction = medication.Dose,
                    MedicationId = medication.MedID,
                    DrOutBed =practitioner.Name,
-                   RequestId = uniqueId.ToString(),
+                   DrInBed = "null",
+                   Status = "active",
+                   RequestId = uniqueId.ToString()
                 };
                 await medicationServicesPharm.CreateMedicationRequestAsync(medthatWillGoToPharmacy);
-
-                //orders table send code 
-                Pharmacy_ASP_API.Models.Entities.Order order = new Pharmacy_ASP_API.Models.Entities.Order
-                {
-                    OrderTime = DateTime.Now,
-                    MedicationId = medication.MedID,
-                    PatientId = _patientid.ToString(),
-                    MedicationRequestId = uniqueId.ToString()
-                };
-
-                PharmaApp.services.OrderService orderService = new PharmaApp.services.OrderService();
-                await orderService.AddAsync(order);
             }
 
             E_Vita_APIs.Models.Prescription prescription = new E_Vita_APIs.Models.Prescription();
