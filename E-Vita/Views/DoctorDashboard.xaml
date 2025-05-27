@@ -59,12 +59,20 @@
                 CornerRadius="20"   Clicked="PatientData"
                 HorizontalOptions="Center" VerticalOptions="Center"/>
                 <!-- Radiology Images Button -->
-                <Button Text="Radiology"   
+                <Button Text="Lab and Radiology images"   
                 FontFamily="Qatar2022 Arabic" FontSize="14" Padding="10"  
                 BackgroundColor="#3b0054" TextColor="#f9dcc0"  
-                WidthRequest="166" HeightRequest="46" Margin="10"  
+                WidthRequest="186" HeightRequest="46" Margin="10"  
                 CornerRadius="20"  Clicked="labImagesbtn"
                 HorizontalOptions="Center" VerticalOptions="Center"/>
+                <!--AIBOT-->
+                <Button Text="ASK AI"   FontAutoScalingEnabled="True"
+                FontFamily="Qatar2022 Arabic" FontSize="12" FontAttributes="Bold"
+                BackgroundColor="Red" TextColor="Black"  
+                WidthRequest="166" HeightRequest="46" Margin="10,50,10,10"  
+                CornerRadius="20"   Clicked="AI"
+                HorizontalOptions="Center" VerticalOptions="Center"/>
+                <!--operation Room-->
                 <Button Text="Operations Room"   FontAutoScalingEnabled="True"
                         FontFamily="Qatar2022 Arabic" FontSize="12" FontAttributes="Bold"
                         BackgroundColor="Red" TextColor="Black"  

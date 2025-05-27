@@ -42,7 +42,7 @@ public partial class CancelAppointment : ContentPage
         foreach (var appointment in allappointments)
         {
             var patient = await patientService.GetPatientsAsync(appointment.PatientId);
-            if (appointment.Start <= DateTime.Now.AddHours(2) || appointment.Status == E_Vita_APIs.Models.AppointmentStatus.Completed || appointment.Status == E_Vita_APIs.Models.AppointmentStatus.Cancelled)
+            if (appointment.Start <= DateTime.Now.AddHours(-2) || appointment.Status == E_Vita_APIs.Models.AppointmentStatus.Completed || appointment.Status == E_Vita_APIs.Models.AppointmentStatus.Cancelled)
             {
                 continue;
             }

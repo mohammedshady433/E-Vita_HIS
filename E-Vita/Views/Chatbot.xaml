@@ -1,0 +1,33 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="E_Vita.Views.Chatbot"
+             Title="Chatbot">
+
+    <Grid RowDefinitions="*, Auto">
+        <!-- Chat Messages Area -->
+        <ScrollView Grid.Row="0">
+            <VerticalStackLayout x:Name="ChatMessagesLayout" Spacing="5" Padding="10"/>
+        </ScrollView>
+
+        <!-- Input Area -->
+        <HorizontalStackLayout Grid.Row="1" Padding="10" Spacing="10"
+                               BackgroundColor="#F0F0F0">
+            <Label Text="Specialization:"
+                   VerticalOptions="Center"/>
+            <Picker x:Name="SpecializationPicker"
+                    WidthRequest="150"
+                    VerticalOptions="Center"/>
+
+            <Entry x:Name="MessageEntry"
+                   HorizontalOptions="FillAndExpand"
+                   Placeholder="Ask or search anything"
+                   HeightRequest="50"
+                   WidthRequest="720"/>
+
+            <Button Text="Send"
+                    Clicked="SendButton_Clicked"
+                    VerticalOptions="Center"/>
+        </HorizontalStackLayout>
+    </Grid>
+
+</ContentPage>

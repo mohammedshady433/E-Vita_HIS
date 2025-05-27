@@ -1,109 +1,121 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="E_Vita.Views.LabImages"
+             BackgroundColor="#F5F5F5"
              Title="Lab Images">
 
-    <ContentPage.Background>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#4B0082" Offset="0.0"/>
-            <GradientStop Color="#2d003d" Offset="1.0"/>
-        </LinearGradientBrush>
-    </ContentPage.Background>
-
-    <VerticalStackLayout Padding="0,30,0,0" Spacing="0">
-        <!-- Top Bar -->
-        <Grid HeightRequest="80" BackgroundColor="#4B0082" VerticalOptions="Start">
+    <Grid RowDefinitions="Auto, *">
+        <!-- Header -->
+        <Grid BackgroundColor="#4B0082" HeightRequest="80" Padding="16">
             <Label Text="Lab Images"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
                    TextColor="White"
                    FontSize="32"
                    FontAttributes="Bold"
-                   FontFamily="Qatar2022 Arabic"/>
+                   CharacterSpacing="1"/>
         </Grid>
 
-        <!-- Main Card -->
-        <Frame Margin="24,24,24,0"
-               Padding="24"
-               BackgroundColor="#fff"
-               CornerRadius="18"
-               HasShadow="True"
-               VerticalOptions="FillAndExpand"
-               HorizontalOptions="FillAndExpand">
-            <VerticalStackLayout Spacing="24" VerticalOptions="FillAndExpand">
+        <!-- Main content area -->
+        <Grid Grid.Row="1" ColumnDefinitions="2*, 6*">
+            <!-- Left Sidebar -->
+            <Frame BackgroundColor="White"
+                  Margin="10"
+                  Padding="15"
+                  CornerRadius="10"
+                  HasShadow="True">
+                <VerticalStackLayout Spacing="20">
+                    <Frame BackgroundColor="#f0f0f0" Padding="10" CornerRadius="5">
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Patient Information" 
+                                   FontSize="18" 
+                                   FontAttributes="Bold"
+                                   TextColor="#4B0082"/>
+                            <BoxView HeightRequest="1" BackgroundColor="#d0d0d0"/>
+                            <HorizontalStackLayout Spacing="5">
+                                <Label Text="ID:" FontAttributes="Bold" VerticalOptions="Center"/>
+                                <Label Text="{Binding Source={x:Reference PatientIdEntry}, Path=Text}" VerticalOptions="Center"/>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
 
-                <!-- Search and Upload Controls -->
-                <Grid ColumnDefinitions="*,Auto,Auto"
-                      RowDefinitions="Auto"
-                      VerticalOptions="Center"
-                      HorizontalOptions="Center"
-                      Padding="0"
-                      Margin="0">
-                    <Entry x:Name="PatientIDEntry"
-                           Grid.Column="0"
-                           Placeholder="Enter Patient ID"
-                           WidthRequest="220"
-                           HeightRequest="44"
-                           BackgroundColor="#f3f3f3"
-                           TextColor="#4B0082"
-                           PlaceholderColor="#b0a7c7"
-                           FontSize="18"
-                           Margin="0,0,12,0"
-                           Keyboard="Numeric"
-                           VerticalOptions="Center"/>
-                    <Button Grid.Column="1"
-                            Text="Search"
-                            FontSize="18"
-                            BackgroundColor="#4B0082"
-                            TextColor="White"
-                            CornerRadius="8"
-                            HeightRequest="44"
-                            WidthRequest="100"
-                            Margin="0,0,12,0"
-                            Clicked="OnSearchClicked"/>
-                    <Button Grid.Column="2"
-                            Text="+ Upload New Image"
-                            FontSize="18"
-                            BackgroundColor="#891739"
-                            TextColor="White"
-                            CornerRadius="8"
-                            HeightRequest="44"
-                            Clicked="Upload"/>
-                </Grid>
+                    <Button 
+                        Text="+ Upload New Image"
+                        FontSize="16"
+                        BackgroundColor="#891739"
+                        TextColor="White"
+                        CornerRadius="8"
+                        HeightRequest="50"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="EndAndExpand"
+                        Margin="0,260,0,0"
+                        Clicked="Upload">
+                        <Button.Shadow>
+                            <Shadow Brush="#66000000" Offset="0,3" Radius="3" />
+                        </Button.Shadow>
+                    </Button>
+                </VerticalStackLayout>
+            </Frame>
 
-                <!-- Images Section Header -->
-                <Label Text="Patient Lab Images"
-                       FontSize="22"
-                       FontAttributes="Bold"
-                       TextColor="#4B0082"
-                       Margin="0,0,0,8"
-                       HorizontalOptions="Center"/>
-
-                <!-- Images CollectionView -->
-                <!-- Make sure to set BindingContext and Images property in code-behind or ViewModel -->
-                <CollectionView x:Name="ImagesCollectionView"
-                                ItemsSource="{Binding Images}"
-                                VerticalOptions="FillAndExpand"
-                                HorizontalOptions="FillAndExpand"
-                                Margin="0">
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" Span="3"/>
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame Padding="6" HasShadow="False" BackgroundColor="Transparent">
-                                <Image Source="{Binding}" 
-                                       Aspect="AspectFill"
-                                       HeightRequest="120"
-                                       WidthRequest="120"
-                                       VerticalOptions="FillAndExpand"
-                                       HorizontalOptions="FillAndExpand"
-                                       Margin="4"/>
+            <!-- Right Content Area -->
+            <Frame Grid.Column="1"
+                  Margin="0,10,10,10"
+                  Padding="15"
+                  CornerRadius="10"
+                  BackgroundColor="White"
+                  HasShadow="True">
+                <Grid RowDefinitions="Auto, *">
+                    <!-- Search Area -->
+                    <Frame BackgroundColor="#f8f8f8" Padding="15" CornerRadius="8" Margin="0,0,0,15">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <Frame BorderColor="#d0d0d0" 
+                                   Padding="5" 
+                                   CornerRadius="5"
+                                   HasShadow="False">
+                                <Entry x:Name="PatientIdEntry"
+                                       Placeholder="Enter Patient ID"
+                                       PlaceholderColor="#A0A0A0"
+                                       FontSize="16"
+                                       Keyboard="Numeric" />
                             </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </VerticalStackLayout>
-        </Frame>
-    </VerticalStackLayout>
+
+                            <Button Grid.Column="1"
+                                    Text="Search"
+                                    FontSize="16"
+                                    TextColor="White"
+                                    BackgroundColor="#4B0082"
+                                    CornerRadius="8"
+                                    Margin="10,0,0,0"
+                                    Padding="15,10"
+                                    Clicked="OnSearchClicked">
+                                <Button.Shadow>
+                                    <Shadow Brush="#66000000" Offset="0,2" Radius="2" />
+                                </Button.Shadow>
+                            </Button>
+                        </Grid>
+                    </Frame>
+
+                    <!-- Images Display Area -->
+                    <ScrollView Grid.Row="1" Grid.RowSpan="5" Grid.ColumnSpan="3">
+                        <Grid Padding="5">
+                            <Grid x:Name="ImagesGrid"
+                                  ColumnSpacing="15"
+                                  RowSpacing="15"
+                                  HorizontalOptions="Center">
+                                <!-- Dynamic images will be added here by code-behind -->
+                            </Grid>
+
+                            <Label x:Name="NoImagesLabel" 
+                                   Text="No images found for this patient ID" 
+                                   IsVisible="False"
+                                   HorizontalOptions="Center" 
+                                   VerticalOptions="Center"
+                                   TextColor="#666666"
+                                   FontSize="18"/>
+                        </Grid>
+                    </ScrollView>
+                </Grid>
+            </Frame>
+        </Grid>
+    </Grid>
 </ContentPage>

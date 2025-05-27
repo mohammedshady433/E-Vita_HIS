@@ -1,111 +1,133 @@
-using E_Vita.Services;
-using E_Vita_APIs.Models;
-using System.Collections.ObjectModel;
+using System;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using E_Vita_APIs.Models;
+using E_Vita.Services;
+using Microsoft.Maui.Controls;
 
 namespace E_Vita.Views
 {
     public partial class LabImages : ContentPage
     {
-        private readonly RadiologyService _radiologyService = new RadiologyService();
-        public ObservableCollection<ImageSource> Images { get; set; } = new ObservableCollection<ImageSource>();
+        private readonly RadiologyService _radiologyService = new();
+        private int _currentPatientId=0;
 
         public LabImages()
         {
             InitializeComponent();
-            BindingContext = this;
+            SetupGridColumns();
         }
 
-        // Search button
+        private void SetupGridColumns()
+        {
+            ImagesGrid.ColumnDefinitions.Clear();
+            for (int i = 0; i < 3; i++)
+            {
+                ImagesGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+        }
+
         private async void OnSearchClicked(object sender, EventArgs e)
         {
-            var patientID = PatientIDEntry.Text;
-
-            if (string.IsNullOrEmpty(patientID) || !int.TryParse(patientID, out int patientId))
+            if (!int.TryParse(PatientIdEntry.Text, out int patientId))
             {
-                await DisplayAlert("Error", "Please enter a valid Patient ID.", "OK");
+                await DisplayAlert("Error", "Invalid Patient ID", "OK");
                 return;
             }
 
-            await LoadPatientImages(patientId);
+            _currentPatientId = patientId;
+            await LoadImages();
         }
 
-        // Load images for the patient from the API
-        private async Task LoadPatientImages(int patientId)
+        private async Task LoadImages()
         {
             try
             {
-                Images.Clear();
-                var allRadiology = await _radiologyService.GetAllAsync();
-                var patientImages = allRadiology
-                    .Where(r => r.PatientId == patientId && r.Photo != null && r.Photo.Length > 0)
-                    .ToList();
+                ImagesGrid.Children.Clear();
+                ImagesGrid.RowDefinitions.Clear();
 
-                if (!patientImages.Any())
+                var allImages = await _radiologyService.GetAllAsync();
+                if (allImages == null)
                 {
-                    await DisplayAlert("Info", "No lab images found for this patient.", "OK");
+                    await DisplayAlert("Error", "Failed to retrieve images", "OK");
                     return;
                 }
 
-                foreach (var radiology in patientImages)
+                var images = allImages.Where(img => img.PatientId == _currentPatientId).ToList();
+
+                if (images.Count == 0)
                 {
-                    // Convert byte[] to ImageSource
-                    ImageSource imgSource = ImageSource.FromStream(() => new MemoryStream(radiology.Photo));
-                    Images.Add(imgSource);
+                    await DisplayAlert("Info", "No images found", "OK");
+                    return;
+                }
+
+                int columnCount = 3;
+                int currentIndex = 0;
+
+                foreach (var image in images)
+                {
+                    if (currentIndex % columnCount == 0)
+                    {
+                        ImagesGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                    }
+
+                    var img = new Image
+                    {
+                        Source = ImageSource.FromStream(() => new MemoryStream(image.Photo)),
+                        Aspect = Aspect.AspectFit,
+                        HeightRequest = 400,
+                        WidthRequest = 400
+                    };
+
+                    Grid.SetRow(img, currentIndex / columnCount);
+                    Grid.SetColumn(img, currentIndex % columnCount);
+                    ImagesGrid.Children.Add(img);
+
+                    currentIndex++;
                 }
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", $"Failed to load images: {ex.Message}", "OK");
+                await DisplayAlert("Error", ex.Message, "OK");
             }
         }
 
-        // Upload new image
         private async void Upload(object sender, EventArgs e)
         {
             try
             {
-                var result = await FilePicker.PickAsync(new PickOptions
+                if (_currentPatientId == 0)
                 {
-                    PickerTitle = "Please select an image",
+                    await DisplayAlert("Error", "Search for patient first", "OK");
+                    return;
+                }
+
+                var result = await FilePicker.Default.PickAsync(new PickOptions
+                {
                     FileTypes = FilePickerFileType.Images
                 });
 
-                if (result != null)
+                if (result == null) return;
+
+                using var stream = await result.OpenReadAsync();
+                using var memoryStream = new MemoryStream();
+                await stream.CopyToAsync(memoryStream);
+                Radiology radiology = new Radiology();
+                radiology.PatientId = _currentPatientId;
+                radiology.Photo = memoryStream.ToArray();
+                radiology.Date = DateTime.Now;
+                radiology.Note = "no notes";
+                var success = await _radiologyService.AddAsync(radiology);
+
+                if (success)
                 {
-                    using var stream = await result.OpenReadAsync();
-                    using var ms = new MemoryStream();
-                    await stream.CopyToAsync(ms);
-                    var imageBytes = ms.ToArray();
-
-                    // Get patient ID from entry
-                    if (!int.TryParse(PatientIDEntry.Text, out int patientId))
-                    {
-                        await DisplayAlert("Error", "Please enter a valid Patient ID before uploading.", "OK");
-                        return;
-                    }
-
-                    // Create a new Radiology object
-                    var newRadiology = new Radiology
-                    {
-                        PatientId = patientId,
-                        Photo = imageBytes,
-                        Date = DateTime.Now,
-                        Note = "Uploaded from MAUI app"
-                    };
-
-                    // Save to API
-                    var success = await _radiologyService.AddAsync(newRadiology);
-                    if (success)
-                    {
-                        await DisplayAlert("Success", "Image uploaded successfully.", "OK");
-                        // Refresh images
-                        await LoadPatientImages(patientId);
-                    }
-                    else
-                    {
-                        await DisplayAlert("Error", "Failed to upload image.", "OK");
-                    }
+                    await DisplayAlert("Success", "Image uploaded", "OK");
+                    await LoadImages();
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Upload failed", "OK");
                 }
             }
             catch (Exception ex)

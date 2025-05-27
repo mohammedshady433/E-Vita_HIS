@@ -168,5 +168,10 @@ public partial class DoctorDashboard : ContentPage
     {
 
     }
+
+    private async void AI(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(Chatbot));
+    }
 }
 

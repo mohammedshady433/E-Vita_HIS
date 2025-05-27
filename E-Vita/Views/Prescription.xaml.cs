@@ -1140,14 +1140,66 @@ namespace E_Vita.Views
             checkboxentry3.IsVisible = e.Value;
         }
 
-        private void saveData(object sender, EventArgs e)
+        private async void saveData(object sender, EventArgs e)
         {
+            await DisplayAlert("Wait", "Prescription will take time!", "OK");
+
             GettheDrugstothemedicationlist();
+            
             // Save the selected drugs, lab tests, and radiology tests to the database
             foreach (var medication in _medicationsWillGotoDB)
             {
-                medicationServices.AddMedication(medication);
+                //send the medication data to the E-Vita API the next line is the line is related to my app the rest for loop is related to the pharmacy application
+                await medicationServices.AddMedication(medication);
+                //send the patient data to the pharmacy API
+                PharmaApp.services.PatientService patientService = new PharmaApp.services.PatientService();
+                var patient = await patientService.GetByIdAsync(_patientid);
+                if (patient == null)
+                {
+                    PatientServices patientserv = new PatientServices();
+                    var patTOsend = await patientserv.GetPatientsAsync(_patientid);
+                    Pharmacy_ASP_API.Models.Entities.Patient patient1 = new Pharmacy_ASP_API.Models.Entities.Patient
+                    {
+                        PatientId = patTOsend.ID.ToString(),
+                        PatientName = patTOsend.Name,
+                        PhoneNo = patTOsend.Phone,
+                        Address = patTOsend.Address,
+                        DateOfBirth = patTOsend.DateOfBirth,
+                        Gender = (Pharmacy_ASP_API.Models.Entities.Gender)patTOsend.Gender
+                    };
+                    await patientService.AddAsync(patient1);
+                }
+                //send the medication data (( medication Request )) to the pharmacy API
+                PractitionerServices practitionerServices = new PractitionerServices();
+                var practitioner = await practitionerServices.GetPractitionerByIdAsync(_currentDoctorId);
+
+                PharmaApp.Services.MedicationRequestService medicationServicesPharm = new PharmaApp.Services.MedicationRequestService();
+                int uniqueId = (int)(DateTime.Now.Ticks & 0x7FFFFFFF);
+
+                Pharmacy_ASP_API.Models.Entities.MedicationRequest medthatWillGoToPharmacy = new Pharmacy_ASP_API.Models.Entities.MedicationRequest
+                {
+                   authoredTime = DateTime.Now.ToString(),
+                   DoseInstruction = medication.Dose,
+                   MedicationId = medication.MedID,
+                   DrOutBed =practitioner.Name,
+                   RequestId = uniqueId.ToString(),
+                };
+                await medicationServicesPharm.CreateMedicationRequestAsync(medthatWillGoToPharmacy);
+                
+
+                //orders table send code 
+                Pharmacy_ASP_API.Models.Entities.Order order = new Pharmacy_ASP_API.Models.Entities.Order
+                {
+                    OrderTime = DateTime.Now,
+                    MedicationId = medication.MedID,
+                    PatientId = _patientid.ToString(),
+                    MedicationRequestId = uniqueId.ToString()
+                };
+
+                PharmaApp.services.OrderService orderService = new PharmaApp.services.OrderService();
+                await orderService.AddAsync(order);
             }
+
             E_Vita_APIs.Models.Prescription prescription = new E_Vita_APIs.Models.Prescription();
             prescription.ReasonForVisit = ReasonForVisitEntry.Text;
             prescription.Surgery = checkboxentry.IsVisible ? checkboxentry.Text : null;
@@ -1167,7 +1219,8 @@ namespace E_Vita.Views
             prescription.Examination = Examination.Text;
             prescription.patientcomplaint = complaint.Text;
 
-            _prescriptionService.AddPrescriptionAsync(prescription);
+            await _prescriptionService.AddPrescriptionAsync(prescription);           
+            await DisplayAlert("Success", "Prescription saved successfully!", "OK");
         }
 
         private async void showprevPrescriptions()
