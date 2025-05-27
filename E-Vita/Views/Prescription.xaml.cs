@@ -1142,6 +1142,7 @@ namespace E_Vita.Views
 
         private async void saveData(object sender, EventArgs e)
         {
+
             await DisplayAlert("Wait", "Prescription will take time!", "OK");
 
             GettheDrugstothemedicationlist();
@@ -1151,6 +1152,7 @@ namespace E_Vita.Views
             {
                 //send the medication data to the E-Vita API the next line is the line is related to my app the rest for loop is related to the pharmacy application
                 await medicationServices.AddMedication(medication);
+                
                 //send the patient data to the pharmacy API
                 PharmaApp.services.PatientService patientService = new PharmaApp.services.PatientService();
                 var patient = await patientService.GetByIdAsync(_patientid);
@@ -1169,6 +1171,7 @@ namespace E_Vita.Views
                     };
                     await patientService.AddAsync(patient1);
                 }
+
                 //send the medication data (( medication Request )) to the pharmacy API
                 PractitionerServices practitionerServices = new PractitionerServices();
                 var practitioner = await practitionerServices.GetPractitionerByIdAsync(_currentDoctorId);
@@ -1185,7 +1188,6 @@ namespace E_Vita.Views
                    RequestId = uniqueId.ToString(),
                 };
                 await medicationServicesPharm.CreateMedicationRequestAsync(medthatWillGoToPharmacy);
-                
 
                 //orders table send code 
                 Pharmacy_ASP_API.Models.Entities.Order order = new Pharmacy_ASP_API.Models.Entities.Order
