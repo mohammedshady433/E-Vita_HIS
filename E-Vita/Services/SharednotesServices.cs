@@ -5,7 +5,7 @@ namespace E_Vita.Services
 {
     internal class SharednotesServices : BaseApiService
     {
-        private const string endpoint = "sharednotes"; 
+        private const string endpoint = "SharedNote"; 
 
         
         public async Task<List<SharedNote>> GetAllAsync()

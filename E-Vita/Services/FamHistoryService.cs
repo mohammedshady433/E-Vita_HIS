@@ -11,19 +11,19 @@ namespace E_Vita.Services
         public class FamHistoryService : BaseApiService
         {
             private const string Endpoint = "famhistory";
-            public Task<List<FamHistory>> GetAllAsync()
+            public Task<List<FamilyHistory>> GetAllAsync()
             {
-                return GetAsync<List<FamHistory>>(Endpoint);
+                return GetAsync<List<FamilyHistory>>(Endpoint);
             }
-        public Task<FamHistory> GetByIdAsync(int id)
+        public Task<FamilyHistory> GetByIdAsync(int id)
         {
-            return GetAsync<FamHistory>($"{Endpoint}/{id}");
+            return GetAsync<FamilyHistory>($"{Endpoint}/{id}");
         }
-        public Task<bool> AddAsync(FamHistory famHistory)
+        public Task<bool> AddAsync(FamilyHistory famHistory)
         {
             return PostAsync(Endpoint, famHistory);
         }
-        public Task<bool> UpdateAsync(int id, FamHistory updated)
+        public Task<bool> UpdateAsync(int id, FamilyHistory updated)
         {
             return PutAsync($"{Endpoint}/{id}", updated);
         }

@@ -10,29 +10,29 @@ namespace E_Vita.Services
     public class RoomService : BaseApiService
     {
 
-        public async Task<List<Room>> GetAllAsync()
+        public async Task<List<Rooms>> GetAllAsync()
         {
-            return await GetAsync<List<Room>>("Room");
+            return await GetAsync<List<Rooms>>("Rooms");
         }
 
-        public async Task<Room> GetByIdAsync(int id)
+        public async Task<Rooms> GetByIdAsync(int id)
         {
-            return await GetAsync<Room>($"Room/{id}");
+            return await GetAsync<Rooms>($"Rooms/{id}");
         }
 
-        public async Task<bool> AddAsync(Room room)
+        public async Task<bool> AddAsync(Rooms room)
         {
-            return await PostAsync("Room", room);
+            return await PostAsync("Rooms", room);
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            return await DeleteAsync($"Room/{id}");
+            return await DeleteAsync($"Rooms/{id}");
         }
 
-        public async Task<bool> UpdateAsync(int id, Room updatedRoom)
+        public async Task<bool> UpdateAsync(int id, Rooms updatedRoom)
         {
-            return await PutAsync($"Room/{id}", updatedRoom);
+            return await PutAsync($"Rooms/{id}", updatedRoom);
         }
     }
 }

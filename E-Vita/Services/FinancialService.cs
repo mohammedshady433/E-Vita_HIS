@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using E_Vita_APIs.Models;
+using Microsoft.VisualBasic;
 
 namespace E_Vita.Services
 {
@@ -11,22 +12,22 @@ namespace E_Vita.Services
     {
         private const string Endpoint = "financial";
 
-        public Task<List<Financial>> GetAllAsync()
+        public Task<List<Finance>> GetAllAsync()
         {
-            return GetAsync<List<Financial>>(Endpoint);
+            return GetAsync<List<Finance>>(Endpoint);
         }
 
-        public Task<Financial> GetByIdAsync(int id)
+        public Task<Finance> GetByIdAsync(int id)
         {
-            return GetAsync<Financial>($"{Endpoint}/{id}");
+            return GetAsync<Finance>($"{Endpoint}/{id}");
         }
 
-        public Task<bool> AddAsync(Financial financial)
+        public Task<bool> AddAsync(Finance financial)
         {
             return PostAsync(Endpoint, financial);
         }
 
-        public Task<bool> UpdateAsync(int id, Financial updated)
+        public Task<bool> UpdateAsync(int id, Finance updated)
         {
             return PutAsync($"{Endpoint}/{id}", updated);
         }

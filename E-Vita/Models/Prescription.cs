@@ -1,33 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace E_Vita_APIs.Models
 {
     public class Prescription
     {
-        public int Id { get; set; }
-        public string ReasonForVisit { get; set; }
+        [Key]
+        public string Id { get; set; }
+        public string Complaint { get; set; }
+        public string Diagnosis { get; set; }
+        public DateTime Date {  get; set; }
+        public string Reason_for_visit { get; set; }
+        public string Doctor_ID { get; set; } // FK property
 
-        [JsonIgnore]
-        public ICollection<Medication> Medications { get; set; } = new List<Medication>();
-        public string Diseases { get; set; } // List of diseases
-        [JsonIgnore]
-        public Lab Labtest { get; set; } // Lab test class
-        public string LabTest { get; set; } // Lab test class
-        public string patientcomplaint { get; set; } // Patient note
-        public string RadiologyTest { get; set; } // Radiology test class
-        public string Examination { get; set; } // Examination details
-        public bool Reserve { get; set; } // Reserve for future use
-        public string? Surgery { get; set; } // Surgery details
-        public string familyHistory { get; set; } // Family history
-        public int PatientId { get; set; } // FK property
-
-        [ForeignKey("PatientId")]
-        [JsonIgnore]
+        [ForeignKey("Doctor_ID")]
+        public Doctor Doctor { get; set; } // Navigation property
+        public string Patient_ID { get; set; } // FK property
+        [ForeignKey("Patient_ID")]
         public Patient Patient { get; set; } // Navigation property
-        public int PractitionerID { get; set; }
-        [ForeignKey("PractitionerID")]
-        [JsonIgnore]
-        public Practitioner Practitioner { get; set; } // Navigation property   
+
+        // Many-to-many navigation
+        public ICollection<Radiology> Radiologies { get; set; }
+        // Many-to-many navigation
+        public ICollection<Lab> Labs { get; set; }
     }
 }

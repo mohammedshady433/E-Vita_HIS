@@ -1,29 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+﻿using E_Vita_APIs.Repositories;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Numerics;
 
 namespace E_Vita_APIs.Models
 {
     public class Medication
     {
-        public int Id { get; set; }
-        public string MedID { get; set; }
-        public string ActiveIngrediant { get; set; }
-        public string Dose { get; set; }
-        public TimeOnly Time { get; set; }
-        public string Medication_name { get; set; }
-        public int PractitionerID { get; set; }
-        [ForeignKey("PractitionerID")]
-        [JsonIgnore]
-        public Practitioner Practitioner { get; set; } // Navigation property   
-        public int PatientId { get; set; } // FK property
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Dosage { get; set; }
+        public string Active_site { get; set; }
+        public DateTime Date { get; set; }
+        public string PatientId { get; set; } // FK property
 
         [ForeignKey("PatientId")]
-        [JsonIgnore]
         public Patient Patient { get; set; } // Navigation property
-                                             // Foreign key to Prescription
-        public int? PrescriptionId { get; set; }
-        [ForeignKey("PrescriptionId")]
-        [JsonIgnore]
-        public Prescription Prescription { get; set; }
+
+        public string PrescriptionID { get; set; } // FK property
+
+        [ForeignKey("PrescriptionID")]
+        public Prescription Prescription { get; set; } // Navigation property
     }
 }

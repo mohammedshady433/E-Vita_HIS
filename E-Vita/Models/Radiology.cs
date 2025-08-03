@@ -1,18 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace E_Vita_APIs.Models
 {
     public class Radiology
     {
-        public int Id { get; set; }
+        [Key]
+        public string Id { get; set; }
         public DateTime Date { get; set; }
-        public byte[]? Photo { get; set; }  // This stores the image as binary
-        public string Note { get; set; }
-        public int PatientId { get; set; } // FK property
-
-        [ForeignKey("PatientId")]
-        [JsonIgnore]
-        public Patient? Patient { get; set; } // Navigation property
+        public StatusOfRadiology Status { get; set; }
+        public string? Examination_Type { get; set; }
+        // Many-to-many navigation
+        public ICollection<Prescription> Prescriptions { get; set; }
     }
+}
+public enum StatusOfRadiology
+{
+    Pending = 0,
+    Completed = 1,
+    Cancelled = 2
 }

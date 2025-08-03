@@ -16,25 +16,25 @@ namespace E_Vita.Services
         }
 
         // Get all beds
-        public async Task<List<Bed>> GetAllAsync()
+        public async Task<List<Beds>> GetAllAsync()
         {
-            return await GetAsync<List<Bed>>(ENDPOINT);
+            return await GetAsync<List<Beds>>(ENDPOINT);
         }
 
         // Get bed by ID
-        public async Task<Bed> GetByIdAsync(int id)
+        public async Task<Beds> GetByIdAsync(int id)
         {
-            return await GetAsync<Bed>($"{ENDPOINT}/{id}");
+            return await GetAsync<Beds>($"{ENDPOINT}/{id}");
         }
 
         // Create new bed
-        public async Task<bool> PostAsync(Bed bed)
+        public async Task<bool> PostAsync(Beds bed)
         {
             return await PostAsync(ENDPOINT, bed);
         }
 
         // Update existing bed
-        public async Task<bool> PutAsync(int id, Bed bed)
+        public async Task<bool> PutAsync(int id, Beds bed)
         {
             return await PutAsync($"{ENDPOINT}/{id}", bed);
         }

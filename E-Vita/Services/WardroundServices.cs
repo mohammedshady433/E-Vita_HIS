@@ -6,7 +6,7 @@ namespace E_Vita.Services
 {
     internal class WardroundServices : BaseApiService
     {
-        private const string endpoint = "wardround"; 
+        private const string endpoint = "WardRound"; 
 
         
         public async Task<List<WardRound>> GetAllAsync()
